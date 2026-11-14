@@ -6,9 +6,15 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Close Terminal tabs and the pane when done
+## Refill the Remote state bullets to 100 columns
 
 2026-11-14, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-sonnet-5-5, effort xhigh.
+
+**7.** Quoted under [c02c734](https://github.com/zululima/setup/commit/c02c734fb084477e18b9ebfdc0b45775e368e07b).
+
+## Close Terminal tabs and the pane when done
+
+2026-11-14, commit [c02c734](https://github.com/zululima/setup/commit/c02c734fb084477e18b9ebfdc0b45775e368e07b), model claude-sonnet-5-5, effort xhigh.
 
 **1.** [a task another Claude session wrote, left out] Quoted under [812f476](https://github.com/zululima/setup/commit/812f476244a367b44587dfe76d47635f613df9b5).
 

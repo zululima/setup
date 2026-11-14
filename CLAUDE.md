@@ -14,18 +14,17 @@ apply to one repository belong in that repository's project memory.
 ## Remote state
 
 - Run `git fetch --all --prune` before relying on remote state: which branches exist, where the
-  default branch is, whether a branch was merged, what an open PR is based on. Remote-tracking
-  refs go stale between sessions, and a decision made on a stale ref is wrong in a way that is
-  hard to notice afterwards.
+  default branch is, whether a branch was merged, what an open PR is based on. Remote-tracking refs
+  go stale between sessions, and a decision made on a stale ref is wrong in a way that is hard to
+  notice afterwards.
 - A `SessionStart` hook runs `~/.claude/hooks/git-prune-gone-branches.sh` when a session starts,
   resumes, is cleared or is forked. Inside a repository with remotes it runs the fetch above, then
-  deletes every local branch whose upstream branch is gone, as long as nothing on it would be
-  lost: every commit, or a patch-equivalent one, is already on the base remote's default branch
-  or in a pull request GitHub still holds. Every other gone branch stays. The hook shows the user
-  what it deleted and, whenever it changes, the set it kept, so a reply never repeats that list.
-  Delete only the ones the user names. Deleted names and hashes go to
-  `claude-code-deleted-branches.log` in the git directory, and `git branch <name> <hash>` brings
-  one back.
+  deletes every local branch whose upstream branch is gone, as long as nothing on it would be lost:
+  every commit, or a patch-equivalent one, is already on the base remote's default branch or in a
+  pull request GitHub still holds. Every other gone branch stays. The hook shows the user what it
+  deleted and, whenever it changes, the set it kept, so a reply never repeats that list. Delete only
+  the ones the user names. Deleted names and hashes go to `claude-code-deleted-branches.log` in the
+  git directory, and `git branch <name> <hash>` brings one back.
 
 ## Git commands
 
