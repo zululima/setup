@@ -210,8 +210,8 @@ run and its commit in the same turn.
 - A `Stop` hook, `~/.claude/hooks/stop-unreachable-claim.sh`, sends a turn back once when its
   closing message says in the first person that something could not be opened, read, reached, found
   or uploaded, and no Claude in Chrome tool ran since the prompt. Its phrase list is a heuristic
-  that backs the rule in `~/.claude/CLAUDE.md` that tries Claude in Chrome before calling a page out
-  of reach.
+  that backs the rule in the `chrome` skill that tries Claude in Chrome before calling a page out of
+  reach.
 - Two hooks back the two stack rules in Running things of `~/.claude/CLAUDE.md` and replace
   neither. A `Stop` hook, `~/.claude/hooks/stop-running-stack.sh`, sends a turn back once when it
   started a stack that is still up. A `PreToolUse` hook, `~/.claude/hooks/stack-held-by-peer.sh`,

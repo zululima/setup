@@ -209,8 +209,7 @@ apply to one repository belong in that repository's project memory.
   in that sense, ends its turn with `archive_session` and `self` once `start_session`,
   `detach_session` and any send of the task returned without error, and writes no closing reply,
   link or Prompt feedback, as its question named the model and effort. On an error it stays and says
-  so. The brief gives its `local_` id, and the started session archives it before its first closing
-  reply unless `get_session` shows it archived, without mentioning it.
+  so.
 - Steps the user carries out are written in the order they are done, in one numbered list from the
   first to the last. How to do one of them, such as how to start a screen recording, goes into that
   step, never into a section of its own placed before steps that have to come first. A value the
@@ -453,8 +452,6 @@ apply to one repository belong in that repository's project memory.
   built from memory notes alone states what was true when they were written. A `retry` or `r`, or
   another ask to redo an answer, reads its sources again, other sessions and git logs too, as the
   user's work moves on.
-- Browser work runs in Claude in Chrome, where a page is tried before a reply calls it out of reach,
-  and a sign-in a source needs is asked for, never skipped.
 - A `PushNotification` goes out only while the screen is locked or off. A session that no window
   shows says nothing about whether the user is away, since they may be in another session, and while
   the screen is on and unlocked the reply and the sidebar reach them.
@@ -465,6 +462,9 @@ apply to one repository belong in that repository's project memory.
 - Once the iOS simulator panel or a simulator has done its job in a turn, the session closes it
   before the reply: the panel with the simulator tool's `detach`, and simulators and emulators with
   their shutdown commands. A panel where a step waits on the user stays open.
+- A Terminal tab a session opened closes with `stop_terminal_tab` and `close` true, and the pane
+  with `close_pane`, once unused, before the reply. The tool refuses a tab the user typed in, such
+  as one that took a sudo password: the reply then names it, linked, as theirs to close.
 - A run a session starts in the background, with Bash's `run_in_background`, a `Monitor`, a workflow
   or a subagent, gets `show_pane` with `tasks` in the message that starts it, and in each later
   message calling a tool and before each reply while it goes on, which says the run is in the tasks
