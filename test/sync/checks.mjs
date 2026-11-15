@@ -133,11 +133,25 @@ const suites = [
       const s = scene(), r = ahead(s, change(pulled, { 12: [rule(11), rule(12)] }))
       return r.code === 1 && changedBoth(r) && r.kept
     }],
-    ['stays refused when the two copies differ, and runs once a run has copied the local one', () => {
+    ['runs in the same run when the local copy changed since HEAD and differs from the copy here, and ends clean', () => {
       const s = scene()
       arrives(s, first); sync(s); arrives(s, pulled); pushes(s, pulled)
-      const head = git(s, 'rev-parse HEAD'), r = sync(s), stayed = git(s, 'rev-parse HEAD') === head, next = sync(s)
-      return r.code === 1 && refusedPull(r) && stayed && read(s.local) === text(pulled) && !refusedPull(next) && pulledAll(s) && git(s, 'status --porcelain') === ''
+      const r = sync(s)
+      return r.code === 0 && !refusedPull(r) && !changedBoth(r) && pulledAll(s) && read(s.local) === text(pulled) &&
+        git(s, 'status --porcelain') === '' && r.out.includes(`sync: ${FILE} took the local copy for the pull`)
+    }],
+    ['copies back a hunk the local copy holds on top, when it differed from the copy here', () => {
+      const s = scene()
+      arrives(s, first); sync(s); arrives(s, apart); pushes(s, pulled)
+      const r = sync(s)
+      return r.code === 0 && !refusedPull(r) && !changedBoth(r) && pulledAll(s) && read(s.local) === text(apart) &&
+        read(s.copy) === text(apart) && git(s, `diff --numstat HEAD -- ${FILE}`) === `1\t1\t${FILE}`
+    }],
+    ['stays refused over a change made only in the copy here, its local copy still as committed', () => {
+      const s = scene()
+      write(s.copy, text(first)); pushes(s, pulled)
+      const head = git(s, 'rev-parse HEAD'), r = sync(s)
+      return r.code === 1 && refusedPull(r) && git(s, 'rev-parse HEAD') === head && read(s.copy) === text(first)
     }],
     ['stays refused when a file that is not mirrored is in the way too, and puts nothing back', () => {
       const s = scene()

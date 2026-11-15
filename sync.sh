@@ -33,15 +33,21 @@
 # is not mirrored; a fetch that fails, as when offline, does not. Literals
 # listed one per line in sync-allow.txt are exempt from the scan.
 #
-# Refused pull: a pull refused only over mirrored files whose copy here holds
-# the same bytes as the local one runs after all. Those copies go back to
-# HEAD, which loses nothing while the local copy stands, the pull
-# fast-forwards, and the reconciling above copies back what the local copy
-# holds beyond the pulled commits. That is the state a file sync leaves when
-# the other computer committed and pushed the file first. A mirrored file
-# missing locally is installed from here unless the fetched upstream has
-# deleted it, as a rename on the other computer does: the file sync removes
-# the local copy before a pull here can drop the file from this list.
+# Refused pull: a pull refused only over mirrored files whose local copy holds
+# the same bytes as the copy here, or changed since HEAD, runs after all. A
+# copy here that differs from such a changed local copy, as when an earlier
+# run copied the file in before the file sync brought a newer one, first gets
+# the local copy, a JSON file in the key order below, as the reconciling would
+# give it anyway. Those copies then go back to HEAD, which loses nothing while
+# the local copy stands, the pull fast-forwards, and the reconciling above
+# copies back what the local copy holds beyond the pulled commits. That is the
+# state a file sync leaves when the other computer committed and pushed the
+# file first. A change made only in the copy here, its local copy still as
+# committed, keeps the pull refused, so no local copy is overwritten before a
+# pull. A mirrored file missing locally is installed from here unless the
+# fetched upstream has deleted it, as a rename on the other computer does: the
+# file sync removes the local copy before a pull here can drop the file from
+# this list.
 #
 # Lock: hooks/mirror-sync.sh runs this on every prompt of every session, so
 # a run takes .git/sync.lock, holding its process id, and waits for another
@@ -309,6 +315,30 @@ pull_blockers() {
   return "$found"
 }
 
+# Gives the copy here of each changed file in the way of that fast-forward the
+# local copy, when the local copy changed since HEAD and differs from it, as
+# the reconciling would anyway. Fails when it copies none, or when a file in
+# the way is not a mirrored file at HEAD with a local copy, or has a local copy
+# still as committed, so a change made only here stays refused.
+local_over_blockers() {
+  local path copies=()
+  git merge-base --is-ancestor HEAD '@{upstream}' 2>/dev/null || return 1
+  while IFS= read -r path; do
+    [ -n "$(git status --porcelain -- ":(literal)$path")" ] || continue
+    is_mirrored "$path" && git cat-file -e "HEAD:$path" 2>/dev/null &&
+      [ -f "$checkout/$path" ] && [ -f "$source_dir/$path" ] || return 1
+    same_file "$checkout/$path" "$source_dir/$path" && continue
+    same_as_commit HEAD "$path" "$source_dir/$path" && return 1
+    copies+=("$path")
+  done < <(git -c core.quotePath=false diff --name-only --no-renames HEAD '@{upstream}')
+  [ "${#copies[@]}" -gt 0 ] || return 1
+  for path in "${copies[@]}"; do
+    case "$path" in *.json) keep_key_order "$checkout/$path" "$source_dir/$path" ;; esac
+    cp "$source_dir/$path" "$checkout/$path"
+    echo "sync: $path took the local copy for the pull, as reconciling would give it"
+  done
+}
+
 # True when file $3 holds the change path $2 took from commit $1 to HEAD:
 # against HEAD's version it removes no line that change wrote, and where that
 # change only removed lines it adds none of them back.
@@ -474,7 +504,8 @@ if git fetch --quiet 2>/dev/null; then
   git restore -- PROMPTS.md 2>/dev/null || true
   refused=0
   merge_error="$(git merge --ff-only --quiet '@{upstream}' 2>&1)" || refused=1
-  if [ "$refused" -eq 1 ] && blockers="$(pull_blockers)"; then
+  if [ "$refused" -eq 1 ] &&
+    { blockers="$(pull_blockers)" || { local_over_blockers && blockers="$(pull_blockers)"; }; }; then
     while IFS= read -r path; do
       git restore --source=HEAD --staged --worktree -- ":(literal)$path"
       echo "sync: $path put back to HEAD for the pull, the local copy holds the same bytes"

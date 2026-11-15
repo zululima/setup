@@ -72,13 +72,16 @@ run and its commit in the same turn.
   one that committed it before the pull here, a run copies it into the checkout, and git then
   refuses the pull over that copy. `sync.sh` gets past that by itself: when every file in the
   pull's way is a mirrored file whose checkout copy holds the same bytes as its `~/.claude` copy,
-  it puts those copies back to HEAD, fast-forwards and reconciles. A file whose `~/.claude` copy is
-  the pulled version ends clean, and one that holds more, such as another session's uncommitted
-  hunk, gets that back as a local change: a copy that removes no line the pull wrote and adds back
-  none it removed holds the pulled change, and is never called changed on both sides. A copy that
-  lacks the pulled change still stops the run, as does a pull refused for any other reason, such as
-  a change to a file that is not mirrored or a commit made here that the remote lacks. No
-  `~/.claude` copy is overwritten on the way.
+  it puts those copies back to HEAD, fast-forwards and reconciles. A checkout copy that differs
+  from a `~/.claude` copy changed since HEAD, such as one an earlier run copied in before the file
+  sync brought a newer file, first gets the `~/.claude` copy, as the reconcile would give it
+  anyway, so the pull runs in that same run. A file whose `~/.claude` copy is the pulled version
+  ends clean, and one that holds more, such as another session's uncommitted hunk, gets that back
+  as a local change: a copy that removes no line the pull wrote and adds back none it removed holds
+  the pulled change, and is never called changed on both sides. A copy that lacks the pulled change
+  still stops the run, as does a pull refused for any other reason, such as a change to a file that
+  is not mirrored, a change made only in the checkout copy or a commit made here that the remote
+  lacks. No `~/.claude` copy is overwritten on the way.
 - `hooks/mirror-sync.sh` runs a plain `sync.sh` in the background at the start of every prompt of
   every session, so the pull and the reconcile need no run of their own. It commits and pushes
   nothing: local changes wait in the checkout for the session that made them. What stops a run, such
