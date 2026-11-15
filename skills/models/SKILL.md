@@ -1,6 +1,6 @@
 ---
 name: models
-description: Which Claude model and effort each kind of work runs on, and the cheaper steps down when the limits run short. Load at a prompt that starts software work or any task of more than a few tool calls, before any other step, and before choosing the model or effort of any work a session starts.
+description: Which Claude model and effort each kind of work runs on, when a task moves up to a stronger model, and the cheaper picks for work a session starts when the limits run short. Load before any other step at a prompt that starts software that is hard or open, research across many web sources or chart reading, and before starting or offering a subagent, a workflow agent or a session.
 ---
 
 # Models and effort
@@ -52,29 +52,31 @@ description: Which Claude model and effort each kind of work runs on, and the ch
 - No row uses max effort: on Fable 5.2 Anthropic keeps it for measuring the model's ceiling, and
   on software work it does worse than xhigh. No row uses Fable 5.2 at xhigh either: the 5-hour
   limit cannot carry it, as What a session costs shows.
-- A session cannot switch its own model or effort, so at the prompt that starts a task it reads
-  them with `get_session` and `self` and compares its model with the task's row. Software that is
-  hard or open, in a session on a cheaper model than Fable 5.2, goes to a new session on its row
-  unless the pace is `tight`: started as above, with `context` "fork" so it holds this conversation,
-  and with a task that asks it to carry out the user's last prompt there, so the prompt stays the
-  user's own in its log and its commits. This session does none of it: a session that stays links
-  that one in its reply and says the work goes on there, and a spawner writes no reply, so no
-  question named the fork's model and effort and its task asks the fork's first reply to say them,
-  with why, as the sentence below does. A task in a session on a model that costs more than
-  its row's, such as a draft or a change with its files named in a session on Fable 5.2, is asked
-  about as a step down is, whatever the pace: the question names the row's model and effort, and
-  on yes the task goes to a session on them as Stepping down says. Any other task runs on the
-  session's model and effort as they are, and the first line of the reply that starts it says so
-  in a full sentence of plain words: which model and effort this skill gives that kind of task
-  and which the session runs on, such as "This skill gives a question like this to Opus 5.5 at
-  xhigh effort, and this session runs on Fable 5.2 at xhigh". No line a reply writes under this
-  skill opens with a label before a colon, such as the task's kind, which reads as a question put
-  to the user, and none uses this skill's own words row, rung or tight: it names the model, the
-  effort and the limit, and says of the limit how full it is and what it is on pace for. A session
-  whose opening prompt says the user picked its model and effort for the pace keeps them, as
-  Stepping down says. That settles its own model and effort only: it still loads this skill
-  before it starts or proposes a session, and its reply names that session's model and effort as
-  the bullet above says.
+- A task runs in the session it is typed in, on that session's model and effort, with no question
+  and no session started for it: handing a task on costs a second context and the turns that
+  arrange it, more than a cheaper model saves, as What a session costs shows. The one move is up.
+  A session cannot switch its own model or effort, so at a prompt that starts software that is
+  hard or open, research across many web sources or chart reading, each more than a few tool
+  calls, it reads them with `get_session` and `self`. In a session on a cheaper model than Fable
+  5.2, such a task goes to a new session on its row unless the pace is `tight`: started as above,
+  with `context` "fork" so it holds this conversation, and with a task that asks it to carry out
+  the user's last prompt there, so the prompt stays the user's own in its log and its commits.
+  This session does none of it: a session that stays links that one in its reply and says the
+  work goes on there, and a spawner writes no reply, so no question named the fork's model and
+  effort and its task asks the fork's first reply to say them, with why, as the sentence below
+  does. Every other task runs here, also in a session on a model that costs more than its row's,
+  such as a draft in a session on Fable 5.2: the user picked that model, and no reply asks to
+  move the task down. When the session's model or effort is not its task's row's, the first line
+  of the reply that starts the task says so in a full sentence of plain words: which model and
+  effort this skill gives that kind of task and which the session runs on, such as "This skill
+  gives software like this to Fable 5.2 at high effort, and this session runs on Opus 5.5 at
+  xhigh". No line a reply writes under this skill opens with a label before a colon, such as the
+  task's kind, which reads as a question put to the user, and none uses this skill's own words
+  row, rung or tight: it names the model, the effort and the limit, and says of the limit how
+  full it is and what it is on pace for. A session whose opening prompt says the user picked its
+  model and effort for the pace keeps them, as Stepping down says. That settles its own model and
+  effort only: it still loads this skill before it starts or proposes a session, and its reply
+  names that session's model and effort as the bullet above says.
 
 | Task | Model | Effort | Benchmarks behind it |
 |---|---|---|---|
@@ -108,60 +110,43 @@ description: Which Claude model and effort each kind of work runs on, and the ch
 - A new session writes its context again before its task starts: about 65,000 tokens beyond the
   shared prompt, $1.04 on Fable 5.2 and $0.52 on Opus 5.5. Such writes, at a session's start and
   after its cache went cold, were 21% of the window that filled. So a task moves to another
-  session only for another model, and never when a few tool calls settle it.
-- The user's sessions on the Mac start on Fable 5.2 at xhigh, which the user keeps: `start_session`
-  takes only a model and effort at or below the session's own, so a session there can start one on
-  any row without an approval. Such a session reads the task, asks as the bullet on a session's own
-  model says and hands the task on as a spawner. It does none of the task first, since each of its responses
-  costs the most. On the Linux desktop, whose account is on the Pro plan, they start on Opus 5.5 at
-  xhigh, as every desktop session there since 12 November 2026 did, so on `tight` the step down
-  there is the one to Sonnet 5.5 that Stepping down gives.
+  session only up to Fable 5.2, and never when a few tool calls settle it.
+- A session that only hands its task on costs more than that write, since it loads this skill,
+  reads the limits, asks and waits for the answer. A window that filled in 2 hours 28 minutes on
+  14 November 2026 held $156.05 over 1,336 responses in 27 sessions, 44% of it cache writes. Seven
+  of those sessions, on Fable 5.2 at xhigh, ended by starting the session that did their task:
+  $35.55 over 173 responses, 23% of the window. An Opus 5.5 session that handed its task to Sonnet
+  5.5 that day cost $1.18 over 14 responses, which the 30% that Sonnet 5.5 saves pays back only on
+  a task of about $5 on Opus 5.5. So no task is handed down to a cheaper model.
+- The user's sessions start on Opus 5.5 at xhigh, on the Mac and on the Linux desktop, whose
+  account is on the Pro plan: the row of most tasks, so most tasks run where they are typed with
+  no session started for them.
 
 ## Stepping down
 
-- At every prompt that starts a task, one that a few tool calls settle too, the session reads the
-  plan's limits with `get_usage` before any other step but the start and detach that a yes to an
-  offer of a session makes first, and pipes the result as it came to
+- Before a session moves a task up or starts any work, such as a subagent, a workflow agent or a
+  session, it reads the plan's limits with `get_usage`, once a task, after the start and detach
+  that a yes to an offer of a session makes first, and pipes the result as it came to
   `~/.claude/skills/models/pace.sh`, which prints what the 5-hour limit and each weekly limit is
-  on pace for, and a verdict. On `fits` or `unknown` the task runs as above. A task that a few tool
-  calls settle runs here whatever the verdict, since a new session costs more than it would save,
-  and on `tight` its reply still gives what `pace.sh` printed for the limit that binds.
-- On `tight` no work starts on Fable 5.2, apart from research and chart reading, whose benchmarks
-  put every Opus 5.5 rung at a higher cost per task or far below. A session's own task steps down
-  by model, which sets what a response costs: software that is hard or open runs on Opus 5.5 at
-  xhigh, 1.9 points under its row, at 38% of Fable 5.2's cost per response, and stays in a session
-  that is on Opus 5.5 already. Other software and everything else run on Sonnet 5.5 at xhigh,
-  within 5 points or 34 Elo of Opus 5.5 at xhigh on the four charts of the second table and at
-  about 70% of its cost per task, so about 27% of Fable 5.2's. When the share `pace.sh` printed is
-  under the rung's share of the session's own cost, the reply says the limit is still on pace to
-  fill.
-- A session on Sonnet 5.5 or a cheaper model keeps its own task whatever the verdict, and so does
-  one on Opus 5.5 whose task is software that is hard or open, research or chart reading. On
-  `tight` its reply says so with what `pace.sh` printed for the limit that binds.
+  on pace for, and a verdict. On `fits` or `unknown` the move is made and the work runs on its
+  row. A task that stays where it is typed and starts no work needs no read.
+- On `tight` no task moves up and no work starts on Fable 5.2, apart from research and chart
+  reading in a subagent or a workflow agent, whose benchmarks put every Opus 5.5 rung at a higher
+  cost per task or far below. Software that is hard or open then runs where it is typed: on Opus
+  5.5 at xhigh it scores 1.9 points under its row at 38% of Fable 5.2's cost per response.
+- A session keeps its own task whatever the verdict, and no reply asks to move it to a cheaper
+  model. A reply that kept a task off its row for the limit, or started work on a second rung,
+  gives what `pace.sh` printed for the limit that binds.
 - Work a session starts while the pace is `tight`, such as a subagent, a workflow agent or a new
   session, takes the second rung of its line: Opus 5.5 at xhigh for software that is hard or open,
   Opus 5.5 at high for other software and for everything else, and Fable 5.2 at low for research
   and chart reading, or Opus 5.5 at medium when the limit that binds is the weekly Fable one. The
   Sonnet and Haiku rows stay as they are. It takes that rung without a question of its own, and
-  an offer to start a session names it.
-- Before any of its own task is done, a session on `tight` whose model costs more than its task's
-  rung above, such as one on Fable 5.2 whose task is neither research nor chart reading or one on
-  Opus 5.5 whose task is other software or anything else, asks whether the task should run on that
-  rung. The next-step box holds the question, with the model and the effort in full, and two
-  buttons: yes, and no, stay on this session's own. The closing message gives what `pace.sh`
-  printed for the limit that binds, the rung's score and cost per task beside those of this
-  session's own model and effort, from the table that holds both, the cost per response of both
-  where What a session costs gives it, and what the tracker line below says of the rung's model.
-- On yes the task goes to a new session on that rung, started with the `model` and `effort` of
-  `start_session`, which a step down needs no approval for, and with `context` "fresh". Its prompt
-  quotes the user's prompt whole and says the user picked this model and effort for the pace, so
-  that session keeps them and asks nothing. A task that leans on this conversation, or on a file
-  attached to it, goes to a fork instead, which gets its rung as the second bullet of this skill
-  says. The session that asked has nothing else left, so it is a spawner: once the start and the
-  detach returned without error it archives itself and writes no reply, since the question named
-  the rung's model and effort. On no the task runs as on `fits`.
-- A stepped-down session that has the context it needs and still gets the task wrong twice says so
-  and names the next rung up, which the user picks in the app's model menu.
+  an offer to start a session names it. The brief of a session started on such a rung says the
+  user picked its model and effort for the pace, so that session keeps them and moves no task up.
+- A session started on a second rung that has the context it needs and still gets the task wrong
+  twice says so and names its row's model and effort, which the user picks in the app's model
+  menu.
 
 The first table gives the score of each model and effort, its cost per task in dollars at API
 prices, and that cost as a share of Fable 5.2 at xhigh. A benchmark runs its task in a small

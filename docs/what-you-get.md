@@ -248,15 +248,13 @@
   picks are the strongest ones the plan's 5-hour limit carries through a working day: a subagent
   that only looks things up runs on a small model, most work on the mid-priced one, and only
   software whose cause or design is still open on the strongest. A session asked for such work on
-  a cheaper model hands it to a copy of itself on the right model and effort, since it cannot
-  switch its own. A session on a costlier model than its task needs, or one that starts while your
-  plan's 5-hour or weekly limit is on pace to fill before it resets, asks whether the task should
-  run on the cheaper model, shows the benchmark score and the cost of both, and on your yes starts
-  it in a session there. It steps down by model, since a lower effort on the same model fills the
-  limit almost as fast. `pace.sh` beside the skill works out that pace from how your own weeks
-  have gone. `/dream` keeps
-  both tables current from each new model's launch page and from the unofficial trackers that watch
-  for a model quietly getting worse.
+  a cheaper model hands it to a copy of itself on the right model and effort, since it cannot switch
+  its own. Every other task runs in the session you type it in, with no question and no session
+  started for it, since handing a task on costs more than a cheaper model saves. While your plan's
+  5-hour or weekly limit is on pace to fill before it resets, no task moves up and the work a
+  session starts, such as a subagent, takes a cheaper pick. `pace.sh` beside the skill works out
+  that pace from how your own weeks have gone. `/dream` keeps both tables current from each new
+  model's launch page and from the unofficial trackers that watch for a model quietly getting worse.
 - [`skills/mirror`](../skills/mirror/SKILL.md): how Claude keeps this copy and my own `~/.claude`
   the same, and what it must never publish here. Claude reads it only before it changes the setup,
   which keeps the rules every session reads shorter.

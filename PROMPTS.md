@@ -6,9 +6,26 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## models: run a task where it is typed, start on Opus 5.5
+
+2026-11-15, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-fable-5-2, effort xhigh.
+
+**1.**
+> this is unacceptable btw. fix your model effort spawner
+> [attached: a screenshot of the plan's usage limits, the 5-hour
+> limit at 97% and the weekly one at 81%]
+
+**2.**
+> now its 0917 and its 97%
+
+Reply: Nothing is changed yet. The 5-hour limit filled because 7 sessions on Fable 5.2 at xhigh spent $35.55 of the window's $156.05 only to hand their task to another session. Both fixes undo a choice of yours, so the models skill waits for your answer.
+
+**3.** (answer to: shall I rewrite the models skill for sessions that start on Opus 5.5 at xhigh?)
+> Yes, Opus start
+
 ## Refill the Remote state bullets to 100 columns
 
-2026-11-14, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-sonnet-5-5, effort xhigh.
+2026-11-14, commit [9526081](https://github.com/zululima/setup/commit/952608133577e679fb4a7e83b25849b961a78dbe), model claude-sonnet-5-5, effort xhigh.
 
 **7.** Quoted under [c02c734](https://github.com/zululima/setup/commit/c02c734fb084477e18b9ebfdc0b45775e368e07b).
 
