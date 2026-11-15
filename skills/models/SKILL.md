@@ -144,6 +144,16 @@ description: Which Claude model and effort each kind of work runs on, when a tas
   Sonnet and Haiku rows stay as they are. It takes that rung without a question of its own, and
   an offer to start a session names it. The brief of a session started on such a rung says the
   user picked its model and effort for the pace, so that session keeps them and moves no task up.
+- A reply that offers a session reads the limits again first, with `get_usage` and `pace.sh`,
+  unless the session read them in the last 10 minutes, and a figure or time the offer or the brief
+  gives for a limit is quoted from that read. When it has the 5-hour limit within 5 points of full,
+  the question gives the reset time `pace.sh` printed and names the model and effort the task takes
+  in the new window: its row's, or its rung's when a weekly limit is tight too. Its first button
+  starts the task at that reset and its second starts it now, on the rung. On the first, the turn
+  makes a one-time task under Scheduled for a minute after the reset in place of `start_session`.
+  The scheduling tool sets no model, so the task's prompt holds the brief and has the session it
+  opens start the brief's session on that model and effort as a spawner, with no question, since
+  the user said yes.
 - A session started on a second rung that has the context it needs and still gets the task wrong
   twice says so and names its row's model and effort, which the user picks in the app's model
   menu.

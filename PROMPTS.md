@@ -6,9 +6,19 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Refresh the eval results for 15 Nov
+## models: read the limits again before offering a session
 
 2026-11-15, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** (starts the dream review, which applies this step without a question)
+> gm
+
+**2.** (14 Nov 2026, in another session, as the 5-hour limit filled)
+> now its 0917 and its 97%
+
+## Refresh the eval results for 15 Nov
+
+2026-11-15, commit [e6a16a9](https://github.com/zululima/setup/commit/e6a16a9f14986e2e45094ad916ca5db9b60dfde6), model claude-opus-5-5, effort xhigh.
 
 **1.** (relayed by the session that started this one)
 > gm
