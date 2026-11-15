@@ -7,7 +7,8 @@
 # section leaves it out. It names the lines to add, each from the newest commit
 # that gave it. It reads the command text and the file named by -F, --file or
 # sync.sh --commit. A word is flagged once per session and set of quoted
-# prompts, so one that means something else here costs a single retry.
+# prompts, so one that means something else here costs a single retry. A key
+# that is also an everyday word, such as rest, is never flagged.
 
 set -u
 
@@ -75,11 +76,17 @@ while IFS= read -r file; do
 $(cat "$file")"
 done <<<"$files"
 
+# Keys that are also everyday words. A prompt nearly always means the everyday
+# word, so the hook never asks for their lines. prompt-log.sh print --commit
+# still names them, for the message where the abbreviation is meant.
+everyday="is rest"
+
 # Abbreviation lines run from an Abbreviations: line to the next blank line,
 # and a trailer such as Signed-off-by that follows without one is skipped.
 # A key such as "pr, prs" stands for each of its words, and a word matches
 # whole, ignoring case, but not as a file extension such as the md of a .md.
-missing="$(awk '
+missing="$(awk -v everyday="$everyday" '
+  BEGIN { n = split(everyday, ws, " "); for (j = 1; j <= n; j++) listed[ws[j]] }
   function key(line,   k) {
     sub(/^- /, "", line)
     if (line !~ /^[^:]+: ./) return ""

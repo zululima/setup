@@ -635,6 +635,11 @@ const suites = [
         return refused(r) && r.err.includes('\nwip: work in progress\n')
       }],
       ['reads the message file of a sync.sh --commit', () => { message(checkout, 'c1.txt', 'squash the wip commits'); return refused(run(bash('./sync.sh --commit c1.txt', checkout))) }],
+      ['lets an everyday word through that an earlier commit expanded', () => {
+        earlier(work, 'abbr-2.txt', 'rest: REST, an HTTP API style\nis: issue')
+        message(work, 'm6.txt', 'ask for my sudo once and you do the rest. it is fine')
+        return quiet(run(bash('git commit -F m6.txt', work)))
+      }],
     ]
   }],
 

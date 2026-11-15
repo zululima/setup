@@ -6,9 +6,19 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Rebase the mirror past sync.sh's own copies
+## abbreviations-listed: let is and rest through
 
 2026-11-15, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** (starts the dream review, which applies this step without a question) Quoted under [fce4d69](https://github.com/zululima/setup/commit/fce4d69bc49d7a4e9ce506b630130d12564da1f9).
+
+**2.** (14 Nov 2026, the prompt the refused commits quoted)
+> [a status update on a package switch left out] next time just spawn
+> terminal pane and ask for my sudo once and you do the rest
+
+## Rebase the mirror past sync.sh's own copies
+
+2026-11-15, commit [cdc16f7](https://github.com/zululima/setup/commit/cdc16f7d01871fc5e53c858557ab9dad47c0f7fd), model claude-opus-5-5, effort xhigh.
 
 **1.** (starts the dream review, which applies this step without a question) Quoted under [fce4d69](https://github.com/zululima/setup/commit/fce4d69bc49d7a4e9ce506b630130d12564da1f9).
 
