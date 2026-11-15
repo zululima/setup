@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## Refresh the eval results for 15 Nov
+
+2026-11-15, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** (relayed by the session that started this one)
+> gm
+
 ## models: run a task where it is typed, start on Opus 5.5
 
-2026-11-15, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-fable-5-2, effort xhigh.
+2026-11-15, commit [014e2cb](https://github.com/zululima/setup/commit/014e2cb86af839f40b0f2c4b0523ad332603e702), model claude-fable-5-2, effort xhigh.
 
 **1.**
 > this is unacceptable btw. fix your model effort spawner
