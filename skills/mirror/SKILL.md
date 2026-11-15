@@ -97,11 +97,13 @@ run and its commit in the same turn.
   room itself, in the same turn and without asking: it moves a block at least as large as the
   overage, unchanged, into the skill whose description loads it wherever the block applies, or cuts
   sentences such a skill already states, and the reply names each block moved or cut and where it
-  went. Raising the budget is the user's call alone, so a session that finds nothing to move or cut
-  takes its own edit back out of `CLAUDE.md` before it asks, and no uncommitted hunk waits on the
-  answer. After a move, a cut or any other change that shrinks the file, write its new size rounded
-  up to the next 1,000 into `claude-md-budget.txt` and commit that file with the rest, so the budget
-  falls with every cut and rises only on the user's yes.
+  went. No sentence that stood in the file before the session's edit is reworded shorter or dropped
+  to fit the budget, in the bullet that edit changes too, unless such a skill states it. Raising the
+  budget is the user's call alone, so a session that finds nothing to move or cut takes its own edit
+  back out of `CLAUDE.md` before it asks, and no uncommitted hunk waits on the answer. After a move,
+  a cut or any other change that shrinks the file, write its new size rounded up to the next 1,000
+  into `claude-md-budget.txt` and commit that file with the rest, so the budget falls with every cut
+  and rises only on the user's yes.
 - `sync.sh --commit <file> <path>...` commits the named paths and pushes them to the default branch,
   then every mirror below. It refuses a run that names no path, or no path with a change, and before
   anything else a message without the prompts heading the `commit-messages` skill gives. No PR: the

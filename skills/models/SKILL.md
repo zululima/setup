@@ -30,6 +30,12 @@ description: Which Claude model and effort each kind of work runs on, when a tas
   opened in a split pane, a window or the main pane unless the user asks for that, and a session
   that stays links it in its reply.
 - A tool that cannot set the model or effort its row asks for is named in the reply with that row.
+- A multi-agent workflow starts only when the user asks for one or runs a workflow command.
+  Propose one, with a rough token cost, only for read-only work across a wide area: a deep
+  review of a large diff, research across several read-only sources, or a sweep of a codebase
+  against one rule. Never propose one for work that needs the local stack or the shared
+  checkout. `workflowKeywordTriggerEnabled` is `false` in `settings.json`, so the word
+  ultracode in a prompt opts in to nothing.
 - An offer to start a session is a question in the next-step box, never a `start_session` card,
   neither an "own_initiative" proposal nor an "offer": the question names the task with the
   session's model and effort in full, its first button, which one shortcut presses, is the yes,

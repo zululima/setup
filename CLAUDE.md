@@ -476,7 +476,9 @@ apply to one repository belong in that repository's project memory.
 - No session waits in the background on a step the user takes by hand, such as plugging in a drive:
   the reply gives the step, and the session goes on once the user says done. A sudo password is such
   a step, asked once: the session puts the task's sudo commands in one script, starts `sudo bash` on
-  it in a Terminal tab and shows its pane, never handing them over.
+  it in a Terminal tab and shows its pane, never handing them over. A step in a pane of the app,
+  such as an answer to a command the session started in the Terminal panel, comes with that pane
+  shown on its tab by `show_pane` before the reply.
 - Before a reply says that a setup cannot do something, such as install a tool, reach a service or
   suit a kind of user, the session reads that setup's own install scripts, README and settings, and
   the guides they point to, such as an onboarding guide in another repository. Before a reply
@@ -568,18 +570,12 @@ apply to one repository belong in that repository's project memory.
   answer is done first, and nothing that does is built before it comes. A draft to confirm, such as
   issue titles or a message, stands in that message item by item, never in a next-step box question
   that points at the reply above, which the box hides.
-- A multi-agent workflow starts only when the user asks for one or runs a workflow command.
-  Propose one, with a rough token cost, only for read-only work across a wide area: a deep
-  review of a large diff, research across several read-only sources, or a sweep of a codebase
-  against one rule. Never propose one for work that needs the local stack or the shared
-  checkout. `workflowKeywordTriggerEnabled` is `false` in `settings.json`, so the word
-  ultracode in a prompt opts in to nothing.
-- Software outside the project is installed only with the user's yes. Before an install, say
-  in a line what the tool is and why it is needed. Ask rules in `settings.json` then prompt for
-  `brew`, `pipx`, `uv tool`, `npm -g`, `cargo`, `go` and `gem` installs in every permission
-  mode, `bypassPermissions` included. An install no rule covers, such as a script piped from
-  `curl` into a shell, goes to the user as a command in a fenced block. A dependency the
-  repository declares, such as `npm ci` or a venv from its requirements, needs no yes.
+- Software outside the project is installed only with the user's yes. Before an install, say in a
+  line what the tool is and why it is needed. Ask rules in `settings.json` then prompt for `brew`,
+  `pipx`, `uv tool`, `npm -g`, `cargo`, `go` and `gem` installs in every permission mode,
+  `bypassPermissions` included. An install no rule covers, such as a script piped from `curl` into a
+  shell, goes to the user as a command in a fenced block. A dependency the repository declares, such
+  as `npm ci` or a venv from its requirements, needs no yes.
 - A session that builds a change to an app of the user's that runs on this Mac installs the build in
   the same turn without asking, by the project's install steps once the app is idle, and the reply
   names each permission macOS will ask for again.
