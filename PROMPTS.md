@@ -6,9 +6,24 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## abbreviations-listed: let is and rest through
+## pages: a reworded term comes back as a row per string
 
 2026-11-15, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**13.**
+> surely theres some apple app that has this documented on what it
+> should say right? if not surely theres some open source or whatever
+> open documentation well natively written app that has this transalted
+> already? also more examples. singel is push-ilmoitus and plural is
+> push-ilmoitukset. finnish has a lot of bending so check each place
+> with me separately
+
+**14.**
+> Only reworded terms
+
+## abbreviations-listed: let is and rest through
+
+2026-11-15, commit [3617d98](https://github.com/zululima/setup/commit/3617d9809f0ce56eeca5ae2ff62f6fb28dd5f94e), model claude-opus-5-5, effort xhigh.
 
 **1.** (starts the dream review, which applies this step without a question) Quoted under [fce4d69](https://github.com/zululima/setup/commit/fce4d69bc49d7a4e9ce506b630130d12564da1f9).
 

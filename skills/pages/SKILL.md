@@ -28,6 +28,8 @@ description: Pages the user opens in a browser, such as an HTML page, a schedule
   one. A shorter list of what to check holds only items something flagged, each with the reason it
   is there. An item asks what one answer settles: a word whose form changes with its use, such as
   a translation of Search as a verb or a noun, is asked on a string of each doubtful use, never as
-  one word for all of them. A document modelled on another keeps its page size and page count: a copy
+  one word for all of them. A term the user answers with a new word comes back as one row for each
+  string that uses it, with the word in the form that string needs, since a language such as
+  Finnish inflects it differently in each; a term the user accepts adds no rows. A document modelled on another keeps its page size and page count: a copy
   of a one-page A4 landscape PDF is one A4 landscape page, never a page stretched to fit the
   content.
