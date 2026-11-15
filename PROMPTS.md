@@ -6,9 +6,18 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## Rebase the mirror past sync.sh's own copies
+
+2026-11-15, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** (starts the dream review, which applies this step without a question) Quoted under [fce4d69](https://github.com/zululima/setup/commit/fce4d69bc49d7a4e9ce506b630130d12564da1f9).
+
+**2.** (14 Nov 2026, answer to: shall I clean up the conflicted file and the stash the pull left in the mirror?)
+> Yes, go ahead
+
 ## models: offer Fable 5.2 at xhigh for a task got wrong twice
 
-2026-11-15, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-fable-5-2, effort xhigh.
+2026-11-15, commit [e6d9300](https://github.com/zululima/setup/commit/e6d9300a35b6c5a5ddb76c5d95e38687d0e1732a), model claude-fable-5-2, effort xhigh.
 
 **4.**
 > fable as default model picker model and extra eats that much? how

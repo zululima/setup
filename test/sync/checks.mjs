@@ -319,7 +319,34 @@ const suites = [
         arrives(s, own)
         const r = sync(s, ['--commit', message(), FILE])
         return r.code === 1 && /stopped in .* and is undone/.test(r.err) && git(s, `show HEAD:${FILE}`, s.remote) === text(own).trim() &&
-          git(s, 'rev-parse HEAD', s.mirror) === head && !fs.existsSync(path.join(s.mirror, '.git/rebase-merge')) && !fs.existsSync(s.cloneLock)
+          git(s, 'rev-parse HEAD', s.mirror) === head && !fs.existsSync(path.join(s.mirror, '.git/rebase-merge')) && !fs.existsSync(s.cloneLock) &&
+          read(s.mirrored) === text(own)
+      }],
+      ['under --commit, gets past an untracked copy of a file the other computer pushed to the mirror first', () => {
+        const s = mirrored()
+        sync(s)
+        git(s, `add -A -- . ':!me/README.md' && git -C ${q(s.mirror)} commit -q -m ${q('the first copy')} && git -C ${q(s.mirror)} push -q`, s.mirror)
+        git(s, 'pull -q', s.peer)
+        fs.copyFileSync(path.join(s.checkout, 'README.md'), path.join(s.peer, 'me/README.md'))
+        git(s, `add -A && git -C ${q(s.peer)} commit -q -m ${q('a new file the other computer pushed first')} && git -C ${q(s.peer)} push -q`, s.peer)
+        arrives(s, own)
+        const r = sync(s, ['--commit', message(), FILE])
+        return r.code === 0 && /pushed in /.test(r.out) && git(s, `show HEAD:me/${FILE}`, s.mirror) === text(own).trim() &&
+          git(s, 'status --porcelain', s.mirror) === '' && git(s, 'stash list', s.mirror) === '' && !fs.existsSync(s.cloneLock)
+      }],
+      ['under --commit, leaves no stash behind when the fetched commits changed lines that a copy changes too', () => {
+        const s = mirrored()
+        sync(s)
+        git(s, `add -A && git -C ${q(s.mirror)} commit -q -m ${q('the first copy')} && git -C ${q(s.mirror)} push -q`, s.mirror)
+        git(s, 'pull -q', s.peer)
+        fs.appendFileSync(path.join(s.peer, 'me/README.md'), '\nA line the other computer added.\n')
+        git(s, `commit -q -am ${q('a change the other computer pushed first')} && git -C ${q(s.peer)} push -q`, s.peer)
+        fs.appendFileSync(path.join(s.checkout, 'README.md'), '\nA line a session added here.\n')
+        arrives(s, own)
+        const r = sync(s, ['--commit', message(), FILE])
+        return r.code === 0 && git(s, `show HEAD:me/${FILE}`, s.mirror) === text(own).trim() && git(s, 'stash list', s.mirror) === '' &&
+          read(path.join(s.mirror, 'me/README.md')) === read(path.join(s.checkout, 'README.md')) &&
+          git(s, 'status --porcelain', s.mirror) === 'M me/README.md' && !fs.existsSync(s.cloneLock)
       }],
     ]
   }],

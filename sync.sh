@@ -80,7 +80,13 @@
 # each mirror's clone, which hooks/share-memories.sh takes too before it writes
 # there, and a lock older than 10 minutes counts as left behind. A clone with a
 # rebase stopped halfway stops the run, and under --commit a rebase onto the
-# fetched commits that stops is undone.
+# fetched commits that stops is undone. Before that rebase, each copy that
+# still holds the bytes of the file it was made from goes out of the way and
+# is copied in again after it: a tracked one is put back to HEAD, and an
+# untracked one that the fetched commits hold is removed. Git refuses the
+# rebase over such an untracked file, as when the other computer pushed a new
+# file first, and cannot apply its autostash over a tracked one that the
+# fetched commits changed too.
 #
 # Private files: paths under the configuration directory listed one per line
 # in sync-private.txt, which git ignores, are copied from there into every
@@ -1014,8 +1020,34 @@ elif [ -n "$message_file" ]; then
   mirror_paths=(${public_paths[@]+"${public_paths[@]}"} ${private_paths[@]+"${private_paths[@]}"})
   for dir in ${mirror_dirs[@]+"${mirror_dirs[@]}"}; do
     git -C "$dir" fetch -q
+    aside=()
+    while IFS= read -r -d '' path; do
+      if is_private "$path"; then
+        from="$source_dir/$path"
+      else
+        case "$published" in *$'\n'"$path"$'\n'*) ;; *) continue ;; esac
+        case "$held" in *$'\n'"$path"$'\n'*) continue ;; esac
+        from="$checkout/$path"
+      fi
+      [ -f "$dir/$path" ] && [ -f "$from" ] && same_file "$dir/$path" "$from" || continue
+      if git -C "$dir" ls-files --error-unmatch -- ":(literal)$path" > /dev/null 2>&1; then
+        git -C "$dir" restore --source=HEAD --staged --worktree -- ":(literal)$path"
+      elif git -C "$dir" cat-file -e "@{upstream}:./$path" 2>/dev/null; then
+        rm -f "$dir/$path"
+      else
+        continue
+      fi
+      aside+=("$from" "$path")
+    done < <(git -C "$dir" ls-files -z --modified --others --exclude-standard)
+    stopped=0
     if ! git -C "$dir" rebase -q --autostash --committer-date-is-author-date; then
       git -C "$dir" rebase --abort 2>/dev/null || true
+      stopped=1
+    fi
+    for ((i = 0; i < ${#aside[@]}; i += 2)); do
+      install_file "${aside[i]}" "$dir/${aside[i + 1]}"
+    done
+    if [ "$stopped" -eq 1 ]; then
       echo "sync: the rebase onto the fetched commits stopped in $dir and is undone, nothing committed there" >&2
       failed=1
       continue
