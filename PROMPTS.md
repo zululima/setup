@@ -6,9 +6,24 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Retry a refused pull once the checkout copy has the local one
+## dream review: render the report, state the target, hide the evals
 
 2026-11-15, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**2.**
+> [a quoted line of the gm list about a podcast, answered in the
+> previous commit, left out]
+>
+> [an answer about starting the next issue left out]
+>
+> that dream review was actually pretty bad the one with copyable block
+> dont do that again. the evals block was also pretty bad remove that .
+> it was unclear also did we achieve the 99% goal. try again and ill
+> tell if the dream review looked ok
+
+## Retry a refused pull once the checkout copy has the local one
+
+2026-11-15, commit [2639a20](https://github.com/zululima/setup/commit/2639a20c5c57f2dd5f99036d420172be9ffb47fe), model claude-opus-5-5, effort xhigh.
 
 **1.** (starts the dream review, which applies this step without a question) Quoted under [fce4d69](https://github.com/zululima/setup/commit/fce4d69bc49d7a4e9ce506b630130d12564da1f9).
 

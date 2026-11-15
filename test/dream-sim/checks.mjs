@@ -251,7 +251,7 @@ const scenarios = [
     ['asks about the due steps, high before low', (st, r) => r.due === 2 && r.forTheSession.indexOf('"high-one"') < r.forTheSession.indexOf('"low-one"')],
     ['leaves the parked step out', (st, r) => r.waiting === 1 && !r.forTheSession.includes('"parked"')],
     ['shows the newest report in full first', (st, r) => r.forTheSession.startsWith('Read ~/.claude/dream/2026-10-17.md and show all of it in the chat first')],
-    ['then refreshes the evals, before the walk', (st, r) => /evals-checkout\.txt exists/.test(r.forTheSession) && /show its lines in a text block/.test(r.forTheSession) && r.forTheSession.indexOf('evals.mjs --write') < r.forTheSession.indexOf('one step per message')],
+    ['then refreshes the evals, before the walk', (st, r) => /evals-checkout\.txt exists/.test(r.forTheSession) && /show none of its lines in the reply/.test(r.forTheSession) && r.forTheSession.indexOf('evals.mjs --write') < r.forTheSession.indexOf('one step per message')],
     ['uses the one-at-a-time dialogue', (st, r) => /1 open proposals wait/.test(r.forTheSession) && /one step per message/.test(r.forTheSession)],
     ['tests a script in a sandbox before running it', (st, r) => /test it in a sandbox before running it for real/.test(r.forTheSession)],
     ['names the unchecked ones', (st, r) => /1 unchecked proposals wait/.test(r.forTheSession)],
@@ -263,7 +263,7 @@ const scenarios = [
     ['and says only that no proposal is due', (st, r) => r.forTheSession.startsWith('No open proposal is due')],
   ]],
   ['first review from gm after the weekly reset', { ...wed, week: 30, sessions: 4, args: { review: true, gm: true }, shown: '2026-10-03T13:59:59.000Z ~/.claude/dream/2026-10-03.md' }, [
-    ['shows the newest report in full, the Fable limit included', (st, r) => r.forTheSession.startsWith('Read ~/.claude/dream/2026-10-17.md and show all of it') && /its usage and the week's figures included\. Then write/.test(r.forTheSession) && !/leaving out/.test(r.forTheSession)],
+    ['shows the newest report in full, the Fable limit included', (st, r) => r.forTheSession.startsWith('Read ~/.claude/dream/2026-10-17.md and show all of it') && /its usage and the week's figures included\. Show it as rendered Markdown/.test(r.forTheSession) && !/leaving out/.test(r.forTheSession)],
     ['records it as shown in this week', (st, r) => r.forTheSession.includes('"2026-10-10T13:59:59.000Z ~/.claude/dream/2026-10-17.md"')],
     ['and refreshes the evals', (st, r) => /evals\.mjs --write/.test(r.forTheSession)],
   ]],
