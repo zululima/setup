@@ -57,7 +57,8 @@ description: Which Claude model and effort each kind of work runs on, when a tas
   model, effort and reason stand.
 - No row uses max effort: on Fable 5.2 Anthropic keeps it for measuring the model's ceiling, and
   on software work it does worse than xhigh. No row uses Fable 5.2 at xhigh either: the 5-hour
-  limit cannot carry it, as What a session costs shows.
+  limit cannot carry it, as What a session costs shows. Its one use is the offer below for a task
+  that a session got wrong twice.
 - A task runs in the session it is typed in, on that session's model and effort, with no question
   and no session started for it: handing a task on costs a second context and the turns that
   arrange it, more than a cheaper model saves, as What a session costs shows. The one move is up.
@@ -83,6 +84,12 @@ description: Which Claude model and effort each kind of work runs on, when a tas
   model and effort for the pace keeps them, as Stepping down says. That settles its own model and
   effort only: it still loads this skill before it starts or proposes a session, and its reply
   names that session's model and effort as the bullet above says.
+- A task that shows itself hard only after it began is offered a move up, never moved without a
+  question. When a session on a cheaper model than Fable 5.2 has the context it needs and still
+  got a task wrong twice, the reply that reports the second failure offers a session on Fable 5.2
+  at xhigh for it: the strongest pick on software, 49.1 on FrontierCode 2.0 against 45.3 at high,
+  for 2.1 times the cost per task. The offer comes once a task, on that model and effort also
+  while the pace is `tight`, and on yes the task goes there as a fork, as above.
 
 | Task | Model | Effort | Benchmarks behind it |
 |---|---|---|---|
@@ -136,10 +143,11 @@ description: Which Claude model and effort each kind of work runs on, when a tas
   `~/.claude/skills/models/pace.sh`, which prints what the 5-hour limit and each weekly limit is
   on pace for, and a verdict. On `fits` or `unknown` the move is made and the work runs on its
   row. A task that stays where it is typed and starts no work needs no read.
-- On `tight` no task moves up and no work starts on Fable 5.2, apart from research and chart
-  reading in a subagent or a workflow agent, whose benchmarks put every Opus 5.5 rung at a higher
-  cost per task or far below. Software that is hard or open then runs where it is typed: on Opus
-  5.5 at xhigh it scores 1.9 points under its row at 38% of Fable 5.2's cost per response.
+- On `tight` no task moves up by itself and no work starts on Fable 5.2, apart from research and
+  chart reading in a subagent or a workflow agent, whose benchmarks put every Opus 5.5 rung at a
+  higher cost per task or far below, and from the session a yes to the offer for a task got wrong
+  twice starts. Software that is hard or open then runs where it is typed: on Opus 5.5 at xhigh
+  it scores 1.9 points under its row at 38% of Fable 5.2's cost per response.
 - A session keeps its own task whatever the verdict, and no reply asks to move it to a cheaper
   model. A reply that kept a task off its row for the limit, or started work on a second rung,
   gives what `pace.sh` printed for the limit that binds.

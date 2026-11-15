@@ -6,9 +6,20 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## models: offer Fable 5.2 at xhigh for a task got wrong twice
+
+2026-11-15, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-fable-5-2, effort xhigh.
+
+**4.**
+> fable as default model picker model and extra eats that much? how
+> much compared to opus on my use? will claude now when to suggest
+> spawning a new session with fable 5.2 extra if you cant solve
+> something or fable would be much better fit for that? i thought
+> claude cant open higher model sessions with question
+
 ## Show the pane for a step that waits in one, again
 
-2026-11-15, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+2026-11-15, commit [29a3d9b](https://github.com/zululima/setup/commit/29a3d9bc9fe04cf6ca2b79b9d4199d77d2d3d8bb), model claude-opus-5-5, effort xhigh.
 
 **1.** (starts the dream review, which applies this step without a question) Quoted under [fce4d69](https://github.com/zululima/setup/commit/fce4d69bc49d7a4e9ce506b630130d12564da1f9).
 
