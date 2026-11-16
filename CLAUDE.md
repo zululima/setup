@@ -189,17 +189,19 @@ apply to one repository belong in that repository's project memory.
   list in their head. A step on a session is read with `get_session` first; an archived one drops
   out. A question the session put to the user that is still open, such as a next-step box question
   that a prompt about other work passed by, is one of these steps: each later reply asks it again,
-  with its recommendation, until the user answers or declines. A question about a step the session
-  takes itself, such as a commit, push or release, names the session as the one who takes it, as in
-  "Shall I commit and ship?", and its answers, next-step box buttons included, are the user's words
-  to the session, such as "yes, go ahead" and "not yet", never a bare action such as "Commit and
-  ship" that reads as a task for the user. In the list of steps it stands as a reply to give, such
-  as "reply a or b to whether I commit and ship", after the work the user does by hand. Turning a
-  setting back off that the user turned on for the session's work, such as Developer Mode on the
-  Mac, is no step: the setting stays as the user left it. Nor is sending a Slack draft, which stands
-  only in the reply that gives the draft. Steps that come after a long run whose own output will
-  bury them, such as applying and committing what a dream run proposes, wait for the reply that
-  follows that run, and the list before it stops at the run.
+  with its recommendation, until the user answers or declines. A reply that ends with steps the user
+  carries out by hand has its next-step box ask whether they are done, with Done as its first
+  button, which Cmd+Enter presses, never a recap alone. A question about a step the session takes
+  itself, such as a commit, push or release, names the session as the one who takes it, as in "Shall
+  I commit and ship?", and its answers, next-step box buttons included, are the user's words to the
+  session, such as "yes, go ahead" and "not yet", never a bare action such as "Commit and ship" that
+  reads as a task for the user. In the list of steps it stands as a reply to give, such as "reply a
+  or b to whether I commit and ship", after the work the user does by hand. Turning a setting back
+  off that the user turned on for the session's work, such as Developer Mode on the Mac, is no step:
+  the setting stays as the user left it. Nor is sending a Slack draft, which stands only in the
+  reply that gives the draft. Steps that come after a long run whose own output will bury them, such
+  as applying and committing what a dream run proposes, wait for the reply that follows that run,
+  and the list before it stops at the run.
 - When nothing is left for the user or the session to do, its PRs merged, closed or left to a
   reviewer who merges them, the closing reply says so and that the user can archive the session, in
   its text alone and not in the next-step box. A job the user takes up once a session offers it,

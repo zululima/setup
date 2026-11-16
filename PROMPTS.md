@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## dream review: a short review in place of the whole report
+## Ask whether hand steps are done, with a Done button
 
 2026-11-16, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**9.**
+> done also next time you should question me Done cmd enter fix for
+> future
+
+## dream review: a short review in place of the whole report
+
+2026-11-16, commit [d38b3db](https://github.com/zululima/setup/commit/d38b3db429e3bbf8c3aa8ad5f4c3e9bb1ccb3430), model claude-opus-5-5, effort xhigh.
 
 **3.**
 > way too verbose. for example idc about 5h or haiku or fable or cost

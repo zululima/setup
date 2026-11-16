@@ -53,5 +53,7 @@ task to another or started the next job's session with nothing else left, writes
 when every call of the hand-over returned without an error, call archive_session with self now, \
 as the turn's last call, and write nothing more. Anyone else adds that line now as the turn's \
 last message, without calling wrap_up again. When something is still left, such as an open PR, a \
-step the user takes or an error of the hand-over, name it in that message instead." >&2
+step the user takes or an error of the hand-over, name it in that message instead. A step the user \
+takes was the box's question, whether it is done with Done as the first button, so that message \
+also ends by asking it." >&2
 exit 2
