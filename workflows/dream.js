@@ -16,9 +16,10 @@ export const meta = {
 // Options, run bare or with them:
 // In idle time with tokens to spare: at the end of a day, overnight or over a weekend. Run bare,
 // it picks its mode from the weekly reset. Run it with review, or {review: true}, to skip the run,
-// see the latest report unless a review showed it already and go through the open backlog; with
-// {review: true, gm: true}, as the gm skill runs it, the report comes, and the evals rerun with
-// none of their lines shown, only at the first gm after the weekly reset. Optional args: {mode:
+// see a short review of the latest report unless a review showed it already and go through the
+// open backlog; with {review: true, gm: true}, as the gm skill runs it, the short review comes, and
+// the evals rerun with none of their lines shown, only at the first gm after the weekly reset.
+// Optional args: {mode:
 // "eve", "final", "night" or "day", workAt: "HH:MM" the user starts on the reset day (default
 // 08:00), keep: <5-hour windows an eve run keeps
 // back instead of its default: none when the reset comes before workAt, else the most the user
@@ -428,8 +429,8 @@ const REVIEW_SETUP = {
   properties: { today: { type: 'string' }, report: { type: 'string' }, backlog: SCOUT.properties.backlog, shown: { type: 'string' }, weeklyResetsAt: { type: 'string' } },
 }
 const SHOWN_FILE = `${OUT}/shown.txt`
-// A review skips the run, shows the latest report unless a review showed it already, reruns the evals and asks about the open backlog.
-// From gm it shows the report, and reruns the evals with none of their lines shown, only at the first gm after the weekly reset.
+// A review skips the run, shows a short review of the latest report unless a review showed it already, reruns the evals and asks about the open backlog.
+// From gm it shows a short review of the report, and reruns the evals with none of their lines shown, only at the first gm after the weekly reset.
 if (opts.review === true || /^\s*review\s*$/i.test(runNote)) {
   phase('Scout')
   const r = await dreamAgent(`Get ready to go through the open proposals of the user's dream backlog.
@@ -456,7 +457,7 @@ ${GROUND}`, { label: 'review setup', phase: 'Scout', model: 'haiku', effort: 'lo
   const showReport = !!r.report && !seen && (opts.gm !== true || !(Date.parse(shownWeek) >= weekStartMs))
   const weekStart = new Date(Number.isFinite(weekStartMs) ? weekStartMs : Date.now()).toISOString()
   const shown = showReport
-    ? `Read ${r.report} and show all of it in the chat first, unshortened, since the user reads the dream report only here, its usage and the week's figures included. Show it as rendered Markdown, its headings, tables and lists as they stand, never inside a code block or another copyable block. When the report is of a final run, which has a section headed Where the run stopped, one sentence right before the report says whether the week reached the final run's target of 99% of the weekly limit for all models, from the figures of that section: where the weekly limit ended, how many points short of the target or over it, and what stopped the run, as in "The week ended at 96% of the weekly limit, 3 points short of the 99% target, because the 5-hour limit stopped the final run." Then write the line "${weekStart} ${r.report}" to ${SHOWN_FILE}, replacing what it held. ${EVALS} `
+    ? `Read ${r.report} and give a short review of it in the chat first, since the user reads the dream report only here. When the report is of a final run, which has a section headed Where the run stopped, the review opens with one sentence on whether the week reached the final run's target of 99% of the weekly limit for all models: where that limit ended and how many points short of the target or over it, as in "The week ended at 96% of the weekly limit, 3 points short of the 99% target." Then come the changes to the setup, one line each in plain words, what carries over to the next run in one line, and one line with the weekly limit for all models this week beside the weeks before it. Leave out the 5-hour limit, the figures of any single model such as Fable or Haiku, the cost, tokens and energy of the run and the week, its pace, its agents and its coverage counts. Write it as rendered Markdown, never inside a code block or another copyable block. Then write the line "${weekStart} ${r.report}" to ${SHOWN_FILE}, replacing what it held. ${EVALS} `
     : opts.gm === true ? ''
     : seen ? `Say in one line that no dream has run since ${fileName(r.report).replace(/\.md$/, '')}, whose report was shown already, and show nothing of that report again, neither its text nor its proposals. ${EVALS} `
     : `Say in one line that no dream report was found. ${EVALS} `

@@ -91,7 +91,7 @@ const work = s => /^(transcripts|prompt feedback|config|github|battery)( |$)/.te
 const scenarios = [
   ['eve, real numbers', { ...fri, week: 54, sessions: 48 }, [
     ['mode is eve', (st, r) => r.mode.startsWith('eve')],
-    ['the session is told to show only the points the run used', (st, r) => /show in the chat only how many percentage points/.test(r.forTheSession) && /get_usage/.test(r.forTheSession) && !/show all of it/.test(r.forTheSession)],
+    ['the session is told to show only the points the run used', (st, r) => /show in the chat only how many percentage points/.test(r.forTheSession) && /get_usage/.test(r.forTheSession) && !/give a short review of it/.test(r.forTheSession)],
     ['weekly stays under 95 minus the reserve, plus a point', st => st.maxWeek <= 95 - 2 * 16.9 + 1],
     ['no window the run touched is open at 08:00 Saturday', st => !st.windows.some(([a, b]) => a <= workAt && workAt < b && st.lastUse >= a)],
     noHits,
@@ -116,7 +116,7 @@ const scenarios = [
   ['final, little work', { ...sat, week: 64, sessions: 6, minutes: tail }, [
     ['mode is final', (st, r) => r.mode.startsWith('final')],
     ['nothing used after the weekly reset', st => st.afterWeekReset === 0],
-    ['the session is told to show only the points the run used, leaving the report to the review', (st, r) => /show in the chat only how many percentage points/.test(r.forTheSession) && !/show all of it/.test(r.forTheSession)],
+    ['the session is told to show only the points the run used, leaving the report to the review', (st, r) => /show in the chat only how many percentage points/.test(r.forTheSession) && !/give a short review of it/.test(r.forTheSession)],
     ['with a row for every limit, the Fable one too, in the chat and the report', (st, r) => /a table with a row per limit and the columns/.test(r.forTheSession) && !/but the Fable one/.test(r.forTheSession) && /Weekly · Fable/.test(st.prompts.report || '')],
     ['the report is asked to stay near 4,000 characters, the setup changes and coverage in a line each', st => /at most about 2,500 characters/.test(st.prompts.report || '') && /one line per impact level naming its ids, such as "High: p1, p2, p4\. Medium: p3, p5\.", and nothing else/.test(st.prompts.report || '') && /7\. Coverage: one line:/.test(st.prompts.report || '') && !/every open proposal in plan order/.test(st.prompts.report || '')],
     ['and to add the tokens and dollars the run spent to the report file', (st, r) => /usage\.sh --run/.test(r.forTheSession) && /the dollars at API list prices/.test(r.forTheSession) && /under a heading Cost/.test(r.forTheSession)],
@@ -250,7 +250,7 @@ const scenarios = [
     ['runs one agent and nothing else', st => Object.keys(st.labels).join() === 'review'],
     ['asks about the due steps, high before low', (st, r) => r.due === 2 && r.forTheSession.indexOf('"high-one"') < r.forTheSession.indexOf('"low-one"')],
     ['leaves the parked step out', (st, r) => r.waiting === 1 && !r.forTheSession.includes('"parked"')],
-    ['shows the newest report in full first', (st, r) => r.forTheSession.startsWith('Read ~/.claude/dream/2026-10-17.md and show all of it in the chat first')],
+    ['shows a short review of the newest report first', (st, r) => r.forTheSession.startsWith('Read ~/.claude/dream/2026-10-17.md and give a short review of it in the chat first')],
     ['then refreshes the evals, before the walk', (st, r) => /evals-checkout\.txt exists/.test(r.forTheSession) && /show none of its lines in the reply/.test(r.forTheSession) && r.forTheSession.indexOf('evals.mjs --write') < r.forTheSession.indexOf('one step per message')],
     ['uses the one-at-a-time dialogue', (st, r) => /1 open proposals wait/.test(r.forTheSession) && /one step per message/.test(r.forTheSession)],
     ['tests a script in a sandbox before running it', (st, r) => /test it in a sandbox before running it for real/.test(r.forTheSession)],
@@ -259,19 +259,19 @@ const scenarios = [
     ['records the report as shown', (st, r) => r.forTheSession.includes('"2026-10-10T13:59:59.000Z ~/.claude/dream/2026-10-17.md" to ~/.claude/dream/shown.txt')],
   ]],
   ['review from gm in a week that already had its report', { ...wed, week: 30, sessions: 4, args: { review: true, gm: true }, shown: '2026-10-10T13:59:59.000Z ~/.claude/dream/2026-10-10.md' }, [
-    ['shows no report, not even one written since, and runs no evals', (st, r) => !/show all of it/.test(r.forTheSession) && !/evals\.mjs/.test(r.forTheSession)],
+    ['shows no report, not even one written since, and runs no evals', (st, r) => !/give a short review of it/.test(r.forTheSession) && !/evals\.mjs/.test(r.forTheSession)],
     ['and says only that no proposal is due', (st, r) => r.forTheSession.startsWith('No open proposal is due')],
   ]],
   ['first review from gm after the weekly reset', { ...wed, week: 30, sessions: 4, args: { review: true, gm: true }, shown: '2026-10-03T13:59:59.000Z ~/.claude/dream/2026-10-03.md' }, [
-    ['shows the newest report in full, the Fable limit included', (st, r) => r.forTheSession.startsWith('Read ~/.claude/dream/2026-10-17.md and show all of it') && /its usage and the week's figures included\. Show it as rendered Markdown/.test(r.forTheSession) && !/leaving out/.test(r.forTheSession)],
+    ['shows a short review of the newest report, without the 5-hour limit, single models or cost', (st, r) => r.forTheSession.startsWith('Read ~/.claude/dream/2026-10-17.md and give a short review of it') && /Leave out the 5-hour limit, the figures of any single model such as Fable or Haiku, the cost/.test(r.forTheSession) && /Write it as rendered Markdown, never inside a code block/.test(r.forTheSession)],
     ['records it as shown in this week', (st, r) => r.forTheSession.includes('"2026-10-10T13:59:59.000Z ~/.claude/dream/2026-10-17.md"')],
     ['and refreshes the evals', (st, r) => /evals\.mjs --write/.test(r.forTheSession)],
   ]],
   ['first review from gm after the reset, its report already shown in a review', { ...wed, week: 30, sessions: 4, args: { review: true, gm: true }, shown: '2026-10-03T13:59:59.000Z /srv/dreams/2026-10-17.md' }, [
-    ['shows it no second time', (st, r) => !/show all of it/.test(r.forTheSession) && !/evals\.mjs/.test(r.forTheSession)],
+    ['shows it no second time', (st, r) => !/give a short review of it/.test(r.forTheSession) && !/evals\.mjs/.test(r.forTheSession)],
   ]],
   ['review typed again after its report was shown, a week later', { ...wed, week: 30, sessions: 4, args: { review: true }, shown: '2026-10-03T13:59:59.000Z /srv/dreams/2026-10-17.md' }, [
-    ['shows the report no second time', (st, r) => !/show all of it/.test(r.forTheSession) && !/shown\.txt, replacing/.test(r.forTheSession)],
+    ['shows the report no second time', (st, r) => !/give a short review of it/.test(r.forTheSession) && !/shown\.txt, replacing/.test(r.forTheSession)],
     ['says no dream ran since it, and shows none of its proposals', (st, r) => r.forTheSession.startsWith('Say in one line that no dream has run since 2026-10-17') && /neither its text nor its proposals/.test(r.forTheSession)],
     ['still refreshes the evals', (st, r) => /evals\.mjs --write/.test(r.forTheSession)],
   ]],

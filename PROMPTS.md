@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## dream review: a short review in place of the whole report
+
+2026-11-16, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**3.**
+> way too verbose. for example idc about 5h or haiku or fable or cost
+> of this run
+
 ## dream review: render the report, state the target, hide the evals
 
-2026-11-15, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+2026-11-15, commit [931a287](https://github.com/zululima/setup/commit/931a2874fb438df31ad20449cb1ef9069f332157), model claude-opus-5-5, effort xhigh.
 
 **2.**
 > [a quoted line of the gm list about a podcast, answered in the
