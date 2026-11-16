@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Take a step's command from the installed tool's --help
+## chrome skill: fill the screen when putting Chrome back
 
 2026-11-16, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> chrome is absolutely small again please fix
+
+## Take a step's command from the installed tool's --help
+
+2026-11-16, commit [dd1bc87](https://github.com/zululima/setup/commit/dd1bc8737dde628814ed55b5419b5046ab8829a2), model claude-opus-5-5, effort xhigh.
 
 **19.**
 > ngit login is not valid command

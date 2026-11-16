@@ -55,7 +55,12 @@ description: Browser work in Claude in Chrome: starting the extension, reading b
 - Chrome tabs stay open, so the user never waits on a close: archiving a session closes every
   Chrome tab no open session names, the user's own too, through the app and the `archive-files` mod,
   which first takes those tabs out of their tab groups so Chrome deletes the saved groups, and
-  deletes groups closed earlier while Chrome is out of sight. Chrome opens its next window at the
-  size of
-  the last one, so before its first `resize_window` the session reads `window.outerWidth` and
-  `window.outerHeight`, and before the reply sets the window back to that size.
+  deletes groups closed earlier while Chrome is out of sight.
+- Chrome opens its next window at the size of the last one, so a session that resized a Chrome
+  window, with `resize_window` or otherwise, makes it fill the screen less the menu bar and the
+  Dock again before the reply, never only the size it read before its first resize: other sessions
+  resize the same window, so that reading can be a check size another session left, and copying it
+  back keeps Chrome small. This command does it:
+  `osascript -l JavaScript -e 'ObjC.import("AppKit"); const s=$.NSScreen.mainScreen, f=s.frame,
+  v=s.visibleFrame; Application("Google Chrome").windows[0].bounds={x:v.origin.x,
+  y:f.size.height-v.origin.y-v.size.height, width:v.size.width, height:v.size.height}'`
