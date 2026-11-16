@@ -65,7 +65,8 @@
       "Bash(~/.claude/skills/toggl/mic-log.sh:*)",
       "Bash(scripts/release.sh apk-android:*)",
       "Bash(scripts/release.sh upload-android:*)",
-      "mcp__ccd_session_mgmt__archive_session"
+      "mcp__ccd_session_mgmt__archive_session",
+      "mcp__ccd_session__start_session"
     ],
     "ask": [
       "Bash(brew install:*)",
@@ -601,6 +602,8 @@
       "**Sensitive remote targets**: any namespace, host, or container whose name carries prod or production as a whole word or name segment",
       "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
       "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries prod or production as a whole word or name segment",
+      "**Primary use of Claude Code**: software development",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries prod or production as a whole word or name segment (hyphen/underscore/dot-delimited)",
       "### User-specific",
       "**Primary use of Claude Code**: software development",
       "**Trusted repo**: The git repository the agent started in (this scratch workspace directory) — it currently has no configured remotes, so no additional trust extends beyond the local working tree",
