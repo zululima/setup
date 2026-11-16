@@ -249,7 +249,8 @@ apply to one repository belong in that repository's project memory.
   reply says where it sits. A tool's description is no source; a control no one saw goes unnamed. A
   step that cannot be run here, such as a sign-in, a shortcut in another app's dialog, a device
   build or a setting on a phone, is named in the reply as not run, with the reason, and is never
-  called checked.
+  called checked. Its command comes from the installed tool's `--help`, so one for a tool the user
+  still installs waits for the reply after the install.
 - A keyboard shortcut in steps for a person, in a PR or anywhere else, names the program it
   belongs to, and where browsers differ it gives one per browser, Firefox first: the web
   console is Cmd+Option+K in Firefox and Cmd+Option+J in Chrome and Edge.
