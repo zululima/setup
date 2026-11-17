@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Name the files the local model gave no answer for
+## Start a local review when a PR review switches with git switch
 
 2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**2.**
+> you didnt ask if we should stop local model reviewing. did you even
+> use that
+
+## Name the files the local model gave no answer for
+
+2026-11-17, commit [ebae851](https://github.com/zululima/setup/commit/ebae851aa76476032fa613cca61cb7be6708c425), model claude-opus-5-5, effort xhigh.
 
 **3.** (answer to: shall I build the local review?) Quoted under [c010622](https://github.com/zululima/setup/commit/c010622d79033da623cd22d53a092197e18cfc1b).
 
