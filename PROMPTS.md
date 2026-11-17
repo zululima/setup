@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Start a local review when a PR review switches with git switch
+## Fold quiz answers and warn of a known date in the pages skill
 
 2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**9.**
+> oof cant you just hide the answers with details etc. also there are
+> no warnings about the dec reset document that
+
+## Start a local review when a PR review switches with git switch
+
+2026-11-17, commit [7107baf](https://github.com/zululima/setup/commit/7107bafa7b1a335705702d287dbd127539443d6d), model claude-opus-5-5, effort xhigh.
 
 **2.**
 > you didnt ask if we should stop local model reviewing. did you even
@@ -7601,6 +7609,7 @@ Stop, add it to dotclaude?)
 - co2: carbon dioxide
 - cs: computer science
 - cuz: because
+- dec: December
 - dev: developer
 - dev: the default branch of the repository in question
 - dir: directory

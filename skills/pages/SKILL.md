@@ -1,6 +1,6 @@
 ---
 name: pages
-description: Pages the user opens in a browser, such as an HTML page, a schedule, a README or a PR's review page: where they go and the one-screen check at 1440x730. Load before making or changing such a page.
+description: Pages and documents read in a browser, such as an HTML page, a schedule, a README, a Markdown doc on GitHub or a PR's review page: where they go, the one-screen check at 1440x730, answers folded under questions and warnings of a known date. Load before making or changing such a page or document.
 ---
 
 # Pages
@@ -33,3 +33,10 @@ description: Pages the user opens in a browser, such as an HTML page, a schedule
   Finnish inflects it differently in each; a term the user accepts adds no rows. A document modelled on another keeps its page size and page count: a copy
   of a one-page A4 landscape PDF is one A4 landscape page, never a page stretched to fit the
   content.
+- Questions a reader answers, such as those of a quiz, a practice exam or an exercise, each fold
+  their answer in a collapsed block under the question, `<details>` in Markdown and HTML, so
+  reading the questions shows no answer: a toggle that hides a spoiler, not one that shortens a
+  long part. Content that stops holding on a known date, such as exam material before a new exam
+  guide takes effect, gets a warning that names the date and what changes, above the first step,
+  question or list of every page that content reaches, as a `> [!WARNING]` alert on GitHub, never
+  only as a sentence inside a step or an intro.
