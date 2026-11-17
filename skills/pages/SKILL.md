@@ -39,4 +39,5 @@ description: Pages and documents read in a browser, such as an HTML page, a sche
   long part. Content that stops holding on a known date, such as exam material before a new exam
   guide takes effect, gets a warning that names the date and what changes, above the first step,
   question or list of every page that content reaches, as a `> [!WARNING]` alert on GitHub, never
-  only as a sentence inside a step or an intro.
+  only as a sentence inside a step or an intro. A page held to one screen that the warning would
+  push past it stays on one screen and names the date in a sentence of the step it concerns.

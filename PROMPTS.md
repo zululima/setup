@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Fold quiz answers and warn of a known date in the pages skill
+## Keep a one-screen page on one screen over a date warning
 
 2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**10.** (answer to: shall I add the 7 Dec warning to both exam guides too,     though they then scroll?)
+> Keep one screen
+
+## Fold quiz answers and warn of a known date in the pages skill
+
+2026-11-17, commit [2b8f07e](https://github.com/zululima/setup/commit/2b8f07ee5c0aa565be166338e8f0732508fe5b1f), model claude-opus-5-5, effort xhigh.
 
 **9.**
 > oof cant you just hide the answers with details etc. also there are
