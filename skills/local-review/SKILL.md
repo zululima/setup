@@ -43,7 +43,8 @@ description: A local model in Ollama that reviews a branch in the background whi
 - A finding that holds becomes a finding of the session's own review, as the `pull-requests` skill
   says: fixed and pushed on the user's own pull request, and added to the review page's overlay for
   another author's, with the page rebuilt. The reply gives how many findings the run made over how
-  many of its files, how many held, and each one that held.
+  many of its files, how many held, and each one that held, and names the files under
+  `unreviewed`, which got no readable answer from the model, as not reviewed.
 - When the user says local review off, run `local-review.sh off`: no run starts by itself until
   `local-review.sh on`, and a run already working goes on until it is stopped. Local review on runs
   `local-review.sh on`.

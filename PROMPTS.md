@@ -6,9 +6,15 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Add a local model review that runs beside a pull request
+## Name the files the local model gave no answer for
 
 2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**3.** (answer to: shall I build the local review?) Quoted under [c010622](https://github.com/zululima/setup/commit/c010622d79033da623cd22d53a092197e18cfc1b).
+
+## Add a local model review that runs beside a pull request
+
+2026-11-17, commit [c010622](https://github.com/zululima/setup/commit/c010622d79033da623cd22d53a092197e18cfc1b), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > are there any local models i could use in my workflow? like some

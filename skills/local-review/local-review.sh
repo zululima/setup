@@ -184,7 +184,7 @@ cmd_status() {
   for d in "$state"/runs/*/; do
     [ -f "$d/status.json" ] || continue
     any=1
-    jq -r '"\(.branch) in \(.repo): \(.state), \(.files_done) of \(.files_total) files, \(.findings) findings, head \(.head[0:7]), started \(.started)"' "$d/status.json"
+    jq -r '"\(.branch) in \(.repo): \(.state), \(.files_done) of \(.files_total) files, \(.findings) findings\(if .unreviewed then ", no readable answer for " + (.unreviewed | join(", ")) else "" end), head \(.head[0:7]), started \(.started)"' "$d/status.json"
   done
   [ "$any" = 1 ] || echo "no local review runs"
 }
@@ -246,7 +246,7 @@ worker_end() {
 
 cmd_worker() {
   dir="$1" have_lock=0 cpid=""
-  local top head remote base_ref pr_base base lock_pid f n chunk total done_files=0 ssh_command
+  local top head remote base_ref pr_base base lock_pid f n chunk json total done_files=0 ssh_command
   top="$(field "$dir" repo)"
   head="$(field "$dir" head)"
   trap '[ -n "$cpid" ] && kill "$cpid" 2> /dev/null; worker_end stopped; exit 0' TERM INT
@@ -328,11 +328,15 @@ cmd_worker() {
         ask "$f" "$chunk" null
       jq -r --arg f "$f" '"\($f): \(.prompt_eval_count // 0) tokens in, \(.eval_count // 0) out (\(.done_reason // "no answer")), \((.total_duration // 0) / 1e9 | floor) s\(if .error then ", error: " + .error else "" end)"' \
         "$dir/tmp/response.json" 2> /dev/null
-      jq -r '.message.content // empty' "$dir/tmp/response.json" 2> /dev/null |
-        perl -0ne 'print $1 if /(\{.*\})/s' |
-        jq -c --arg f "$f" --arg head "$head" '.findings[] | {file: $f, head: $head} + .' \
-          >> "$dir/findings.jsonl" 2> /dev/null ||
+      json="$(jq -r '.message.content // empty' "$dir/tmp/response.json" 2> /dev/null |
+        perl -0ne 'print $1 if /(\{.*\})/s')"
+      if printf '%s' "$json" | jq -e '.findings | type == "array"' > /dev/null 2>&1; then
+        printf '%s' "$json" | jq -c --arg f "$f" --arg head "$head" '.findings[] | {file: $f, head: $head} + .' \
+          >> "$dir/findings.jsonl"
+      else
         echo "$f: no readable answer for $(basename "$chunk")"
+        set_status "$dir" '.unreviewed = ((.unreviewed // []) + [$f] | unique)' --arg f "$f"
+      fi
     done
     done_files=$((done_files + 1))
     set_status "$dir" '.files_done = $d | .findings = $n' --argjson d "$done_files" \
