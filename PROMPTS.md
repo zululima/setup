@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## Check a step the user may have taken before listing it
+
+2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort high.
+
+**4.**
+> if i havent posted yet? just check next time. [the rest, about a
+> downstream project's pull request, left out]
+
 ## chrome: stay out of Chrome during a call, no chrome:// pages
 
-2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+2026-11-17, commit [cf6a3fe](https://github.com/zululima/setup/commit/cf6a3fee7d15b9ad51097fffa13c7e70b0fc51a8), model claude-opus-5-5, effort xhigh.
 
 **5.**
 > debug inc hrome
