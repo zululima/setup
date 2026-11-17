@@ -6,9 +6,21 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Ask questions without double negatives
+## chrome: stay out of Chrome during a call, no chrome:// pages
 
 2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**5.**
+> debug inc hrome
+
+Reply: Chrome's extension can't open [an address], the page with Chrome's call statistics, so you need to open it yourself. [an aside about the call left out]
+
+**9.** (answer to: shall I add today's Chrome lesson to the chrome skill?)
+> Yes, go ahead
+
+## Ask questions without double negatives
+
+2026-11-17, commit [627dde1](https://github.com/zululima/setup/commit/627dde103a1360e58747a4c18e50edc11d7e1d83), model claude-opus-5-5, effort xhigh.
 
 **2.**
 > [the header of answers about a meeting left out]

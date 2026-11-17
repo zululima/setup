@@ -13,8 +13,9 @@ description: Browser work in Claude in Chrome: starting the extension, reading b
   When the extension is not connected, the session runs `~/.claude/hooks/chrome-background.sh`
   without asking, which gives the extension the window it needs and keeps Chrome hidden, and never
   opens Chrome another way, since Chrome then puts its window on top. Nor does a session open a
-  tab or load a page in Chrome through AppleScript, which brings Chrome to the front as well, while
-  Claude in Chrome's own tools do it unseen. It then calls
+  tab or load a page in Chrome through AppleScript, which brings Chrome to the front as well.
+  Claude in Chrome's own tools leave Chrome behind the app the user is in, but the tab they open or
+  load can become the one the user's Chrome window shows. It then calls
   `list_connected_browsers` for up to a minute until it lists a browser, and tries before that are
   no failures. When the extension is still not connected, the reply gives its install page and the
   step to sign in to it from Chrome's side panel, and the browser step waits for that, never moving
@@ -43,6 +44,18 @@ description: Browser work in Claude in Chrome: starting the extension, reading b
   checked. A step that hands the user input to type in the browser names the button that saves it,
   and the session reads that page as it stands before its first navigate, reload or click away from
   it, saves what is still unsaved and leaves only once the input is saved.
+- While the user is in a call in a Chrome tab, such as Google Meet, no session opens, loads or
+  closes a tab in Chrome, since its tab can take the call's place on the screen. Chrome holds the
+  camera or the microphone then, so before its first browser step the session reads
+  `/usr/bin/log show --last 5m --predicate 'process == "ControlCenter" AND eventMessage BEGINSWITH
+  "Active activity attributions changed to "'`, whose latest line lists `cam:com.google.Chrome` or
+  `mic:com.google.Chrome` while the call runs.
+- Claude in Chrome reaches only the tabs of its own group and opens no `chrome://` page: its
+  `navigate` turns `chrome://webrtc-internals` into `https://chrome//webrtc-internals`. Such a page,
+  like a tab of the user's outside the group, is a step for the user: the reply gives its address in
+  a `text` block, the session reads it with `screencapture -x -o -l <window id>` of the Chrome
+  window, whose id `CGWindowListCopyWindowInfo` gives, and figures below what the window shows come
+  from the page's own download, such as the dump `chrome://webrtc-internals` saves.
 - Before each click in a Chrome tab, the session reads the page as it is at that moment, a fresh
   screenshot or an element's ref from `find`, never coordinates from an earlier screenshot, since
   the user may have scrolled, typed or clicked there since. A click that submits, sends or posts
