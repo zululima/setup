@@ -6,9 +6,47 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Let the local review answer, and say how long it needs
+## Review each file from six viewpoints in the local review
 
 2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> [an ask about a hotspot left out] also is the local model review
+> still running during car ride
+
+Reply: [a hotspot diagnosis left out] No local review was running during the drive: the last one finished at 13:52.
+
+**2.**
+> [an answer about a hotspot fix left out] also why does the local
+> model not run anymore
+
+Reply: [a hotspot fix left out] The local review isn't broken: nothing has started one since 13:52.
+
+**3.**
+> it doesnt run all the time? i thought thats the point. can it fetch
+> web?
+
+Reply: The local review starts once for each new version of a pull request's branch and stops when every file is done. Web search is possible through Ollama's cloud API, but the script doesn't use it. Nothing is changed yet.
+
+**4.**
+> free account limits? i thought this was local model. cant it just
+> review the pr from different view points like how code reviews can go
+> on and on. also is there any good jobs these local llms could do
+> while i sleep i.e. dream like cluade code can
+
+Reply: The local model has no usage limits; only Ollama's web search runs in the cloud. Reviewing a pull request from several viewpoints fits the current script at about 7 minutes per viewpoint for an 18-file PR. Nothing is built yet.
+
+**5.** (answer to: should the local review stop once it has gone through its list of viewpoints?)
+> stop after the list [a note about a drive left out]
+
+Reply: Here's where things stand, and the test run is still going.
+
+**6.** (answer to: when should the local review start?)
+> a. [a question about a hotspot left out]
+
+## Let the local review answer, and say how long it needs
+
+2026-11-17, commit [67d042b](https://github.com/zululima/setup/commit/67d042b312efa29b52c118bf4c4bad46d68ab00f), model claude-opus-5-5, effort xhigh.
 
 **3.**
 > yes check em the yes check em should be the cmd enter one. also can
