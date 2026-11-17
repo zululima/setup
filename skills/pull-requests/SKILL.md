@@ -253,6 +253,10 @@ GitHub.
   from the root, in a `text` block of its own, which the user copies into Firefox's address bar, as
   `~/.claude/CLAUDE.md` says for every local page. The block is the last thing before Prompt
   feedback, where the reader's eye is when they go to copy it.
+- Once no finding of a review of a PR another author opened is left open, the reply asks in its
+  next-step box whether the session approves and merges it, naming any PR the merge waits on, such
+  as the one that holds its base branch. Approving and merging are never listed as the user's
+  steps: the session takes both on the yes, the approval with no comment, as Merging says.
 - Where the PR's steps fall short, the overlay's `added_steps` put the fix on the page, marked as
   added by the review: the two command steps when the PR lacks them (an empty `after` puts a step
   before the PR's first), a step for a change the PR's steps skip, and the bug steps below. They

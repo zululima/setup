@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## pull-requests: ask to approve and merge after a review
+
+2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort high.
+
+**4.**
+> you should have asked me to approve and merge. do that. also in
+> future. [an ask about a downstream project left out]
+
 ## Review each file from six viewpoints in the local review
 
-2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+2026-11-17, commit [12c98ef](https://github.com/zululima/setup/commit/12c98ef5d64036e5870696ff1fd5667b4e4df4d3), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > [an ask about a hotspot left out] also is the local model review
