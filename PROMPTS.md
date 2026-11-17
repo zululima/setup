@@ -6,9 +6,27 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## Give an app's command for a file, never an app-scheme link
+
+2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> [an ask about a document left out]
+
+**2.**
+> [a reply button about the document left out]
+
+**3.**
+> just give me a vscode link i can open and edit during the meeting
+
+Reply: The minutes are now also a text file you can edit in VS Code, with the same items and blanks as the Word file. After the meeting I'll copy your edits into the docx. The link was not opened here.
+
+**4.**
+> interesting i cant open that link from here
+
 ## pull-requests: ask to approve and merge after a review
 
-2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort high.
+2026-11-17, commit [05ab7bb](https://github.com/zululima/setup/commit/05ab7bb05c4fe76b2bf9c46e1fa9110d7e10dd6e), model claude-opus-5-5, effort high.
 
 **4.**
 > you should have asked me to approve and merge. do that. also in

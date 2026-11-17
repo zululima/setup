@@ -266,10 +266,11 @@ apply to one repository belong in that repository's project memory.
   Any other file in the session's folders that the reader opens gets a Markdown link to its path,
   which the app opens on a click. Any other file outside them, such as a spreadsheet in
   `~/Downloads`, gets the command that opens it in its default app, `open` with its full `~` path,
-  in a `bash` block of its own, whose Run button opens it. A file outside the session's folders is
-  never sent with SendUserFile or linked, a `file://` link included, since the app's side pane,
-  where a click on either lands, opens only the session's folders and asks the user to add the
-  folder instead, and the user adds none for this.
+  or in a named app, such as `code`, in a `bash` block of its own, whose Run button opens it. A file
+  outside the session's folders is never sent with SendUserFile or linked, a `file://` or an
+  app-scheme link, such as `vscode://`, included, since the app's side pane, where a click on either
+  lands, opens only the session's folders and asks the user to add the folder instead, and the user
+  adds none for this.
 - A project's CLAUDE.md holds what Claude runs, such as build, test, verify, install, launch and
   logs, and the rules the code follows. One-time manual setup goes in a doc under `docs/` that
   CLAUDE.md or AGENTS.md indexes. The README says what the project is, shows its parts and every way
