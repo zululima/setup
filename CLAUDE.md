@@ -278,10 +278,6 @@ apply to one repository belong in that repository's project memory.
 - The user's public software, such as a repository or a store listing, takes AGPL-3.0-or-later for
   its code, in `LICENSE`, and CC BY-SA 4.0 for the rest, such as the README, docs and images, in
   `LICENSE-PROSE`, unless the user names another licence.
-- The user's own repositories on GitHub turn off Releases, Packages and Deployments in the About
-  dialog in Claude in Chrome, each one the repository has none of, and carry a few short topics, a
-  word each where one does, that fit one line of the sidebar. The description is as short as it
-  takes, one line if need be, for About and Languages to show without scrolling at 1440x730.
 
 ## Prompt feedback
 
@@ -572,7 +568,9 @@ apply to one repository belong in that repository's project memory.
   and each other waits for the reply after an answer, which asks it. Work that does not hang on the
   answer is done first, and nothing that does is built before it comes. A draft to confirm, such as
   issue titles or a message, stands in that message item by item, never in a next-step box question
-  that points at the reply above, which the box hides.
+  that points at the reply above, which the box hides. Every question, in the box, on a page or in
+  the text, puts its choice in plain words, such as "share them?" or "keep them out of Slack?",
+  never as a double negative such as "leave them unshared?".
 - Software outside the project is installed only with the user's yes. Before an install, say in a
   line what the tool is and why it is needed. Ask rules in `settings.json` then prompt for `brew`,
   `pipx`, `uv tool`, `npm -g`, `cargo`, `go` and `gem` installs in every permission mode,

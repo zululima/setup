@@ -6,9 +6,19 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## Ask questions without double negatives
+
+2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**2.**
+> [the header of answers about a meeting left out]
+> 26. leave them unshared is a double negative dont do that again.
+> [the answer itself and pasted answers about another meeting left
+> out]
+
 ## chrome skill: fill the screen when putting Chrome back
 
-2026-11-16, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+2026-11-16, commit [dd980c5](https://github.com/zululima/setup/commit/dd980c52f55a5e4b3abd15a18c55a09e8f752e7e), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > chrome is absolutely small again please fix

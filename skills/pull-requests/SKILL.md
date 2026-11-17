@@ -1,6 +1,6 @@
 ---
 name: pull-requests
-description: Procedures for a pull request: body, How to verify, review page, merge, pictures and issues. Load before opening, editing, reviewing or merging a PR, writing its test steps, capturing pictures for one, or opening a GitHub issue.
+description: Procedures for a pull request: body, How to verify, review page, merge, pictures and issues, and the About settings of the user's repository. Load before opening, editing, reviewing or merging a PR, writing its test steps, capturing pictures for one, opening a GitHub issue, or creating or publishing a repository of the user's.
 ---
 
 # Pull requests
@@ -348,3 +348,10 @@ GitHub.
   nothing submitted. The tab stays open on it, and the reply names that tab and the account the page
   is signed in as, read from the page. The issue is created only on the user's go after that, with
   the page's own submit button, so what goes out is what the user saw.
+
+## The repository
+
+- The user's own repositories on GitHub turn off Releases, Packages and Deployments in the About
+  dialog in Claude in Chrome, each one the repository has none of, and carry a few short topics, a
+  word each where one does, that fit one line of the sidebar. The description is as short as it
+  takes, one line if need be, for About and Languages to show without scrolling at 1440x730.
