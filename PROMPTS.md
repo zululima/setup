@@ -6,9 +6,18 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Write the prompts block without details where it shows as text
+## Let the local review answer, and say how long it needs
 
 2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**3.**
+> yes check em the yes check em should be the cmd enter one. also can
+> you next time say how long at least the local model should check for
+> it to guessfully find anything of use
+
+## Write the prompts block without details where it shows as text
+
+2026-11-17, commit [2559bdf](https://github.com/zululima/setup/commit/2559bdf62a081308f2e9ecb152e313dc9ecf9fad), model claude-opus-5-5, effort xhigh.
 
 **35.**
 > ngit dont support details element. [a note on a Nostr profile name

@@ -26,9 +26,13 @@ description: A local model in Ollama that reviews a branch in the background whi
 
 - While a run of the branch is working or done and its findings are unchecked, the reply that hands
   over that branch's pull request, or the review page of a PR review, asks in its next-step box:
-  "Shall I stop the local review and check its findings?", with the buttons "Yes, check them" and
-  "Not yet". It is that reply's one question: any other waits for the reply after its answer.
-  `local-review.sh status` shows the runs and how far each got.
+  "Shall I stop the local review and check its findings?", with "Yes, check them" as its first
+  button, the one Cmd+Enter presses, however far the run got, and "Not yet" second. It is that
+  reply's one question: any other waits for the reply after its answer.
+- That reply says how far the run got and how long it needs at least to finish its files, as
+  `local-review.sh status` prints them, with the pace the time rests on: the run's own seconds per
+  file, or before its first file the last run's. A run still waiting for memory says so, since no
+  estimate covers that wait. A file with no readable answer counts as not reviewed.
 - After "Not yet" the run goes on, and each later reply on that branch asks again, as for any open
   question.
 

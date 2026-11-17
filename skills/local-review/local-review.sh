@@ -178,13 +178,28 @@ cmd_stop() {
   echo "$(basename "$dir"): $(field "$dir" state), $(field "$dir" files_done) of $(field "$dir" files_total) files, $(field "$dir" findings) findings"
 }
 
+# The time a working run needs to finish its files: its own seconds per file
+# once one is done, else the last run's, without any wait for memory.
 cmd_status() {
-  local d any=0
+  local d any=0 pace
+  pace="$(cat "$state/pace" 2> /dev/null)"
   [ -e "$state/off" ] && echo "automatic starts: off" || echo "automatic starts: on"
   for d in "$state"/runs/*/; do
     [ -f "$d/status.json" ] || continue
     any=1
-    jq -r '"\(.branch) in \(.repo): \(.state), \(.files_done) of \(.files_total) files, \(.findings) findings\(if .unreviewed then ", no readable answer for " + (.unreviewed | join(", ")) else "" end), head \(.head[0:7]), started \(.started)"' "$d/status.json"
+    jq -r --arg pace "${pace:-}" '
+      def mins: (. / 60 | ceil | tostring) + " min";
+      (if .running_since and .files_done > 0
+        then (now - (.running_since | fromdate)) / .files_done else null end) as $own
+      | ($pace | tonumber? // null) as $last
+      | (.files_total - .files_done) as $left
+      | (if ((.state | IN("running", "waiting for memory", "queued", "starting")) | not)
+           or .files_total == 0 then ""
+         elif $own then ", about \($own * $left | mins) left at \($own | floor) s per file so far"
+         elif $last then ", about \($last * $left | mins) left at \($last) s per file as the last run went"
+           + (if .state == "running" then "" else ", once it runs" end)
+         else "" end) as $eta
+      | "\(.branch) in \(.repo): \(.state), \(.files_done) of \(.files_total) files, \(.findings) findings\(if .unreviewed then ", no readable answer for " + (.unreviewed | join(", ")) else "" end)\($eta), head \(.head[0:7]), started \(.started)"' "$d/status.json"
   done
   [ "$any" = 1 ] || echo "no local review runs"
 }
@@ -227,10 +242,13 @@ ask() {
   jq -n --arg model "$model" --argjson ctx "$ctx" --arg sys "$system_prompt" --arg path "$1" \
     --rawfile diff "$2" --argjson format "$3" --argjson schema "$schema" \
     '{model: $model, stream: false, keep_alive: "15m",
-      options: {num_ctx: $ctx, num_predict: 4096, temperature: 0},
+      options: {num_ctx: $ctx, num_predict: 16384, temperature: 0},
       messages: [{role: "system", content: ($sys + "\n\nAnswer with JSON only, matching this schema: " + ($schema | tojson))},
                  {role: "user", content: ("File: " + $path + "\n\nDiff:\n" + $diff)}]}
-     + if $format then {format: $format} else {} end' > "$dir/tmp/request.json"
+     + if $format then {format: $format} else {} end
+     # gpt-oss thinks at medium unless told, and its thinking counts against
+     # num_predict: at 4096 it used all of it and left no answer.
+     + if ($model | startswith("gpt-oss")) then {think: "low"} else {} end' > "$dir/tmp/request.json"
   curl -s -m 900 "$api/api/chat" -d @"$dir/tmp/request.json" -o "$dir/tmp/response.json" &
   cpid=$!
   wait "$cpid"
@@ -238,7 +256,12 @@ ask() {
 }
 
 worker_end() {
+  local per
   set_status "$dir" '.state = $s | .ended = (now | todate)' --arg s "$1"
+  per="$(jq -r 'if .running_since and .files_done > 0
+    then ((.ended | fromdate) - (.running_since | fromdate)) / .files_done | floor else empty end' \
+    "$dir/status.json" 2> /dev/null)"
+  [ -n "$per" ] && echo "$per" > "$state/pace"
   [ "$have_lock" = 1 ] && rm -rf "$state/lock"
   rm -rf "$dir/tmp"
   release "$dir"
@@ -308,7 +331,7 @@ cmd_worker() {
       worker_end "failed: ollama did not start"
       return 0
     fi
-    set_status "$dir" '.state = "running"'
+    set_status "$dir" '.state = "running" | .running_since = (now | todate)'
   fi
 
   while IFS= read -r f; do
