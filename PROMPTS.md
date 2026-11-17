@@ -6,9 +6,31 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## Add a local model review that runs beside a pull request
+
+2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> are there any local models i could use in my workflow? like some
+> local model or models reviewing my changes while i manually review etc
+
+Reply: gpt-oss:20b (14 GB) is the local model that fits your Mac's 17.8 GB GPU limit for a review pass that runs while you read the diff yourself. Nothing has been downloaded or built yet.
+
+**2.**
+> can some local model then just run after ive created a feat or maybe
+> when i review someone elses and and just run at the same time and ill
+> just notify claude when i wanna stop reviewing locally too. also
+> could claude and local models communicate with each other correctly?
+
+Reply: A local model can start on its own when a session opens or pushes your PR or checks out someone else's, and Claude can read and check its findings when you say stop. Nothing is downloaded or built yet.
+
+**3.** (answer to: shall I build the local review?)
+> yes go ahead also maybe just ask question after feature is done
+> should the local llm review stop and same in when i say review pr x
+
 ## Check a step the user may have taken before listing it
 
-2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort high.
+2026-11-17, commit [c4fab85](https://github.com/zululima/setup/commit/c4fab859d6f7c591c8089669426def33b9bf7221), model claude-opus-5-5, effort high.
 
 **4.**
 > if i havent posted yet? just check next time. [the rest, about a
@@ -7582,12 +7604,14 @@ Stop, add it to dotclaude?)
 - feat: feature
 - ff-only: fast-forward only
 - fri: Friday
+- GB: gigabytes
 - gcp: Google Cloud Platform
 - gh: GitHub CLI
 - gh: GitHub command line interface
 - gh: the GitHub command line tool
 - gm: good morning, the alias that runs the start of day script
 - gm: good morning, the morning routine skill
+- GPU: graphics processing unit
 - h1: HTML heading level 1
 - HTML: HyperText Markup Language
 - i.e.: id est, that is

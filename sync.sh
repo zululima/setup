@@ -227,6 +227,7 @@ mirrored=(
   hooks/energy-session-pid.sh
   hooks/usage-waiting.sh
   hooks/finished-banner.sh
+  hooks/local-review-start.sh
   hooks/sync-conflicts.sh
   hooks/plan-limits.sh
   presence/install.sh
@@ -269,6 +270,8 @@ mirrored=(
   skills/read-aloud/SKILL.md
   skills/models/SKILL.md
   skills/models/pace.sh
+  skills/local-review/SKILL.md
+  skills/local-review/local-review.sh
   workflows/dream.js
   agents/dream-worker.md
 )
