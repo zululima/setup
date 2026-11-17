@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Keep a one-screen page on one screen over a date warning
+## Write the prompts block without details where it shows as text
 
 2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**35.**
+> ngit dont support details element. [a note on a Nostr profile name
+> left out]
+
+## Keep a one-screen page on one screen over a date warning
+
+2026-11-17, commit [0b4c70e](https://github.com/zululima/setup/commit/0b4c70e0765f304ce417ae2bbf1ca4a6f3eac3f4), model claude-opus-5-5, effort xhigh.
 
 **10.** (answer to: shall I add the 7 Dec warning to both exam guides too,     though they then scroll?)
 > Keep one screen

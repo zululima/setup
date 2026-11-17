@@ -83,6 +83,10 @@ GitHub.
   `<details><summary>Abbreviations</summary>` block lists every abbreviation used anywhere in the
   quoted prompts with its expansion, one per line, so a reader who does not know one can open
   the list and check. When the prompts use none, leave the block out.
+- Where the PR is read on a site that shows `<details>` as text, such as an ngit PR's cover note on
+  gitworkshop.dev, neither block uses it: the prompts block opens with a bold `**Prompts behind this
+  PR**` line, the abbreviations follow a bold `**Abbreviations**` line as one bullet each, and since
+  nothing folds them, the prompts block goes last, after the rest of the body.
 - Pasted text inside a quoted prompt is replaced by a bracketed description, as the commit
   message rules say. The prompts may come before the rest of the body here, unlike in a commit.
 - Leave out meta prompts: anything about Claude Code itself, its memory, `~/.claude/CLAUDE.md`, or
