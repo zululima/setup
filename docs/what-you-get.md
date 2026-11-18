@@ -143,10 +143,11 @@
 - [`mods/archive-files`](../mods/archive-files): when you archive a session in the desktop app, the
   files it made for you, its drafts folder and its folder in `~/Downloads`, move to
   `~/.claude/archive/` within seconds, on macOS and on Linux, and memory notes and background files
-  that named them point to where they went. On a Mac it also closes every Chrome tab that no open
-  session uses, the archived session's and your own, such as a page you signed in on, through
-  Chrome's AppleScript, so macOS asks once whether Claude may control Google Chrome. When no tab
-  would stay, the last one stays open, so Claude in Chrome keeps the window it connects through.
+  that named them point to where they went. Unarchive the session and the files it changed move back
+  to where they were, with the notes pointing there again. On a Mac it also closes every Chrome tab
+  that no open session uses, the archived session's and your own, such as a page you signed in on,
+  through Chrome's AppleScript, so macOS asks once whether Claude may control Google Chrome. When no
+  tab would stay, the last one stays open, so Claude in Chrome keeps the window it connects through.
   Before the close, a small companion extension of yours in Chrome takes those tabs out of their tab
   groups, which makes Chrome delete each saved group rather than pin it to the bookmarks bar. Groups
   that were already closed, by a window closing or Chrome quitting, it reopens from their chip on a

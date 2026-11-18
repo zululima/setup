@@ -11,7 +11,14 @@
 # A session's tasks are the ~/.claude/drafts/<task> folders its tool calls
 # name. A task moves when the session changed its folder, its ~/Downloads/<task>
 # folder or one of its ~/Downloads/<task>-* files, and no session still open
-# names it.
+# names it. The .origins file in ~/.claude/archive/<task>/ notes where each
+# entry came from.
+#
+# When the user unarchives a session, each task whose archived files it
+# changed moves back to where .origins says, and the notes point back. An
+# archive from before .origins sends downloads/<task>-* and downloads/<task>.*
+# files to ~/Downloads, the rest of downloads/ to ~/Downloads/<task>/ and every
+# other entry to ~/.claude/drafts/<task>/. Closed Chrome tabs stay closed.
 #
 # ~/.claude is synced between machines, so the app also holds records it
 # imported from the other machine's transcripts. A record that started outside
@@ -155,11 +162,13 @@ move_task() {
     if [ -e "$dest" ]; then
       for e in "$drafts"/*; do
         to=$(place "$e" "$dest")
+        origin "$to" "$e"
         [ "$to" = "$dest/${e##*/}" ] || rewrite_notes "$e" "$to"
       done
       rmdir "$drafts"
     else
       mv "$drafts" "$dest"
+      for e in "$dest"/*; do origin "$e" "$drafts/${e##*/}"; done
     fi
     say "  $task: moved ${drafts/#$HOME/~} to ${dest/#$HOME/~}"
     rewrite_notes "$drafts" "$dest"
@@ -168,6 +177,7 @@ move_task() {
     mkdir -p "$dest/downloads"
     for e in "$shared"/*; do
       to=$(place "$e" "$dest/downloads")
+      origin "$to" "$e"
       [ "$to" = "$dest/downloads/${e##*/}" ] || rewrite_notes "$e" "$to"
     done
     rmdir "$shared"
@@ -177,15 +187,63 @@ move_task() {
   for f in ${files[@]+"${files[@]}"}; do
     mkdir -p "$dest/downloads"
     to=$(place "$f" "$dest/downloads")
+    origin "$to" "$f"
     say "  $task: moved ${f/#$HOME/~} to ${to/#$HOME/~}"
     rewrite_notes "$f" "$to"
   done
 }
 
-# Moves $1 into the folder $2, numbering its name when the folder holds it
-# already, as render-2.html, and prints where it went.
+# Notes in .origins that the archive entry $1 came from the path $2.
+origin() {
+  printf '%s\t%s\n' "${1#"$dest"/}" "~/${2#"$HOME"/}" >>"$dest/.origins"
+}
+
+# Moves a task back from the archive for a session the user unarchived.
+restore_task() {
+  local task=$1 dest="$archive/$1" drafts="$HOME/.claude/drafts/$1" shared="$HOME/Downloads/$1"
+  local e rel from to name to_drafts= to_shared=
+  shopt -s nullglob dotglob
+  for e in "$dest"/* "$dest"/downloads/*; do
+    rel=${e#"$dest"/}
+    case $rel in downloads | .origins) continue ;; esac
+    from=
+    [ -f "$dest/.origins" ] && from=$(awk -F'\t' -v r="$rel" '$1 == r { o = $2 } END { print o }' "$dest/.origins")
+    if [ -z "$from" ]; then
+      name=${e##*/}
+      case $rel in
+        downloads/"$task"-* | downloads/"$task".*) if [ -f "$e" ]; then from="~/Downloads/$name"; else from="~/Downloads/$task/$name"; fi ;;
+        downloads/*) from="~/Downloads/$task/$name" ;;
+        *) from="~/.claude/drafts/$task/$name" ;;
+      esac
+    fi
+    from="$HOME/${from#\~/}"
+    mkdir -p "${from%/*}"
+    to=$(place "$e" "${from%/*}" "${from##*/}")
+    rewrite_notes "$e" "$to"
+    case ${from%/*} in
+      "$drafts") to_drafts=1 ;;
+      "$shared") to_shared=1 ;;
+      *) say "  $task: moved ${e/#$HOME/~} back to ${to/#$HOME/~}" ;;
+    esac
+    [ "$to" = "$from" ] || say "  $task: ${from/#$HOME/~} was taken, so it went back as ${to##*/}"
+  done
+  if [ -n "$to_shared" ]; then
+    say "  $task: moved ${dest/#$HOME/~}/downloads back to ${shared/#$HOME/~}"
+    rewrite_notes "$dest/downloads" "$shared"
+  fi
+  if [ -n "$to_drafts" ]; then
+    say "  $task: moved ${dest/#$HOME/~} back to ${drafts/#$HOME/~}"
+    rewrite_notes "$dest" "$drafts"
+  fi
+  rm -f "$dest/.origins"
+  rmdir "$dest/downloads" 2>/dev/null
+  rmdir "$dest" 2>/dev/null || say "  $task: ${dest/#$HOME/~} still holds files"
+}
+
+# Moves $1 into the folder $2 as the name $3, or its own, numbering the name
+# when the folder holds it already, as render-2.html, and prints where it went.
 place() {
-  local name=${1##*/} stem ext n=2 to
+  local name=${3:-${1##*/}} stem ext n=2 to
   stem=$name ext=
   if [ -f "$1" ] && [[ $name == ?*.* ]]; then
     stem=${name%.*} ext=.${name##*.}
@@ -483,7 +541,7 @@ EOF
 }
 
 handle() {
-  local record=$1 t created since task
+  local record=$1 t task
   t=$(transcript_of "$record")
   current=$t
   say "$(jq -r '.title // .sessionId' "$record")"
@@ -498,13 +556,37 @@ handle() {
     say "  no transcript on this machine"
     return
   fi
-  created=$(jq -r '(.createdAt // 0) / 1000 | floor' "$record")
-  since=$(( ($(date +%s) - created) / 60 + 2 ))
-  # A task folder's name has no dot, a working file's in drafts has its extension.
-  for task in $(tool_inputs "$t" | grep -oE '\.claude/drafts/[A-Za-z0-9_-][A-Za-z0-9._-]*' | sed 's|.*/||' | sort -u); do
-    case $task in *.*) continue ;; esac
-    [ -f "$HOME/.claude/drafts/$task" ] || move_task "$task" "$since"
+  for task in $(tasks_of "$t"); do
+    [ -f "$HOME/.claude/drafts/$task" ] || move_task "$task" "$(minutes_since "$record")"
   done
+}
+
+unarchived() {
+  local record=$1 t task
+  [ "$(jq -r --argjson roots "$roots" "$here"' .isArchived != true and (foreign | not)' "$record")" = true ] || return 0
+  t=$(transcript_of "$record")
+  say "$(jq -r '.title // .sessionId' "$record"), unarchived"
+  if [ -z "$t" ]; then
+    say "  no transcript on this machine"
+    return
+  fi
+  for task in $(tasks_of "$t"); do
+    [ -d "$archive/$task" ] || continue
+    if [ -z "$(find "$archive/$task" -type f ! -name .origins -mmin "-$(minutes_since "$record")" | head -1)" ]; then
+      say "  $task: left in the archive, nothing in it changed during this session"
+      continue
+    fi
+    restore_task "$task"
+  done
+}
+
+# A task folder's name has no dot, a working file's in drafts has its extension.
+tasks_of() {
+  tool_inputs "$1" | grep -oE '\.claude/drafts/[A-Za-z0-9_-][A-Za-z0-9._-]*' | sed 's|.*/||' | grep -v '\.' | sort -u
+}
+
+minutes_since() {
+  echo $(( ($(date +%s) - $(jq -r '(.createdAt // 0) / 1000 | floor' "$1")) / 60 + 2 ))
 }
 
 work=$(mktemp -d)
@@ -569,7 +651,15 @@ for idx in "$sessions"/*/*/archived-sessions.idx; do
     archived=1
   done
 done
-sort -u "$work/now" >"$seen"
+sort -u -o "$work/now" "$work/now"
+if [ -f "$seen" ]; then
+  for id in $(comm -23 "$seen" "$work/now"); do
+    for record in "$sessions"/*/*/"$id".json; do
+      [ -f "$record" ] && unarchived "$record"
+    done
+  done
+fi
+cp "$work/now" "$seen"
 if [ -n "${archived:-}" ]; then
   close_tabs "$work/now"
   groups_left && delete_groups

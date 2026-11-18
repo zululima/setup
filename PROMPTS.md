@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## mirror: unbind a PR that the PR pass made the app attach
+## archive-files: move a session's files back when it is unarchived
 
 2026-11-18, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**20.**
+> could unarchive also restore the files to downloads etc
+
+## mirror: unbind a PR that the PR pass made the app attach
+
+2026-11-18, commit [a0cc568](https://github.com/zululima/setup/commit/a0cc568f96f5ae2b7acdc1537c5d4b2920b06b1b), model claude-opus-5-5, effort xhigh.
 
 **4.** (answer to: is the new Signal pack uploaded?)
 > [an answer about a downstream project left out]
