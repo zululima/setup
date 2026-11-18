@@ -41,7 +41,8 @@ description: Which Claude model and effort each kind of work runs on, when a tas
   session's model and effort in full, its first button, which one shortcut presses, is the yes,
   and on that yes the session starts it with `start_session` and "user_asked". When the pace is
   `tight`, that one question names the rung Stepping down gives, and its second button keeps this
-  session's own model and effort.
+  session's own model and effort. The question Stepping down asks before it moves a task up while
+  the pace is `tight` is the exception: there the first button keeps the task here.
 - The turn that the yes opens makes `start_session` its first call and `detach_session` its next
   message, before any other step, `get_usage` and loading a skill included. The app posts its
   "moved to top level" banner when the session that calls `detach_session` is not the one on
@@ -65,9 +66,10 @@ description: Which Claude model and effort each kind of work runs on, when a tas
   A session cannot switch its own model or effort, so at a prompt that starts software that is
   hard or open, research across many web sources or chart reading, each more than a few tool
   calls, it reads them with `get_session` and `self`. In a session on a cheaper model than Fable
-  5.2, such a task goes to a new session on its row unless the pace is `tight`: started as above,
-  with `context` "fork" so it holds this conversation, and with a task that asks it to carry out
-  the user's last prompt there, so the prompt stays the user's own in its log and its commits.
+  5.2, such a task goes to a new session on its row, after a question when the pace is `tight`, as
+  Stepping down says: started as above, with `context` "fork" so it holds this conversation, and
+  with a task that asks it to carry out the user's last prompt there, so the prompt stays the
+  user's own in its log and its commits.
   This session does none of it: a session that stays links that one in its reply and says the
   work goes on there, and a spawner writes no reply, so no question named the fork's model and
   effort and its task asks the fork's first reply to say them, with why, as the sentence below
@@ -143,11 +145,16 @@ description: Which Claude model and effort each kind of work runs on, when a tas
   `~/.claude/skills/models/pace.sh`, which prints what the 5-hour limit and each weekly limit is
   on pace for, and a verdict. On `fits` or `unknown` the move is made and the work runs on its
   row. A task that stays where it is typed and starts no work needs no read.
-- On `tight` no task moves up by itself and no work starts on Fable 5.2, apart from research and
-  chart reading in a subagent or a workflow agent, whose benchmarks put every Opus 5.5 rung at a
-  higher cost per task or far below, and from the session a yes to the offer for a task got wrong
-  twice starts. Software that is hard or open then runs where it is typed: on Opus 5.5 at xhigh
-  it scores 1.9 points under its row at 38% of Fable 5.2's cost per response.
+- On `tight` no task moves up without the user's yes and no work starts on Fable 5.2, apart from
+  research and chart reading in a subagent or a workflow agent, whose benchmarks put every Opus
+  5.5 rung at a higher cost per task or far below, and from the session a yes to the offer for a
+  task got wrong twice starts. A task the pace keeps off its row is asked about before any step
+  of it, and the turn ends with that question: the next-step box asks whether to move the task to
+  its row's model and effort, and the reply gives what `pace.sh` printed for the limit that binds.
+  Its first button, which Cmd+Enter presses, keeps the task here on this session's model and
+  effort, where software that is hard or open on Opus 5.5 at xhigh scores 1.9 points under its
+  row at 38% of Fable 5.2's cost per response. Its second starts the fork on the task's row, as
+  the bullet on moving a task up says.
 - A session keeps its own task whatever the verdict, and no reply asks to move it to a cheaper
   model. A reply that kept a task off its row for the limit, or started work on a second rung,
   gives what `pace.sh` printed for the limit that binds.

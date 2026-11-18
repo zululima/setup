@@ -6,9 +6,24 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## models: ask before keeping a task off its row when tight
+
+2026-11-18, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** Quoted under [27b102b](https://github.com/zululima/setup/commit/27b102be9389750bc51481b956fdba27e2348237).
+
+**2.** Quoted under [27b102b](https://github.com/zululima/setup/commit/27b102be9389750bc51481b956fdba27e2348237).
+
+**3.** Quoted under [55fb3db](https://github.com/zululima/setup/commit/55fb3db3aa4bd4b4fcdc78fce09856ca5904538e).
+
+**4.**
+> next time you can aks the cmd enter one to stay in opus but lets
+> spawn this to fable isntead this time i have weekly resets. [a
+> question about a downstream project left out]
+
 ## Give an app's command for a file, never an app-scheme link
 
-2026-11-17, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+2026-11-17, commit [b132595](https://github.com/zululima/setup/commit/b132595935e8a67b37a54d3a78eae689a20e09f9), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > [an ask about a document left out]
