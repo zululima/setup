@@ -160,7 +160,11 @@ run and its commit in the same turn.
   such as prompts, a verify run or new screenshots, is named in the reply under its PR, next to what
   the edit changed. `sync.sh --commit` ends by listing the open PRs whose body links the repository
   or a copy's repository but not the commit it just pushed there. It is a safety net for the pass,
-  not a substitute for it: a PR with only the prompts block is not on that list.
+  not a substitute for it: a PR with only the prompts block is not on that list. Each `gh pr edit`
+  of the pass prints the PR's address, and the app binds the session to the last one it printed,
+  which puts that PR on the session's sidebar row. So the pass ends with `get_status` from the
+  `ccd_pr` tools, and a PR it names that the session does not work on is unbound with `unbind_pr`
+  before the reply.
 - When the user asked why a problem still shows in a teammate's work or setup, such as issues a
   teammate's merge left open, the reply that reports the push also gives a prompt the user can hand
   to that teammate, who runs a copy of this setup, and other pushes give none. It stands in a `text`

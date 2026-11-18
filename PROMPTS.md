@@ -6,9 +6,24 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## chrome: check the Firefox tab is loaded and runs the same app
+## mirror: unbind a PR that the PR pass made the app attach
 
 2026-11-18, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**4.** (answer to: is the new Signal pack uploaded?)
+> [an answer about a downstream project left out]
+
+**5.** Quoted under [55fb3db](https://github.com/zululima/setup/commit/55fb3db3aa4bd4b4fcdc78fce09856ca5904538e).
+
+**6.** (answer to: is the Signal pack link copied or pasted?)
+> [pasted: a sticker pack link]
+
+**7.**
+> why is this pr attached to this. fix
+
+## chrome: check the Firefox tab is loaded and runs the same app
+
+2026-11-18, commit [231b489](https://github.com/zululima/setup/commit/231b489a3adfc618b9370156f51a99e9c8af4443), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > [an ask about stickers for a downstream project left out]
