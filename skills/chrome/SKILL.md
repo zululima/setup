@@ -32,9 +32,14 @@ description: Browser work in Claude in Chrome: starting the extension, reading b
   to, a grant the session removes under `myaccount.google.com/connections` once the read is done.
   A sign-in page in a Chrome tab for a site the user is signed in to in Firefox means the cookie
   bridge's copy fell short, so before that sign-in goes to the user the session checks that Firefox
-  runs and has had the site open since it started, that the site's cookies and local storage
-  reached the tab, reads the page's own code for signed-in state kept elsewhere, such as in
-  IndexedDB or session storage, which the bridge does not carry, and names the cause in the reply.
+  runs and has loaded a page of the site since it started, since the bridge's script runs only in a
+  loaded page and a tab Firefox restored but nobody opened sends no local storage, that the site's
+  cookies and local storage reached the tab, whose key `cookie-bridge-written` lists the items the
+  bridge wrote, and that the Chrome tab runs the same app as Firefox's tab, since two apps on one
+  origin, such as Telegram Web's `/a/` and `/k/`, keep a login under different keys. It reads the
+  page's own code for signed-in state kept elsewhere, such as in IndexedDB or session storage, which
+  the bridge does not carry, and names the cause in the reply. When only an unloaded Firefox tab
+  stands in the way, the step for the user is to open that tab in Firefox, never the sign-in.
   When a step needs the user in the browser, such as a sign-in, personal data to type or a click the
   session may not make, the session opens the page that step happens on in a tab of its group,
   leaves that tab open, selects it with `~/.claude/cookie-bridge/front-tab <tab id>`, puts the

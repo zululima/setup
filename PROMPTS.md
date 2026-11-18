@@ -6,9 +6,22 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## models: ask before keeping a task off its row when tight
+## chrome: check the Firefox tab is loaded and runs the same app
 
 2026-11-18, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> [an ask about stickers for a downstream project left out]
+
+**2.** (answer to: which packs to change?)
+> [an answer about the same stickers left out]
+
+**3.**
+> how come doesnt firefox tg login sync to chrome
+
+## models: ask before keeping a task off its row when tight
+
+2026-11-18, commit [6dbec2e](https://github.com/zululima/setup/commit/6dbec2edba497d1948ed634fda283ae67d7c89e6), model claude-opus-5-5, effort xhigh.
 
 **1.** Quoted under [27b102b](https://github.com/zululima/setup/commit/27b102be9389750bc51481b956fdba27e2348237).
 
@@ -7786,6 +7799,7 @@ Stop, add it to dotclaude?)
 - sod: start of day
 - spdx: Software Package Data Exchange
 - ss: screenshot
+- tg: Telegram
 - tmp: the temporary directory, /tmp
 - tms: tai muuta sellaista, or the like
 - ts: TypeScript
