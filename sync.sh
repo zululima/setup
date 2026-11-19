@@ -239,6 +239,8 @@ mirrored=(
   overload/install.sh
   overload/overload.swift
   overload/Info.plist
+  pause/pause.sh
+  pause/install.sh
   mods/session-usage/.claude-plugin/plugin.json
   mods/session-usage/hooks/hooks.json
   mods/session-usage/hooks/register.ts

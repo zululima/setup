@@ -6,9 +6,30 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## CLAUDE.md: install a changed app on the user's iPhone too
+## pause: free the CPU and memory at once, and put it back after
 
 2026-11-19, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**2.**
+> pause all tasks for a now i take teams call my ram adn cpu are hot
+
+**3.**
+> where the tf is a llam aserver going
+
+**4.**
+> pause that
+
+Reply: The local review model is unloaded, new local reviews are held off, and 7 [project] containers are paused. Free memory went from 11% to 64%. Nothing is resumed yet.
+
+**5.**
+> [an ask to resume and about a notification left out] also i should
+> probably have a pause command in terminal that pauses everything
+> gracefully if shit hits the fan i.e. resoucres are suddenyl just
+> taken
+
+## CLAUDE.md: install a changed app on the user's iPhone too
+
+2026-11-19, commit [d0d6297](https://github.com/zululima/setup/commit/d0d62971805747a3bc65ecf436ab841fda431947), model claude-opus-5-5, effort xhigh.
 
 **28.**
 > why is the xr version not updated. always match it on iphone

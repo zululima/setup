@@ -205,6 +205,17 @@
   ```zsh
   ~/.claude/overload/install.sh
   ```
+- [`pause`](../pause/pause.sh): two terminal commands for when the CPU or memory runs out all at
+  once, such as when a call starts while builds, containers and a local model run. `pause` freezes
+  build and test processes with their children, pauses every running Docker container, stops the
+  local review runs, holds new ones off and unloads every model Ollama holds, then prints the free
+  memory and what is still busy. `resume` undoes only what the pauses since the last resume did. A
+  frozen test may time out once it runs again. Command names listed one per line in
+  `~/.claude/pause/more-names` are frozen too. [`install.sh`](../pause/install.sh) links both names
+  into `~/.local/bin`:
+  ```zsh
+  ~/.claude/pause/install.sh
+  ```
 - [`skills/commit-messages`](../skills/commit-messages/SKILL.md): how Claude writes a commit
   message: the order of its parts, the prompts behind the change, and what it leaves out or redacts.
 - [`skills/pull-requests`](../skills/pull-requests/SKILL.md): how Claude writes a pull request: the
