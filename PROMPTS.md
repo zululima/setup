@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## CLAUDE.md: commit and push finished work without asking
+## CLAUDE.md: install a changed app on the user's iPhone too
 
 2026-11-19, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**28.**
+> why is the xr version not updated. always match it on iphone
+
+## CLAUDE.md: commit and push finished work without asking
+
+2026-11-19, commit [8638ed2](https://github.com/zululima/setup/commit/8638ed283d003eb51d00949d860bc80c21fb79d0), model claude-opus-5-5, effort xhigh.
 
 **25.** (answer to: shall I commit these changes and push them to GitHub?)
 > always
