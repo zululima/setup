@@ -12,6 +12,8 @@
 
 set -u
 
+# An app such as Overload starts this with the system's PATH alone.
+PATH="$PATH:/opt/homebrew/bin:/usr/local/bin"
 state="$HOME/.claude/state/pause"
 file="$state/$(hostname -s)"
 review="$HOME/.claude/skills/local-review/local-review.sh"

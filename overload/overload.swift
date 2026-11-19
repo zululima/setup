@@ -56,7 +56,38 @@ struct Badge {
     static let noInternet = Badge(symbol: "wifi.exclamationmark", color: .systemBlue)
     static let busy = Badge(symbol: "arrow.up.arrow.down", color: .systemOrange)
     static let hotspot = Badge(symbol: "personalhotspot", color: .systemGreen)
-    static let all = [cpu, memory, heat, disk, offline, noInternet, busy, hotspot]
+    static let paused = Badge(symbol: "pause.circle", color: .systemPurple)
+    static let all = [cpu, memory, heat, disk, offline, noInternet, busy, hotspot, paused]
+}
+
+// pause in ~/.claude/pause keeps what it paused here until resume, under the name hostname -s prints.
+let pauseState: URL = {
+    var name = [CChar](repeating: 0, count: 256)
+    gethostname(&name, name.count)
+    let host = String(cString: name).split(separator: ".").first.map(String.init) ?? ""
+    return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".claude/state/pause/\(host)")
+}()
+
+func somethingPaused() -> Bool {
+    let attributes = try? FileManager.default.attributesOfItem(atPath: pauseState.path)
+    return ((attributes?[.size] as? Int) ?? 0) > 0
+}
+
+func workSummary(_ name: String, _ output: String) -> String {
+    let lines = output.split(separator: "\n")
+    func count(_ prefix: String, _ one: String, _ many: String) -> String? {
+        let n = lines.filter { $0.hasPrefix(prefix) }.count
+        return n == 0 ? nil : "\(n) \(n == 1 ? one : many)"
+    }
+    let pausing = name == "pause"
+    let parts = pausing
+        ? [count("froze ", "process", "processes"), count("paused container", "container", "containers"),
+           count("stopped local review", "review", "reviews"), count("unloaded model", "model", "models")]
+        : [count("resumed ", "process", "processes"), count("unpaused container", "container", "containers"),
+           count("started:", "review", "reviews")]
+    let done = parts.compactMap { $0 }
+    if done.isEmpty { return pausing ? "nothing to pause" : "nothing paused" }
+    return (pausing ? "paused " : "resumed ") + done.joined(separator: ", ")
 }
 
 let gigabyte: Int64 = 1 << 30
@@ -538,6 +569,8 @@ final class Monitor: NSObject, NSMenuDelegate, NSApplicationDelegate {
     private var lastTick = DispatchTime.now().uptimeNanoseconds
     private var asleep = false
     private var menuOpen = false
+    private var paused = somethingPaused()
+    private var working: String?
     private var peekUntil = Date()
     private var activity: NSObjectProtocol?
     private let clock: DateFormatter = {
@@ -587,7 +620,7 @@ final class Monitor: NSObject, NSMenuDelegate, NSApplicationDelegate {
     }
 
     private func refresh() {
-        let visible = menuOpen || reading?.badge != nil || Date() < peekUntil
+        let visible = menuOpen || reading?.badge != nil || paused || Date() < peekUntil
         // Redrawing the calm state right before hiding flashes it while the item animates out.
         if visible, let r = reading { draw(r) }
         if visible != item.isVisible {
@@ -636,6 +669,7 @@ final class Monitor: NSObject, NSMenuDelegate, NSApplicationDelegate {
             }
         }
         reading = r
+        paused = somethingPaused()
         refresh()
     }
 
@@ -646,9 +680,10 @@ final class Monitor: NSObject, NSMenuDelegate, NSApplicationDelegate {
 
     private func draw(_ r: Reading) {
         guard let button = item.button else { return }
-        button.toolTip = r.headline
-        button.setAccessibilityLabel(r.headline)
-        if let badge = r.badge, let image = badgeImage(badge) {
+        let headline = paused ? r.headline + ", work paused" : r.headline
+        button.toolTip = headline
+        button.setAccessibilityLabel(headline)
+        if let badge = r.badge ?? (paused ? .paused : nil), let image = badgeImage(badge) {
             button.contentTintColor = nil
             button.image = image
         } else {
@@ -712,6 +747,14 @@ final class Monitor: NSObject, NSMenuDelegate, NSApplicationDelegate {
             }
         }
         menu.addItem(.separator())
+        if let working {
+            let busy = NSMenuItem(title: working, action: nil, keyEquivalent: "")
+            busy.isEnabled = false
+            menu.addItem(busy)
+        } else {
+            menu.addItem(action("Pause Builds, Containers and Models", #selector(pauseWork)))
+            if paused { menu.addItem(action("Resume Paused Work", #selector(resumeWork))) }
+        }
         menu.addItem(action("Open Activity Monitor", #selector(openActivityMonitor)))
         let login = action("Open at Login", #selector(toggleLogin))
         login.state = SMAppService.mainApp.status == .enabled ? .on : .off
@@ -741,6 +784,38 @@ final class Monitor: NSObject, NSMenuDelegate, NSApplicationDelegate {
         let item = NSMenuItem(title: title, action: selector, keyEquivalent: key)
         item.target = self
         return item
+    }
+
+    @objc private func pauseWork() { run("pause", while: "Pausing...") }
+
+    @objc private func resumeWork() { run("resume", while: "Resuming...") }
+
+    // install.sh in ~/.claude/pause links both names to one script, which reads which ran from its name.
+    private func run(_ name: String, while label: String) {
+        working = label
+        let tool = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".local/bin/\(name)")
+        DispatchQueue.global().async {
+            let process = Process()
+            process.executableURL = tool
+            let out = Pipe()
+            process.standardOutput = out
+            process.standardError = FileHandle.nullDevice
+            var summary: String
+            do {
+                try process.run()
+                let data = out.fileHandleForReading.readDataToEndOfFile()
+                process.waitUntilExit()
+                summary = workSummary(name, String(decoding: data, as: UTF8.self))
+            } catch {
+                summary = "\(name) not found, run ~/.claude/pause/install.sh"
+            }
+            DispatchQueue.main.async {
+                self.working = nil
+                self.note(summary)
+                self.paused = somethingPaused()
+                self.refresh()
+            }
+        }
     }
 
     @objc private func openActivityMonitor() {

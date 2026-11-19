@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## pause: free the CPU and memory at once, and put it back after
+## overload: pause and resume from the menu bar
 
 2026-11-19, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**6.** (answer to: shall I add pause and resume to the overload menu?)
+> Yes, add them
+
+## pause: free the CPU and memory at once, and put it back after
+
+2026-11-19, commit [07574fe](https://github.com/zululima/setup/commit/07574fe067102fe8b952b6ce6110823cf57f145e), model claude-opus-5-5, effort xhigh.
 
 **2.**
 > pause all tasks for a now i take teams call my ram adn cpu are hot

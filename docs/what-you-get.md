@@ -197,9 +197,11 @@
   percentage over a bar as full as it, yellow at 20% and red at 10%. The other stays hidden until
   something needs a look, then shows one symbol for the first that applies: the CPU, memory
   pressure, heat or a nearly full disk in red, no network or no internet in blue, a busy iPhone
-  hotspot in orange and the hotspot itself in green. A click on either opens a menu with the CPU,
-  memory, disk, battery and network, the apps using the most, recent events and Open at Login. Mac
-  only. This builds [`overload.swift`](../overload/overload.swift) with
+  hotspot in orange and the hotspot itself in green. While `pause` below holds anything, it shows a
+  purple pause symbol when nothing else applies. A click on either opens a menu with the CPU,
+  memory, disk, battery and network, the apps using the most, recent events, Pause and Resume, which
+  run `pause` and `resume` and note what they did under recent events, and Open at Login. Mac only.
+  This builds [`overload.swift`](../overload/overload.swift) with
   [`Info.plist`](../overload/Info.plist) into `~/Applications` and starts it, and again after a
   change:
   ```zsh
@@ -210,9 +212,9 @@
   build and test processes with their children, pauses every running Docker container, stops the
   local review runs, holds new ones off and unloads every model Ollama holds, then prints the free
   memory and what is still busy. `resume` undoes only what the pauses since the last resume did. A
-  frozen test may time out once it runs again. Command names listed one per line in
-  `~/.claude/pause/more-names` are frozen too. [`install.sh`](../pause/install.sh) links both names
-  into `~/.local/bin`:
+  frozen test may time out once it runs again. The `overload` menu runs both too. Command names
+  listed one per line in `~/.claude/pause/more-names` are frozen too.
+  [`install.sh`](../pause/install.sh) links both names into `~/.local/bin`:
   ```zsh
   ~/.claude/pause/install.sh
   ```
