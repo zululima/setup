@@ -6,9 +6,15 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Turn off the Hue lights when a dream run starts
+## Tell a session that edited dream.js to run it by its path
 
 2026-11-19, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** Quoted under [ce369b5](https://github.com/zululima/setup/commit/ce369b5748a923b8a1f2d9d55e1f66d3721a9892).
+
+## Turn off the Hue lights when a dream run starts
+
+2026-11-19, commit [ce369b5](https://github.com/zululima/setup/commit/ce369b5748a923b8a1f2d9d55e1f66d3721a9892), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > dreaming should also close the hue lights. also start dreaming now
