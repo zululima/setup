@@ -55,7 +55,7 @@ case "$out" in
   *) exit 0 ;;
 esac
 
-context="A local review ${out#started: }: a local model reviews this branch in the background. Load the local-review skill. The turn that hands over this branch's pull request, or its review page, waits on the run in the background with local-review.sh wait and checks the findings once it ends, asking nothing about it."
+context="A local review ${out#started: }: a local model reviews this branch in the background. Load the local-review skill. The turn that hands over this branch's pull request, or its review page, waits on the run in the background with local-review.sh wait, asks in the next-step box whether to stop it, with stopping first, and checks the findings once it ends."
 
 jq -n --arg context "$context" \
   '{hookSpecificOutput: {hookEventName: "PostToolUse", additionalContext: $context}}'

@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## local-review: start a run only when the user asks
+## local-review: ask in the box to start a run and to stop it
 
 2026-11-19, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**8.** (answer to: which question should end a turn about the local    review, a, ask to start, or b, ask to stop?)
+> a ask to start and then ask to stop
+
+## local-review: start a run only when the user asks
+
+2026-11-19, commit [78e4867](https://github.com/zululima/setup/commit/78e486761b8ce6ea136e3facbb77f68f05cc5337), model claude-opus-5-5, effort xhigh.
 
 **7.**
 > only start local model checking when i say so and you should ask

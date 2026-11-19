@@ -22,18 +22,24 @@ description: A local model in Ollama that reviews a branch in the background whe
   run unasked. No run starts on a default branch or when the model is not pulled. One run works at
   a time and the next waits for it; a run also waits, up to an hour, until enough memory is free to
   load the model.
+- So the user can say so with one key, a reply after a push to the branch of a pull request of the
+  user's, or one that hands over such a pull request or a PR review page, asks in the next-step box
+  whether the session starts the local review of the branch, with starting as the first button,
+  which Cmd+Enter presses, when no run of that head works or is done. While a run works, every reply
+  on its branch asks instead whether the session stops it, with stopping first. Either is the box's
+  one question unless one that holds up more work is open.
 - A run goes on in the background across turns until it finishes or is stopped. It starts
   `ollama serve` when no server is up, and unloads the model and stops that server once no run is
   left.
 
 ## Waiting at hand-over
 
-- No reply asks whether to stop the run or check its findings: the session waits for the run
-  itself. A turn that hands over a branch's pull request, or the review page of a PR review, while
-  the branch's run is working starts `local-review.sh wait` in the checkout with the Bash tool's
-  `run_in_background` and shows the tasks pane. The wait returns once the run has ended, and the
-  turn it wakes checks the findings as below. A run already done is checked before the reply that
-  hands over.
+- Until the user says stop, the session waits for the run itself. A turn that starts a run, or
+  hands over a branch's pull request or the review page of a PR review while the branch's run is
+  working, starts `local-review.sh wait` in the checkout with the Bash tool's `run_in_background`
+  and shows the tasks pane. The wait returns once the run has ended or is stopped, and the turn it
+  wakes checks the findings as below. A run already done is checked before the reply that hands
+  over.
 - A reply that hands over while the run works says how far it got, its pass and viewpoint, and how
   long it needs at least to finish that pass and all of them, as `local-review.sh status` prints
   them, with the pace the time rests on: the run's own seconds per file, or before its first file
