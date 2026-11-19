@@ -49,7 +49,7 @@ if [ "$switch_only" -ne 0 ]; then
   pr_state="$(cd "$dir" && GH_PROMPT_DISABLED=1 gh pr view --json state --jq .state 2>/dev/null)"
   [ "$pr_state" = OPEN ] || exit 0
 fi
-out="$("$HOME/.claude/skills/local-review/local-review.sh" start "$dir" 2>&1)" || exit 0
+out="$("$HOME/.claude/skills/local-review/local-review.sh" start --auto "$dir" 2>&1)" || exit 0
 case "$out" in
   started:*) ;;
   *) exit 0 ;;

@@ -1,6 +1,6 @@
 ---
 name: local-review
-description: A local model in Ollama that reviews a branch in the background while its pull request is made or reviewed, and how Claude checks its findings. Load when a hook says a local review started, when the user says stop local review, local review off or on, and before the reply that hands over a pull request or a PR review page while a local review runs.
+description: A local model in Ollama that reviews a branch in the background when the user asks for it, and how Claude checks its findings. Load when the user asks for a local review or says stop local review, local review off or on, and before the reply that hands over a pull request or a PR review page while a local review runs.
 ---
 
 # Local review
@@ -14,14 +14,14 @@ description: A local model in Ollama that reviews a branch in the background whi
   The base is the pull request's base branch when the branch has one, else the default branch of
   `upstream`, or of `origin` in a checkout without one. Lock files, minified files and source maps
   are left out.
-- The `PostToolUse` hook `~/.claude/hooks/local-review-start.sh` starts a run after `gh pr create`,
-  `gh pr checkout`, `git push` and a `git switch` onto a branch with an open pull request, so a run
-  starts when a session opens or pushes a pull request of the user's and when a PR review switches
-  to the PR's branch, whichever command it switches with. A review that reaches the branch another
-  way, such as a worktree, starts the run itself with `local-review.sh start <checkout>`. A new
-  head on the same branch restarts its run. No run starts on a default branch, while `local-review.sh off` holds, or when
-  the model is not pulled. One run works at a time and the next waits for it; a run also waits,
-  up to an hour, until enough memory is free to load the model.
+- A run starts only when the user says so, such as "local review" or "run the local model": the
+  session then runs `local-review.sh start <checkout>` in the checkout that holds the branch.
+  `local-review.sh off` holds, so the `PostToolUse` hook `~/.claude/hooks/local-review-start.sh`,
+  which calls `start --auto` after `gh pr create`, `gh pr checkout`, `git push` and a `git switch`
+  onto a branch with an open pull request, starts nothing, and no session turns it on or starts a
+  run unasked. No run starts on a default branch or when the model is not pulled. One run works at
+  a time and the next waits for it; a run also waits, up to an hour, until enough memory is free to
+  load the model.
 - A run goes on in the background across turns until it finishes or is stopped. It starts
   `ollama serve` when no server is up, and unloads the model and stops that server once no run is
   left.
@@ -57,6 +57,6 @@ description: A local model in Ollama that reviews a branch in the background whi
   many of its files and passes, how many held, and each one that held with its viewpoint, and names
   the entries under `unreviewed`, a file and a viewpoint that got no readable answer from the
   model, as not reviewed.
-- When the user says local review off, run `local-review.sh off`: no run starts by itself until
-  `local-review.sh on`, and a run already working goes on until it is stopped. Local review on runs
-  `local-review.sh on`.
+- Only the user's words turn the hook on or off: local review on runs `local-review.sh on`, after
+  which the hook starts runs again, and local review off runs `local-review.sh off`. A run already
+  working goes on until it is stopped.

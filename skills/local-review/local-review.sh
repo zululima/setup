@@ -5,12 +5,13 @@
 # request is made or reviewed. Its findings go to a JSON lines file that Claude
 # reads and checks once the user stops the run or it has gone through the list.
 #
-#   local-review.sh start [dir]     review the branch of dir against its base
+#   local-review.sh start [--auto] [dir]  review the branch of dir against its base;
+#                                   --auto, as the hook starts it, skips while off
 #   local-review.sh stop [dir]      stop the run of dir's branch, else the one running
 #   local-review.sh status          list the runs
 #   local-review.sh findings [dir]  print a run's findings as JSON
 #   local-review.sh wait [dir]      return once the run of dir's branch has ended
-#   local-review.sh off | on       turn the automatic starts off or back on
+#   local-review.sh off | on       turn the hook's automatic starts off or back on
 #
 # LOCAL_REVIEW_MODEL, LOCAL_REVIEW_CTX (tokens) and LOCAL_REVIEW_NEED_GB (free
 # memory a cold start waits for) override the defaults below. Ollama's own
@@ -110,9 +111,10 @@ release() {
 }
 
 cmd_start() {
-  local top dir head default branch
+  local top dir head default branch auto=0
+  [ "${1:-}" = --auto ] && { auto=1; shift; }
   top="$(repo_top "${1:-.}")" || die "not in a git repository: ${1:-.}"
-  [ -e "$state/off" ] && { echo "off: automatic local reviews are turned off"; return 0; }
+  [ "$auto" -eq 1 ] && [ -e "$state/off" ] && { echo "off: automatic local reviews are turned off"; return 0; }
   command -v ollama > /dev/null || { echo "skipped: ollama is not installed"; return 0; }
   model_pulled || { echo "skipped: $model is not pulled"; return 0; }
   branch="$(branch_of "$top")"
@@ -432,7 +434,7 @@ cmd_worker() {
 }
 
 case "${1:-}" in
-  start) cmd_start "${2:-.}" ;;
+  start) shift; cmd_start "$@" ;;
   stop) cmd_stop "${2:-.}" ;;
   status) cmd_status ;;
   findings) cmd_findings "${2:-.}" ;;

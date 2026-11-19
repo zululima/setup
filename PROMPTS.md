@@ -6,9 +6,18 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## overload: pause and resume from the menu bar
+## local-review: start a run only when the user asks
 
 2026-11-19, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**7.**
+> only start local model checking when i say so and you should ask
+> question afterward when to stop with cmd enter. [an ask about a
+> downstream project left out]
+
+## overload: pause and resume from the menu bar
+
+2026-11-19, commit [4535e9e](https://github.com/zululima/setup/commit/4535e9e3f16c63cbb4a95763514d5eab3d9a87e9), model claude-opus-5-5, effort xhigh.
 
 **6.** (answer to: shall I add pause and resume to the overload menu?)
 > Yes, add them
