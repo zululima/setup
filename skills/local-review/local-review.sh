@@ -9,7 +9,8 @@
 #   local-review.sh stop [dir]      stop the run of dir's branch, else the one running
 #   local-review.sh status          list the runs
 #   local-review.sh findings [dir]  print a run's findings as JSON
-#   local-review.sh off | on        turn the automatic starts off or back on
+#   local-review.sh wait [dir]      return once the run of dir's branch has ended
+#   local-review.sh off | on       turn the automatic starts off or back on
 #
 # LOCAL_REVIEW_MODEL, LOCAL_REVIEW_CTX (tokens) and LOCAL_REVIEW_NEED_GB (free
 # memory a cold start waits for) override the defaults below. Ollama's own
@@ -175,11 +176,27 @@ pick_run() {
   return 1
 }
 
+run_line() {
+  echo "$(basename "$1"): $(field "$1" state), pass $(field "$1" pass) of $(field "$1" passes_total) ($(field "$1" viewpoint)), $(field "$1" files_done) of $(field "$1" files_total) files, $(field "$1" findings) findings"
+}
+
 cmd_stop() {
   local dir
   dir="$(pick_run "${1:-.}")" || { echo "no local review runs"; return 0; }
   stop_run "$dir"
-  echo "$(basename "$dir"): $(field "$dir" state), pass $(field "$dir" pass) of $(field "$dir" passes_total) ($(field "$dir" viewpoint)), $(field "$dir" files_done) of $(field "$dir" files_total) files, $(field "$dir" findings) findings"
+  run_line "$dir"
+}
+
+# Gives up after 3 hours, past a run's hour of waiting for memory. A new head
+# restarts the run in the same directory, so the wait goes on with it.
+cmd_wait() {
+  local dir i
+  dir="$(pick_run "${1:-.}")" || { echo "no local review runs"; return 0; }
+  for i in $(seq 1 720); do
+    [ "$(field "$dir" state)" = starting ] || alive "$(field "$dir" pid)" || break
+    sleep 15
+  done
+  run_line "$dir"
 }
 
 # The time a working run needs to finish its pass and all its passes: its own
@@ -419,8 +436,9 @@ case "${1:-}" in
   stop) cmd_stop "${2:-.}" ;;
   status) cmd_status ;;
   findings) cmd_findings "${2:-.}" ;;
+  wait) cmd_wait "${2:-.}" ;;
   off) touch "$state/off" && echo "automatic local reviews are off" ;;
   on) rm -f "$state/off" && echo "automatic local reviews are on" ;;
   worker) cmd_worker "$2" ;;
-  *) sed -n '3,11p' "$self" | sed 's/^# \{0,1\}//' ;;
+  *) sed -n '3,13p' "$self" | sed 's/^# \{0,1\}//' ;;
 esac

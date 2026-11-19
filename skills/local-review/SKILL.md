@@ -26,24 +26,24 @@ description: A local model in Ollama that reviews a branch in the background whi
   `ollama serve` when no server is up, and unloads the model and stops that server once no run is
   left.
 
-## The question at hand-over
+## Waiting at hand-over
 
-- While a run of the branch is working or done and its findings are unchecked, the reply that hands
-  over that branch's pull request, or the review page of a PR review, asks in its next-step box:
-  "Shall I stop the local review and check its findings?", with "Yes, check them" as its first
-  button, the one Cmd+Enter presses, however far the run got, and "Not yet" second. It is that
-  reply's one question: any other waits for the reply after its answer.
-- That reply says how far the run got, its pass and viewpoint, and how long it needs at least to
-  finish that pass and all of them, as `local-review.sh status` prints them, with the pace the time
-  rests on: the run's own seconds per file, or before its first file the last run's. A run still
-  waiting for memory says so, since no estimate covers that wait. A file with no readable answer
-  counts as not reviewed from that viewpoint.
-- After "Not yet" the run goes on, and each later reply on that branch asks again, as for any open
-  question.
+- No reply asks whether to stop the run or check its findings: the session waits for the run
+  itself. A turn that hands over a branch's pull request, or the review page of a PR review, while
+  the branch's run is working starts `local-review.sh wait` in the checkout with the Bash tool's
+  `run_in_background` and shows the tasks pane. The wait returns once the run has ended, and the
+  turn it wakes checks the findings as below. A run already done is checked before the reply that
+  hands over.
+- A reply that hands over while the run works says how far it got, its pass and viewpoint, and how
+  long it needs at least to finish that pass and all of them, as `local-review.sh status` prints
+  them, with the pace the time rests on: the run's own seconds per file, or before its first file
+  the last run's. A run still waiting for memory says so, since no estimate covers that wait. A
+  file with no readable answer counts as not reviewed from that viewpoint.
 
 ## Checking the findings
 
-- On a yes, or when the user says stop local review, run `local-review.sh stop` in the repository,
+- When the wait returns or the run is done, or when the user says stop local review, run
+  `local-review.sh stop` in the repository,
   then `local-review.sh findings`, which prints the run's status with its findings as
   `findings_list`, each with the file, the head it reviewed, the viewpoint, a line, a severity, the
   problem and why. Two viewpoints often find the same defect, which counts once.

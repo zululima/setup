@@ -262,9 +262,10 @@
   six viewpoints, from correctness and security to how the file fits the rest of the pull request,
   and stops after the last one. [`local-review-start.sh`](../hooks/local-review-start.sh) starts it
   when Claude opens or pushes a pull request or checks one out to review it, and when Claude hands
-  that pull request over it asks whether to stop the run and check what the model found. Claude
-  keeps only the findings the code shows, since a small model gets many wrong. It does nothing until
-  you install Ollama and pull `gpt-oss:20b`, which needs about 15 GB of free memory.
+  that pull request over it waits for the run in the background and then checks what the model
+  found, without asking you. Claude keeps only the findings the code shows, since a small model gets
+  many wrong. It does nothing until you install Ollama and pull `gpt-oss:20b`, which needs about 15
+  GB of free memory.
 - [`skills/mirror`](../skills/mirror/SKILL.md): how Claude keeps this copy and my own `~/.claude`
   the same, and what it must never publish here. Claude reads it only before it changes the setup,
   which keeps the rules every session reads shorter.

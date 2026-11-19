@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## local-review: wait for the run in the background instead of asking
+
+2026-11-19, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**26.**
+> cant you just put it to background task and then come back when its
+> ready
+
 ## archive-files: move a session's files back when it is unarchived
 
-2026-11-18, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+2026-11-18, commit [20f62d4](https://github.com/zululima/setup/commit/20f62d487fae2fac5be6e8d7afe82184d1d173f6), model claude-opus-5-5, effort xhigh.
 
 **20.**
 > could unarchive also restore the files to downloads etc
