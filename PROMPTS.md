@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## local-review: ask in the box to start a run and to stop it
+## Turn off the Hue lights when a dream run starts
 
 2026-11-19, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> dreaming should also close the hue lights. also start dreaming now
+
+## local-review: ask in the box to start a run and to stop it
+
+2026-11-19, commit [b08084c](https://github.com/zululima/setup/commit/b08084c3efdde44b8d547db0f4cf6e7390405524), model claude-opus-5-5, effort xhigh.
 
 **8.** (answer to: which question should end a turn about the local    review, a, ask to start, or b, ask to stop?)
 > a ask to start and then ask to stop

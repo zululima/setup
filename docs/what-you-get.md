@@ -285,9 +285,9 @@
 - [`workflows/dream.js`](../workflows/dream.js): type `/dream` when you stop for the day. Many
   agents read your recent sessions, your setup and the Mac's own power log, which shows what drained
   the battery, and come back with suggested changes, each with a ready script, and scheduled tasks
-  worth setting up, each asked about before it is created. It changes nothing by itself and stops
-  before your usage limits, and in the chat it says only how much of them it used. Type `/dream
-  review` in a new session to read its report and go through the changes. When
+  worth setting up, each asked about before it is created. It changes nothing in your setup by
+  itself and stops before your usage limits, and in the chat it says only how much of them it used.
+  Type `/dream review` in a new session to read its report and go through the changes. When
   `~/.claude/dream/evals-checkout.txt` names a copy of this repository, the review also reruns the
   [evals](evals.md) and publishes their numbers. When you keep a glossary at
   `~/.claude/rules/finnish-terms.md`, with a list headed "Use the Finnish word" and one headed "Keep
@@ -296,7 +296,9 @@
   decides the word, and a term with neither keeps its English one. Started with `unattended: true`,
   as a timer on a computer nobody sits at would, it stops before it reads anything when it cannot
   see your limits. When two computers share `~/.claude`, only one run goes at a time, and each run
-  estimates from the earlier runs of its own computer, since their plans may differ.
+  estimates from the earlier runs of its own computer, since their plans may differ. When
+  `~/.config/hue-strip/env` holds a Philips Hue bridge's address and app key as `HUE_BRIDGE` and
+  `HUE_KEY`, a run, unlike a review, first turns off every light on that bridge.
 - [`agents/dream-worker.md`](../agents/dream-worker.md): a lighter agent for `/dream`, so it uses
   fewer tokens.
 

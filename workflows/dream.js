@@ -3,7 +3,7 @@ export const meta = {
   description: 'Review Claude Code use since the last run in idle time, carry open proposals forward, and propose changes to the global setup',
   whenToUse: 'In idle time with tokens to spare: at the end of a day, overnight or over a weekend. Run bare, it picks its mode from the weekly reset; its options are in the comment under the meta block of ~/.claude/workflows/dream.js.',
   phases: [
-    { title: 'Scout', detail: 'time window, mode, due sources, transcripts, pull requests, backlog, usage and its history' },
+    { title: 'Scout', detail: 'Hue lights off, time window, mode, due sources, transcripts, pull requests, backlog, usage and its history' },
     { title: 'Recent', detail: 'tier 1: the window\'s transcripts newest first, config, GitHub reviews and battery use, merged and checked first' },
     { title: 'Weekly', detail: 'tier 2: rule effectiveness, token waste, harness, doctor, Anthropic, Hacker News, Finnish terms and skill repositories' },
     { title: 'Work', detail: 'tier 3: project audits, what derived projects should take over from their upstreams, reviews of open pull requests and, in a final run, a Monday brief' },
@@ -18,7 +18,9 @@ export const meta = {
 // it picks its mode from the weekly reset. Run it with review, or {review: true}, to skip the run,
 // see a short review of the latest report unless a review showed it already and go through the
 // open backlog; with {review: true, gm: true}, as the gm skill runs it, the short review comes, and
-// the evals rerun with none of their lines shown, only at the first gm after the weekly reset.
+// the evals rerun with none of their lines shown, only at the first gm after the weekly reset. A
+// run, unlike a review, first turns off every light on the Hue bridge that HUE_BRIDGE and HUE_KEY
+// in ~/.config/hue-strip/env name, on a machine that has that file.
 // Optional args: {mode:
 // "eve", "final", "night" or "day", workAt: "HH:MM" the user starts on the reset day (default
 // 08:00), keep: <5-hour windows an eve run keeps
@@ -380,7 +382,7 @@ const CLOCK = { type: 'object', required: ['now'], properties: { now: { type: 's
 
 // Agents read each other's prompt cache only when type and tools match, so all run as dream-worker.
 let watching = false
-const PRE_USAGE = { ...USAGE, required: [...USAGE.required, 'utcOffset', 'machine', 'running', 'historyLines', 'weekLines'], properties: { ...USAGE.properties, utcOffset: { type: 'string' }, machine: { type: 'string' }, running: { type: 'string', description: 'The line the marker command printed, or an empty string' }, historyLines: { type: 'array', items: { type: 'string' } }, weekLines: { type: 'array', items: { type: 'string' } } } }
+const PRE_USAGE = { ...USAGE, required: [...USAGE.required, 'utcOffset', 'machine', 'running', 'historyLines', 'weekLines', 'lights'], properties: { ...USAGE.properties, lights: { type: 'string', description: 'What the Hue command printed' }, utcOffset: { type: 'string' }, machine: { type: 'string' }, running: { type: 'string', description: 'The line the marker command printed, or an empty string' }, historyLines: { type: 'array', items: { type: 'string' } }, weekLines: { type: 'array', items: { type: 'string' } } } }
 
 // The harness puts the prompt of the session that started the run above every agent's task as the user's request, and an agent once took a spawner's prompt about prompt files for its own job.
 const STEP = 'This task is one step of the dream run that the request relayed above started, itself or through a prompt file it names. The session that started the run carries out the rest of that request, such as reading, reporting on and moving prompt files, so do only the task below and return its result.'
@@ -525,8 +527,13 @@ function eveReserve(resetFirst, runs, weekLines, isMine) {
 const READ_MARKER = `jq -c 'select(now - .aliveEpoch < ${MARKER_MINUTES * 60})' ${MARKER_FILE} 2>/dev/null`
 // The whole history file runs to over 100 KB, more than a cheap agent can return verbatim, and the reserve needs only each run's machine and ledger.
 const READ_LEDGERS = `jq -c 'select(.ledger) | {machine, ledger}' ${HISTORY_FILE} 2>/dev/null`
+// Group 0 is every light on the bridge, and only the machine that holds the bridge's app key has the env file.
+const LIGHTS_OFF = `if [ -r ~/.config/hue-strip/env ]; then . ~/.config/hue-strip/env; curl -s -m 5 -X PUT "http://$HUE_BRIDGE/api/$HUE_KEY/groups/0/action" -d '{"on":false}' || echo "the bridge $HUE_BRIDGE did not answer"; else echo 'no Hue bridge set up on this machine'; fi`
 phase('Scout')
-const pre = await dreamAgent(`${READ_USAGE} Then run date +%z and return it as utcOffset, and ${MACHINE_SH} and return it as machine. Then run ${READ_MARKER} and return the line it prints as running, or an empty string when it prints nothing. Then run ${READ_LEDGERS} and return each line it prints as historyLines, and run cat ${WEEKS_FILE} 2>/dev/null and return each line it prints as weekLines, both verbatim, in order, and an empty list when the command prints nothing.`, { label: 'usage before the scout', phase: 'Scout', model: 'haiku', effort: 'low', schema: PRE_USAGE })
+const pre = await dreamAgent(`First turn off the Hue lights: run this command as given and return what it prints as lights.
+${LIGHTS_OFF}
+${READ_USAGE} Then run date +%z and return it as utcOffset, and ${MACHINE_SH} and return it as machine. Then run ${READ_MARKER} and return the line it prints as running, or an empty string when it prints nothing. Then run ${READ_LEDGERS} and return each line it prints as historyLines, and run cat ${WEEKS_FILE} 2>/dev/null and return each line it prints as weekLines, both verbatim, in order, and an empty list when the command prints nothing.`, { label: 'usage before the scout', phase: 'Scout', model: 'haiku', effort: 'low', schema: PRE_USAGE })
+if (pre && pre.lights) log(`Hue lights off: ${pre.lights}`)
 const preShift = ms => new Date(ms + parseOffset(pre && pre.utcOffset)).toISOString()
 let going = null
 try { going = pre && pre.running ? (typeof pre.running === 'string' ? JSON.parse(pre.running) : pre.running) : null } catch (e) { going = null }
