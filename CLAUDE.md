@@ -50,6 +50,9 @@ apply to one repository belong in that repository's project memory.
 
 ## Pull requests
 
+- A session commits and pushes its finished work without asking, where the rules below send it: no
+  reply, next-step box or button asks whether to commit or push. A rule that asks before a push,
+  such as the `commit-messages` skill's on quoted prompts about people, still asks.
 - One draft PR per issue or feature the user asks to start, such as the next issue, each in a
   session of its own at top level, never one holding other work: an offer to start one is a
   next-step box question, as the models skill says, never a button to do it here. Every other change
@@ -193,16 +196,16 @@ apply to one repository belong in that repository's project memory.
   steps: each later reply asks it again, with its recommendation, until the user answers or
   declines. A reply that ends with steps the user carries out by hand has its next-step box ask
   whether they are done, with Done as its first button, which Cmd+Enter presses, never a recap
-  alone. A question about a step the session takes itself, such as a commit, push or release, names
-  the session as the one who takes it, as in "Shall I commit and ship?", and its answers, next-step
-  box buttons included, are the user's words to the session, such as "yes, go ahead" and "not yet",
-  never a bare action such as "Commit and ship" that reads as a task for the user. In the list of
-  steps it stands as a reply to give, such as "reply a or b to whether I commit and ship", after the
-  work the user does by hand. Turning a setting back off that the user turned on for the session's
-  work, such as Developer Mode on the Mac, is no step: the setting stays as the user left it. Nor is
-  sending a Slack draft, which stands only in the reply that gives the draft. Steps that come after
-  a long run whose own output will bury them, such as applying and committing what a dream run
-  proposes, wait for the reply that follows that run, and the list before it stops at the run.
+  alone. A question about a step the session takes itself, such as a release or a deploy, names the
+  session as the one who takes it, as in "Shall I release it?", and its answers, next-step box
+  buttons included, are the user's words to the session, such as "yes, go ahead" and "not yet",
+  never a bare action such as "Release it" that reads as a task for the user. In the list of steps
+  it stands as a reply to give, such as "reply a or b to whether I release it", after the work the
+  user does by hand. Turning a setting back off that the user turned on for the session's work, such
+  as Developer Mode on the Mac, is no step: the setting stays as the user left it. Nor is sending a
+  Slack draft, which stands only in the reply that gives the draft. Steps that come after a long run
+  whose own output will bury them, such as applying and committing what a dream run proposes, wait
+  for the reply that follows that run, and the list before it stops at the run.
 - When nothing is left for the user or the session to do, its PRs merged, closed or left to a
   reviewer who merges them, the closing reply says so and that the user can archive the session, in
   its text alone and not in the next-step box. A job the user takes up once a session offers it,
@@ -271,12 +274,6 @@ apply to one repository belong in that repository's project memory.
   app-scheme link, such as `vscode://`, included, since the app's side pane, where a click on either
   lands, opens only the session's folders and asks the user to add the folder instead, and the user
   adds none for this.
-- A project's CLAUDE.md holds what Claude runs, such as build, test, verify, install, launch and
-  logs, and the rules the code follows. One-time manual setup goes in a doc under `docs/` that
-  CLAUDE.md or AGENTS.md indexes. The README says what the project is, shows its parts and every way
-  to use or try it, and gives a newcomer a prompt to paste into Claude Code, in a `text` block, that
-  clones the repository and gets them started. GitHub strips `claude://` links, so none stands in
-  for it.
 - The user's public software, such as a repository or a store listing, takes AGPL-3.0-or-later for
   its code, in `LICENSE`, and CC BY-SA 4.0 for the rest, such as the README, docs and images, in
   `LICENSE-PROSE`, unless the user names another licence.

@@ -1,6 +1,6 @@
 ---
 name: pages
-description: Pages and documents read in a browser, such as an HTML page, a schedule, a README, a Markdown doc on GitHub or a PR's review page: where they go, the one-screen check at 1440x730, answers folded under questions and warnings of a known date. Load before making or changing such a page or document.
+description: Pages and documents read in a browser, such as an HTML page, a schedule, a project's README, CLAUDE.md or docs, a Markdown doc on GitHub or a PR's review page: where they go, the one-screen check at 1440x730, answers folded under questions and warnings of a known date. Load before making or changing such a page or document.
 ---
 
 # Pages
@@ -41,3 +41,9 @@ description: Pages and documents read in a browser, such as an HTML page, a sche
   question or list of every page that content reaches, as a `> [!WARNING]` alert on GitHub, never
   only as a sentence inside a step or an intro. A page held to one screen that the warning would
   push past it stays on one screen and names the date in a sentence of the step it concerns.
+- A project's CLAUDE.md holds what Claude runs, such as build, test, verify, install, launch and
+  logs, and the rules the code follows. One-time manual setup goes in a doc under `docs/` that
+  CLAUDE.md or AGENTS.md indexes. The README says what the project is, shows its parts and every way
+  to use or try it, and gives a newcomer a prompt to paste into Claude Code, in a `text` block, that
+  clones the repository and gets them started. GitHub strips `claude://` links, so none stands in
+  for it.

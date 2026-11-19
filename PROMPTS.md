@@ -6,9 +6,21 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## local-review: wait for the run in the background instead of asking
+## CLAUDE.md: commit and push finished work without asking
 
 2026-11-19, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**25.** (answer to: shall I commit these changes and push them to GitHub?)
+> always
+
+Reply: [a reply about another repository's commit left out]
+
+**27.** (answer to: should "always" hold in every repository?)
+> a, every repository
+
+## local-review: wait for the run in the background instead of asking
+
+2026-11-19, commit [ca5f966](https://github.com/zululima/setup/commit/ca5f966684d9bf8f9ca46640304a9f643ded8126), model claude-opus-5-5, effort xhigh.
 
 **26.**
 > cant you just put it to background task and then come back when its
