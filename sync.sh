@@ -244,6 +244,8 @@ mirrored=(
   overload/Info.plist
   pause/pause.sh
   pause/install.sh
+  dock-gap/install.sh
+  dock-gap/dock-gap-fix.swift
   mods/session-usage/.claude-plugin/plugin.json
   mods/session-usage/hooks/hooks.json
   mods/session-usage/hooks/register.ts

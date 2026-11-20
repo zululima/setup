@@ -6,9 +6,47 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Put the prompts behind an issue in its body
+## Share the Dock gap fix job
 
 2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**4.**
+> maybe sign it with the [employer] one? surely this is useful for
+> other workers as well
+
+Reply: Signing with [employer]'s certificate wouldn't help colleagues. Their copies get built and signed on their own Macs, so only sharing the source reaches them. Nothing is signed or shared yet, and the fix job runs ad hoc signed as before.
+
+**5.** (answer to: which certificate should sign your copy?)
+> [an answer about the certificate for the local copy left out]
+
+**6.**
+> [pasted: a step from the previous reply]
+>
+> what. undert system settigns?
+
+Reply: System Settings is now in front of the Claude window, on the Device Control and Data Access page. The signed fix job still lacks the Accessibility permission until the old dock-gap-fix entry is removed and granted again.
+
+**7.** (answer to: have you removed the old dock-gap-fix entry?)
+> Done
+
+Reply: The old dock-gap-fix entry is gone, and macOS listed the signed job again, switched off. System Settings is in front on Device Control and Data Access. The job grows the Claude window only once that switch is on.
+
+**8.** (answer to: is the dock-gap-fix switch on?)
+> Done
+
+Reply: The fix job is signed with [employer]'s certificate and has the Accessibility permission. A rebuild of changed code kept it. It will grow the Claude window back the next time the Dock gap clears, which hasn't happened since.
+
+**9.**
+> does the job live in .claude
+
+Reply: The fix job's program, source, installer and certificate name live in ~/.claude/dock-gap. Its login entry and log are under ~/Library. Nothing changed this turn, and whether to share the source is still open.
+
+**10.** (answer to: shall I share the fix job's source through the setup mirror?)
+> Yes, share it
+
+## Put the prompts behind an issue in its body
+
+2026-11-20, commit [992dacf](https://github.com/zululima/setup/commit/992dacf3f32c701eab6ccbda7bce4682c81b82fe), model claude-opus-5-5, effort xhigh.
 
 **2.** (answer to: shall I push the fixes and ask for a re-review?)
 > [an answer about a downstream project left out]

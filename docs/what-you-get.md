@@ -218,6 +218,19 @@
   ```zsh
   ~/.claude/pause/install.sh
   ```
+- [`dock-gap`](../dock-gap/dock-gap-fix.swift): for a Mac whose Dock hides automatically. On macOS
+  27.2.1 the hidden Dock's space can stay held, so maximized windows stop above the bottom of the
+  screen. A background job notices that, restarts the Dock and WindowManager until the space clears,
+  then grows Claude's window back, which stays short while other apps' windows grow back by
+  themselves. It logs each step to `~/Library/Logs/dock-gap-fix.log`. Growing the window needs the
+  Accessibility permission, called Device Control and Data Access in System Settings on macOS 27,
+  which macOS asks for when the job starts. [`install.sh`](../dock-gap/install.sh) builds it, signs
+  it and starts it at login, and again after a change:
+  ```zsh
+  ~/.claude/dock-gap/install.sh
+  ```
+  A file named `signing-identity` beside it, holding the name of one of your code signing
+  certificates, lets a rebuild keep the permission. Without it, each rebuild asks again.
 - [`skills/commit-messages`](../skills/commit-messages/SKILL.md): how Claude writes a commit
   message: the order of its parts, the prompts behind the change, and what it leaves out or redacts.
 - [`skills/pull-requests`](../skills/pull-requests/SKILL.md): how Claude writes a pull request: the
