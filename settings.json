@@ -433,6 +433,16 @@
             "timeout": 10
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 10,
+            "command": "\"$HOME/.claude/hooks/no-own-chrome.sh\""
+          }
+        ]
       }
     ],
     "Stop": [

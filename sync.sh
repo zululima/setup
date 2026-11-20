@@ -197,6 +197,7 @@ mirrored=(
   hooks/no-own-email-in-requests.sh
   hooks/no-secrets-in-commands.sh
   hooks/no-home-search.sh
+  hooks/no-own-chrome.sh
   hooks/prompt-log.sh
   hooks/memory-plain-characters.sh
   hooks/claude-md-memory-index.sh

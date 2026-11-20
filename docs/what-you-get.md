@@ -25,6 +25,9 @@
   issue, so a side change joins that PR.
 - [`no-home-search.sh`](../hooks/no-home-search.sh): stops searches of your whole disk, which make
   the Mac ask you for permission folder after folder.
+- [`no-own-chrome.sh`](../hooks/no-own-chrome.sh): stops Claude from starting a Chrome of its own,
+  headless or with another profile, to turn a page into a PDF or an image, and sends it to Claude in
+  Chrome in your own browser instead.
 - [`cd-fall-through.sh`](../hooks/cd-fall-through.sh): stops a command from carrying on in the wrong
   folder when moving to the right one failed.
 - [`no-foreground-wait.sh`](../hooks/no-foreground-wait.sh): stops Claude from checking over and

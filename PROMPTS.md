@@ -6,9 +6,29 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## pull-requests: drop an unchecked cause from the bind rule
+## Refuse a Chrome a session starts itself
 
 2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> [an ask about business cards for work left out]
+
+**2.**
+> [the same ask, narrowed to an employer, left out]
+
+Reply: [a reply about the card and a print shop left out] The hook that stops me starting my own Chrome isn't active until you run the settings script.
+
+**3.**
+> [an ask about the card's web address left out]
+
+Reply: [a reply about the card left out] The hook isn't committed yet: the settings.json entry is booked to another session, and auto mode won't let me clear that.
+
+**4.** (answer to: have you cleared the record so I can commit the hook?)
+> Done
+
+## pull-requests: drop an unchecked cause from the bind rule
+
+2026-11-20, commit [5c5c4ab](https://github.com/zululima/setup/commit/5c5c4ab81cce579a74e599a76ba4a213485f1d66), model claude-opus-5-5, effort xhigh.
 
 **1.** Quoted under [e0b60d4](https://github.com/zululima/setup/commit/e0b60d43131b0406061bcafc6e8d50d0cb861e22).
 
