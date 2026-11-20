@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Push straight to the default branch where the user is the sole contributor
+## Ask a new repository's visibility and source a document's claims
 
 2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**17.** (answer to: shall I add a rule to the pages skill that a README's claims need a source?)
+> yes add it also why is [one repository] private and [another] public
+
+## Push straight to the default branch where the user is the sole contributor
+
+2026-11-20, commit [f19961a](https://github.com/zululima/setup/commit/f19961a78f7e9db69e6822f4cda16e344285b55a), model claude-opus-5-5, effort xhigh.
 
 **16.**
 > always push directly to main when im the sole contributor

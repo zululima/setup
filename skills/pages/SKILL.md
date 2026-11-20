@@ -47,3 +47,7 @@ description: Pages and documents read in a browser, such as an HTML page, a sche
   to use or try it, and gives a newcomer a prompt to paste into Claude Code, in a `text` block, that
   clones the repository and gets them started. GitHub strips `claude://` links, so none stands in
   for it.
+- A page or document a session writes, such as a README, states as fact only what a source in the
+  session shows: the user's words, a log, the code, or the page of a project it names. A reason no
+  one gave stays out, and a claim about another project, such as whether it is still maintained, is
+  read from that project's own repository or page in the same turn.

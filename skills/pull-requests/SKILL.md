@@ -370,6 +370,10 @@ GitHub.
 
 ## The repository
 
+- A repository a session creates for the user gets the visibility the user named. When they named
+  none, the next-step box asks public or private before `gh repo create`, and says so when the owner
+  is an organisation whose `members_can_change_repo_visibility`, as `gh api orgs/<org>` gives it, is
+  false: there only an owner can change it later.
 - The user's own repositories on GitHub turn off Releases, Packages and Deployments in the About
   dialog in Claude in Chrome, each one the repository has none of, and carry a few short topics, a
   word each where one does, that fit one line of the sidebar. The description is as short as it
