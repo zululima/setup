@@ -6,9 +6,22 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Share the Dock gap fix job
+## Write every commit message in English
 
 2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**6.** Quoted under [05edd94](https://github.com/zululima/setup/commit/05edd941981f613960b92a145e40ebe69a66c5c2).
+
+**7.**
+> [an answer about a downstream project left out]
+
+**8.**
+> also git commit messages should be english though as to not confuse
+> our llms
+
+## Share the Dock gap fix job
+
+2026-11-20, commit [716ebef](https://github.com/zululima/setup/commit/716ebefa21c14fbbec3ff36558c3711c3d205567), model claude-opus-5-5, effort xhigh.
 
 **4.**
 > maybe sign it with the [employer] one? surely this is useful for

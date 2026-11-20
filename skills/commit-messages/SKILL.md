@@ -10,6 +10,10 @@ reaches a running one through the hook that the `mirror` skill describes.
 
 - Wrap every line of a commit message at 72 columns, the subject included. Neither GitHub nor
   `git log` reflows long lines, so they break the rendering.
+- Write every commit message in English, since agents read the history, a squash merge's subject
+  too where the PR title is in another language: the merge keeps the title's type and scope, gives
+  the description in English and sets it with `gh pr merge --squash --subject`. Only the quoted
+  prompts keep the user's own language.
 - The message proper comes first: the subject, a blank line, then a body that says what changed
   and why. The prompts follow after another blank line, never before the body. PR bodies are the
   other way round, as the `pull-requests` skill describes. Trailers, such as `Co-authored-by` and
