@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Ask a new repository's visibility and source a document's claims
+## pull-requests: a review session binds the PR it reviews
 
 2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> the pr it shows is wrong
+
+## Ask a new repository's visibility and source a document's claims
+
+2026-11-20, commit [514214f](https://github.com/zululima/setup/commit/514214ffd2feb261d3328fe77b8320394f2620b0), model claude-opus-5-5, effort xhigh.
 
 **17.** (answer to: shall I add a rule to the pages skill that a README's claims need a source?)
 > yes add it also why is [one repository] private and [another] public

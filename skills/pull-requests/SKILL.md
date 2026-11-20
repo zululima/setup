@@ -223,7 +223,11 @@ GitHub.
   change the review would make, for the author to commit.
 - A PR review switches the checkout to the PR's branch and leaves it there, runs the two command
   steps above itself, and checks the PR's manual steps against the screen. "Here" or "only" in a
-  review prompt limits where the reply goes, never what runs.
+  review prompt limits where the reply goes, never what runs. Right after the switch it binds the PR
+  under review with `bind_pr`, and before each reply it reads `get_status` from the `ccd_pr` tools
+  and unbinds with `unbind_pr` any other PR it reports, so the sidebar row shows the PR under
+  review: the app keeps a PR the session inherited from the checkout or from the session that
+  started it, such as the previous review's, and binds one whose address a command printed.
 - The steps the reader follows go on a review page, never into the reply, so they cannot drift from
   what the PR holds. Build it with `review-page/build.py` beside this skill, run in the checkout as
   `python3 -I ~/.claude/skills/pull-requests/review-page/build.py <owner/repo#n> --review
