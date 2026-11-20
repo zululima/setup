@@ -6,9 +6,25 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## hooks: verify-gate keeps a turn going until the checks pass
+
+2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> [pasted: the address of Relay, a coding agent harness] does this do
+> something my setup cant
+
+Reply: I compared Relay with your Claude Code setup. You already have most of what it does. The two parts you lack are a test gate that keeps a session working until the tests pass, and picking the better of two attempts at a task. Nothing was built or changed.
+
+**2.** (answer to: shall I build a Stop hook that blocks a session until the repo's verify command passes?)
+> yes build it but i dont understand how that works or benefits me
+> exlpain
+>
+> also check things you did not check
+
 ## dream: spread a small plan's work over its 5-hour windows
 
-2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-fable-5-2, effort xhigh.
+2026-11-20, commit [4cc8e89](https://github.com/zululima/setup/commit/4cc8e89cdb21179ceb6cb8018407248f6277620b), model claude-fable-5-2, effort xhigh.
 
 **2.**
 > dream review. [an ask about two lights left out] also 48%? it should

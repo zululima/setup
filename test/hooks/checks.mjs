@@ -1528,6 +1528,69 @@ esac`)
       }],
     ]
   }],
+
+  ['verify-gate.sh', run => {
+    const repo = path.join(home, 'gate-repo'), file = path.join(repo, 'app.txt'), runs = path.join(home, 'gate-runs')
+    const ok = path.join(repo, 'ok')
+    const count = () => fs.existsSync(runs) ? fs.readFileSync(runs, 'utf8').split('\n').filter(Boolean).length : 0
+    const edit = (session = 'g1') => run({ hook_event_name: 'PostToolUse', tool_name: 'Edit', tool_input: { file_path: file }, cwd: home, session_id: session })
+    const stop = (session = 'g1') => run({ hook_event_name: 'Stop', session_id: session, stop_hook_active: false, cwd: repo })
+    const change = text => write(file, `${text}\n`)
+    const verify = cmd => sh(`git -C ${q(repo)} config claude.verify ${q(cmd)}`)
+    const blocked = r => r.code === 0 && output(r).decision === 'block'
+    const noted = (r, text) => r.code === 0 && !output(r).decision && (output(r).systemMessage || '').includes(text)
+    return [
+      ['lets a turn through that changed no files', () => {
+        sh(`git init -q ${q(repo)} && printf 'ok\\n' >${q(path.join(repo, '.gitignore'))}`)
+        change('one'); sh(`git -C ${q(repo)} add -A && git -C ${q(repo)} commit -qm init`)
+        verify(`echo run >>${runs}; test -f ok`)
+        return quiet(stop())
+      }],
+      ['sends back a turn whose change fails the verify command', () => {
+        change('two'); edit()
+        const r = stop()
+        return blocked(r) && output(r).reason.includes('test -f ok') && output(r).reason.includes('try 1 of 3') && count() === 1
+      }],
+      ['lets the turn end when Claude stops again without a change', () => noted(stop(), 'still fails') && count() === 1],
+      ['lets a fixed tree through', () => { change('three'); edit(); write(ok, ''); return quiet(stop()) && count() === 2 }],
+      ['does not run a tree that already passed again', () => { edit('g2'); return quiet(stop('g2')) && count() === 2 }],
+      ['counts Claude\'s own run of the command as a pass', () => {
+        change('four')
+        const before = count()
+        const r = run({ hook_event_name: 'PostToolUse', tool_name: 'Bash', tool_input: { command: `(cd ${repo} && echo run >>${runs}; test -f ok)` }, cwd: home, session_id: 'g1' })
+        edit()
+        return r.code === 0 && quiet(stop()) && count() === before
+      }],
+      ['reads the files a Bash command changed from its bashEditDiff', () => {
+        fs.rmSync(ok); change('five')
+        run({ hook_event_name: 'PostToolUse', tool_name: 'Bash', tool_input: { command: 'sed -i s/x/y/ app.txt' }, tool_response: { bashEditDiff: { changedFiles: [file] } }, cwd: repo, session_id: 'g3' })
+        return blocked(stop('g3'))
+      }],
+      ['gives up after three tries in a row', () => {
+        const results = []
+        for (const text of ['six', 'seven', 'eight']) { change(text); edit('g3'); results.push(stop('g3')) }
+        const last = results.pop()
+        return results.every(blocked) && output(results[1]).reason.includes('try 3 of 3') && noted(last, 'after 3 tries')
+      }],
+      ['never sends a turn back for a command missing from PATH', () => {
+        verify('no-such-verify-command-here'); change('nine'); edit('g4')
+        return noted(stop('g4'), 'exit 127')
+      }],
+      ['leaves a tree alone when claude.verify is off', () => { verify('off'); change('ten'); edit('g5'); return quiet(stop('g5')) }],
+      ['leaves a tree with no verify command alone', () => {
+        sh(`git -C ${q(repo)} config --unset claude.verify`); change('eleven'); edit('g6')
+        return quiet(stop('g6'))
+      }],
+      ['picks npm run verify from package.json', () => {
+        const bin = path.join(home, 'gate-bin')
+        fs.chmodSync(write(path.join(bin, 'npm'), `#!/bin/sh\necho "$*" >>${runs}\nexit 1\n`), 0o755)
+        write(path.join(repo, 'package.json'), JSON.stringify({ scripts: { verify: 'true' } }))
+        change('twelve'); edit('g7')
+        const r = run({ hook_event_name: 'Stop', session_id: 'g7', stop_hook_active: false, cwd: repo }, { env: { PATH: `${bin}:${ENV.PATH}` } })
+        return blocked(r) && output(r).reason.includes('npm run verify') && fs.readFileSync(runs, 'utf8').includes('run verify')
+      }],
+    ]
+  }],
 ]
 
 const hooks = fs.readdirSync(HOOKS).filter(f => f.endsWith('.sh')).sort()

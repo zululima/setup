@@ -59,6 +59,11 @@
   it started before it finishes, so nothing keeps running and eating battery.
 - [`stop-unreachable-claim.sh`](../hooks/stop-unreachable-claim.sh): sends Claude back to try Claude
   in Chrome, where you are signed in, before it says a page or file is out of reach.
+- [`verify-gate.sh`](../hooks/verify-gate.sh): sends Claude back to fix its change when the
+  repository's verify command fails at the end of a turn, so "done" means the checks passed. It
+  reads the command from `git config claude.verify`, a `verify` script in `package.json` or a
+  `verify` target in the `Makefile`, runs it only after Claude changed files there, and gives up
+  after three tries or when Claude ends the turn again without a change.
 - [`stack-held-by-peer.sh`](../hooks/stack-held-by-peer.sh): stops one Claude window from stopping
   Docker containers that another window is using.
 

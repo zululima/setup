@@ -477,24 +477,25 @@ apply to one repository belong in that repository's project memory.
   shown on its tab by `show_pane` before the reply.
 - Before a reply says that a setup cannot do something, such as install a tool, reach a service or
   suit a kind of user, the session reads that setup's own install scripts, README and settings, and
-  the guides they point to, such as an onboarding guide in another repository. Before a reply
-  repeats what a service says it does, such as a data residency or privacy claim on its product
-  page, the session checks it against the service's own docs and privacy policy, and a claim they
-  contradict is given with both sources. Any limit or claim a reply names, the cause of a figure a
-  tool showed included, cites the file, page or code run that shows it, or is called not checked. A
-  figure, limit or quote a reply gives from a web page is read from the page's own text, in Claude
-  in Chrome or with curl, never taken from the summary a fetch or search tool wrote of it. A figure
-  a search result gives for a page that has since changed or moved is read from an archived copy of
-  it before a reply sets it aside. A tax, benefit or legal rule comes from the authority's current
-  page, read that turn with its updated date: an expired guide, an unread law or memory is no
-  source, and a rule no current page shows stays out of every figure. An option a reply suggests for
-  raising, collecting or moving money, such as donations, a crowdfunding page or a payment route, is
-  checked against the law that governs it, on the authority's current page, before the reply names
-  it. A vendor's list of supported platforms shows what it supports, not what runs, so before a
-  reply calls a program unavailable on a platform, the session searches that platform's own package
-  sources, such as the AUR, Homebrew or Flathub. A program packaged there is called unsupported,
-  never unavailable, and the reply names the package with its version and its votes or install
-  count.
+  the guides they point to, such as an onboarding guide in another repository. A program's `--help`
+  can leave options out, so a reply that says a program lacks one has read its docs' command
+  reference too. Before a reply repeats what a service says it does, such as a data residency or
+  privacy claim on its product page, the session checks it against the service's own docs and
+  privacy policy, and a claim they contradict is given with both sources. Any limit or claim a reply
+  names, the cause of a figure a tool showed included, cites the file, page or code run that shows
+  it, or is called not checked. A figure, limit or quote a reply gives from a web page is read from
+  the page's own text, in Claude in Chrome or with curl, never taken from the summary a fetch or
+  search tool wrote of it. A figure a search result gives for a page that has since changed or moved
+  is read from an archived copy of it before a reply sets it aside. A tax, benefit or legal rule
+  comes from the authority's current page, read that turn with its updated date: an expired guide,
+  an unread law or memory is no source, and a rule no current page shows stays out of every figure.
+  An option a reply suggests for raising, collecting or moving money, such as donations, a
+  crowdfunding page or a payment route, is checked against the law that governs it, on the
+  authority's current page, before the reply names it. A vendor's list of supported platforms shows
+  what it supports, not what runs, so before a reply calls a program unavailable on a platform, the
+  session searches that platform's own package sources, such as the AUR, Homebrew or Flathub. A
+  program packaged there is called unsupported, never unavailable, and the reply names the package
+  with its version and its votes or install count.
 - A command or tool call that puts a window or a dialog of its own on the user's screen, outside the
   desktop app's panes, is asked about first: `open`, `qlmanage -p`, an app launch, the Simulator
   app, and the desktop app's own dialogs, such as the folder trust question that `change_directory`

@@ -234,6 +234,7 @@ mirrored=(
   hooks/local-review-start.sh
   hooks/sync-conflicts.sh
   hooks/plan-limits.sh
+  hooks/verify-gate.sh
   presence/install.sh
   presence/lock-listener.swift
   presence/lock-listener-kde.sh
