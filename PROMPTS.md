@@ -6,9 +6,15 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Name the timers that start dream runs in dream.js's options
+## Keep symlinked project folders as one in dream's scripts and sandbox
 
 2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**2.** Quoted under [6f7fe95](https://github.com/zululima/setup/commit/6f7fe957235f9853ab5a2d896cdbef636fdab0c1).
+
+## Name the timers that start dream runs in dream.js's options
+
+2026-11-20, commit [4d233f9](https://github.com/zululima/setup/commit/4d233f91f7a7984ae65723814093f4296e4e14a3), model claude-opus-5-5, effort xhigh.
 
 **2.** Quoted under [6f7fe95](https://github.com/zululima/setup/commit/6f7fe957235f9853ab5a2d896cdbef636fdab0c1).
 
