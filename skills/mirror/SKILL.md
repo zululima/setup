@@ -148,23 +148,28 @@ run and its commit in the same turn.
 
 - Every push to the checkout is followed in the same turn by a pass over the user's open PRs, listed
   with `gh search prs --author @me --state open`. Each PR whose body carries a block the
-  `pull-requests` skill puts there, the configuration link or the prompts block, gets the link
-  pinned to the commit just pushed and the rest of the body brought into line with the rules as they
-  now stand, as far as the skill lets an edit of the body change it. The link pinned is the one to
-  the repository of the checkout's `origin` remote, or to that of a copy `sync-mirrors.txt` lists,
-  matched by owner and name and pinned to the commit the run pushed there, and it points at the copy
-  the `pull-requests` skill picks for the PR's repository, so a link in a PR whose repository's
-  owner also owns a copy's repository moves to that copy. A link to another owner's copy of the
-  repository stays as it is, hash included. A PR with neither block was written by hand and stays as
-  it is. Nothing is rebuilt from another session's context: what the new rules need beyond the body,
-  such as prompts, a verify run or new screenshots, is named in the reply under its PR, next to what
-  the edit changed. `sync.sh --commit` ends by pinning the links itself: in each open PR it points
-  every `<repository URL>/tree/<full hash>` link to the repository or a copy's repository at the
-  commit it just pushed there, prints `sync: re-pinned` with the PR's address for each body it
-  wrote, and lists the PRs whose body still links one of those repositories without that commit. The
-  pass pins by hand only a link on that list or one to the wrong copy, and builds no loop of its own
-  for the rest. Each `gh pr edit` of the pass prints the PR's address, and the app binds the session
-  to the last one it printed, which puts that PR on the session's sidebar row. So the pass ends with
+  `pull-requests` skill puts there, the configuration link or the prompts block, and whose link is
+  missing or pins a commit older than a change to a file a PR body follows, gets the link pinned to
+  the commit just pushed and the rest of the body brought into line with the rules as they now
+  stand, as far as the skill lets an edit of the body change it. Those files are `CLAUDE.md` and the
+  `pull-requests` and `commit-messages` skills: `git -C <checkout or copy> diff --quiet <pinned
+  hash> HEAD -- CLAUDE.md skills/pull-requests skills/commit-messages` exits 0 for a link that
+  stays, since the rules it names are the ones that now stand, so a push that changed only other
+  files, such as a workflow, edits no PR. The link pinned is the one to the repository of the
+  checkout's `origin` remote, or to that of a copy `sync-mirrors.txt` lists, matched by owner and
+  name and pinned to the commit the run pushed there, and it points at the copy the `pull-requests`
+  skill picks for the PR's repository, so a link in a PR whose repository's owner also owns a copy's
+  repository moves to that copy. A link to another owner's copy of the repository stays as it is,
+  hash included. A PR with neither block was written by hand and stays as it is. Nothing is rebuilt
+  from another session's context: what the new rules need beyond the body, such as prompts, a verify
+  run or new screenshots, is named in the reply under its PR, next to what the edit changed.
+  `sync.sh --commit` ends by pinning those links itself: in each open PR it points every
+  `<repository URL>/tree/<full hash>` link to the repository or a copy's repository at the commit it
+  just pushed there, unless that test exits 0 for it, prints `sync: re-pinned` with the PR's address
+  for each body it wrote, and lists the PRs whose link the test still sends to the pass. The pass
+  pins by hand only a link on that list or one to the wrong copy, and builds no loop of its own for
+  the rest. Each `gh pr edit` of the pass prints the PR's address, and the app binds the session to
+  the last one it printed, which puts that PR on the session's sidebar row. So the pass ends with
   `get_status` from the `ccd_pr` tools, and a PR it names that the session does not work on is
   unbound with `unbind_pr` before the reply.
 - When the user asked why a problem still shows in a teammate's work or setup, such as issues a

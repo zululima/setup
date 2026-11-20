@@ -91,6 +91,16 @@ function ahead(s, local, commits = [pulled]) {
 
 const suites = [
   ['sync.sh --commit and an open PR that links the checkout at an older commit', () => [
+    ['leaves a link whose commit has the rules of the commit just pushed, so a push of other files edits no PR', () => {
+      const s = scene(), stub = path.join(home, `gh-${scenes}`), old = git(s, 'rev-parse HEAD')
+      write(path.join(stub, 'body'), `A change.\n\n\`\`\`\n${s.remote.replace(/\.git$/, '')}/tree/${old}/me\n\`\`\`\n`)
+      write(path.join(stub, 'gh'), '#!/bin/sh\nd="$(dirname "$0")"\ncase "$1 $2" in\n  "search prs") echo https://github.invalid/o/r/pull/1 ;;\n  "pr view") cat "$d/body" ;;\n  "pr edit") cat > "$d/edited" ;;\nesac\n')
+      fs.chmodSync(path.join(stub, 'gh'), 0o755)
+      fs.appendFileSync(path.join(s.checkout, 'README.md'), '\nA line a session added.\n')
+      const r = sync(s, ['--commit', write(path.join(home, 'message'), MESSAGE), 'README.md'], { PATH: `${stub}:${ENV.PATH}` })
+      return r.code === 0 && git(s, 'rev-parse HEAD', s.remote) !== old && !r.err.includes('re-pinned') &&
+        !fs.existsSync(path.join(stub, 'edited')) && !/pinned before a change/.test(r.out)
+    }],
     ['pins the link to the commit just pushed and writes the body back without the newlines gh adds', () => {
       const s = scene(), stub = path.join(home, `gh-${scenes}`), old = 'a'.repeat(40)
       const body = `A change.\n\n\`\`\`\n${s.remote.replace(/\.git$/, '')}/tree/${old}/me\n\`\`\`\n\nThe rest.`
@@ -99,7 +109,7 @@ const suites = [
       fs.chmodSync(path.join(stub, 'gh'), 0o755)
       arrives(s, change(base, { 6: ['- Rule 6 as a session rewrote it.'] }))
       const r = sync(s, ['--commit', write(path.join(home, 'message'), MESSAGE), FILE], { PATH: `${stub}:${ENV.PATH}` })
-      return r.code === 0 && r.err.includes('sync: re-pinned https://github.invalid/o/r/pull/1') && !/older commit/.test(r.out) &&
+      return r.code === 0 && r.err.includes('sync: re-pinned https://github.invalid/o/r/pull/1') && !/pinned before a change/.test(r.out) &&
         read(path.join(stub, 'edited')) === body.replace(old, git(s, 'rev-parse HEAD', s.remote))
     }],
   ]],

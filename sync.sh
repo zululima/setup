@@ -16,12 +16,13 @@
 #                      message gaining a line that names the commit here, then
 #                      point every <URL>/tree/<hash> link to this repository or
 #                      a mirror's in the open PRs of the gh user at the commit
-#                      just pushed there, and list the PRs whose body still
-#                      links one of them without that commit. Named paths of
-#                      which none but PROMPTS.md has a change stop the run
-#                      before the commit, and a message without the prompts
-#                      heading the commit-messages skill gives stops it before
-#                      the sync.
+#                      just pushed there when CLAUDE.md or the pull-requests or
+#                      commit-messages skill changed there since the commit it
+#                      pins, and list the PRs whose link still pins a commit
+#                      older than such a change. Named paths of which none but
+#                      PROMPTS.md has a change stop the run before the commit,
+#                      and a message without the prompts heading the
+#                      commit-messages skill gives stops it before the sync.
 #
 # Reconciling: a file the pull changed is installed locally, a file changed
 # only in the checkout, its local copy still as committed, is installed
@@ -1109,16 +1110,30 @@ elif [ -n "$message_file" ]; then
     https_url() { git -C "$1" remote get-url origin | sed -E 's#^git@([^:]+):#https://\1/#; s#\.git$##'; }
     repo_urls=("$(https_url .)")
     pins=("${repo_urls[0]}/tree/$(git rev-parse HEAD)")
+    repo_dirs=(.)
     for dir in ${mirror_dirs[@]+"${mirror_dirs[@]}"}; do
       url="$(https_url "$dir")" || continue
       repo_urls+=("$url")
+      repo_dirs+=("$dir")
       pins+=("$url/tree/$(git -C "$dir" rev-parse HEAD)")
     done
+    # Succeeds when body $1 links repo_urls[$2] at a commit whose CLAUDE.md and
+    # pull-requests and commit-messages skills are the same as at HEAD in
+    # repo_dirs[$2], so the rules the body was checked against still stand and
+    # its link stays as it is.
+    rules_stand() {
+      [[ "$1" =~ "${repo_urls[$2]}/tree/"([0-9a-f]{40}) ]] &&
+        git -C "${repo_dirs[$2]}" diff --quiet "${BASH_REMATCH[1]}" HEAD -- \
+          CLAUDE.md skills/pull-requests skills/commit-messages 2>/dev/null
+    }
     stale="$(gh search prs --author @me --state open --limit 100 --json url --jq '.[].url' |
       while IFS= read -r pr; do
         body="$(gh pr view "$pr" --json body --jq .body)" || continue
         new="$body"
         for i in "${!repo_urls[@]}"; do
+          if rules_stand "$new" "$i"; then
+            continue
+          fi
           url_re="$(printf '%s' "${repo_urls[$i]}" | LC_ALL=C sed 's/[][\.*^$#+?{}|]/\\&/g')"
           new="$(printf '%s\n' "$new" | LC_ALL=C sed -E "s#${url_re}/tree/[0-9a-f]{40}#${pins[$i]}#g")"
         done
@@ -1127,13 +1142,13 @@ elif [ -n "$message_file" ]; then
           body="$new"
         fi
         for i in "${!repo_urls[@]}"; do
-          if [[ "$body" == *"${repo_urls[$i]}/"* && "$body" != *"${pins[$i]}"* ]]; then
+          if [[ "$body" == *"${repo_urls[$i]}/"* && "$body" != *"${pins[$i]}"* ]] && ! rules_stand "$body" "$i"; then
             echo "  $pr"
             break
           fi
         done
       done)" || echo "sync: could not list the open PRs" >&2
-    [ -z "$stale" ] || printf 'sync: open PRs whose link pins an older commit\n%s\n' "$stale"
+    [ -z "$stale" ] || printf 'sync: open PRs pinned before a change to the rules a PR body follows\n%s\n' "$stale"
   fi
 fi
 exit "$failed"

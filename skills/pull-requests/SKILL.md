@@ -49,23 +49,23 @@ GitHub.
   refused for lack of permission. The board then shows who holds the work without a separate step.
 - The two blocks come straight after the closing line and above the rest of the template. They
   are a TL;DR for the reviewer.
-- First block: a fenced code block holding the URL of the public configuration repository
-  described under Public configuration repository in `~/.claude/CLAUDE.md`, pinned to a commit
-  as `<repository URL>/tree/<full hash>`, so teammates can read and copy the rules the body was
-  last checked against, not ones changed since. Take the repository URL at runtime from the
-  checkout's `origin` remote, with `git -C ~/Projects/setup remote get-url origin`, rewritten from
-  the SSH form to https and without the `.git` suffix, and the hash from `git -C ~/Projects/setup
-  ls-remote origin HEAD`, the commit GitHub serves as the default branch, never from memory or from
-  a local commit not pushed yet. A PR in a repository whose GitHub owner also owns the repository of
-  a copy that `sync-mirrors.txt` beside `sync.sh` lists links that copy instead, which the owner's
-  members can open with the files only the copies hold: `<its repository URL>/tree/<full
-  hash>/<directory>`, with the URL and hash taken the same way from the `origin` of the checkout
-  that holds the copy, and the directory from `git -C <copy> rev-parse --show-prefix`. Every edit of
-  the body takes the hash again, and every push to the repository edits each open PR that carries
-  the block, as Public configuration repository in `~/.claude/CLAUDE.md` says, so the block names
-  the commit current at the body's last edit. A code block and not a Markdown link: a link's visible
-  text can differ from where it goes, while a URL the reader pastes is one they see in the address
-  bar before they go.
+- First block: a fenced code block holding the URL of the public configuration repository described
+  under Public configuration repository in `~/.claude/CLAUDE.md`, pinned to a commit as `<repository
+  URL>/tree/<full hash>`, so teammates can read and copy the rules the body was last checked
+  against, not ones changed since. Take the repository URL at runtime from the checkout's `origin`
+  remote, with `git -C ~/Projects/setup remote get-url origin`, rewritten from the SSH form to https
+  and without the `.git` suffix, and the hash from `git -C ~/Projects/setup ls-remote origin HEAD`,
+  the commit GitHub serves as the default branch, never from memory or from a local commit not
+  pushed yet. A PR in a repository whose GitHub owner also owns the repository of a copy that
+  `sync-mirrors.txt` beside `sync.sh` lists links that copy instead, which the owner's members can
+  open with the files only the copies hold: `<its repository URL>/tree/<full hash>/<directory>`,
+  with the URL and hash taken the same way from the `origin` of the checkout that holds the copy,
+  and the directory from `git -C <copy> rev-parse --show-prefix`. Every edit of the body takes the
+  hash again, and a push to the repository edits each open PR that carries the block and pins a
+  commit older than a change to `CLAUDE.md`, this skill or the `commit-messages` skill, as the
+  `mirror` skill says, so the block names a commit that holds the rules the body was last checked
+  against. A code block and not a Markdown link: a link's visible text can differ from where it
+  goes, while a URL the reader pastes is one they see in the address bar before they go.
 - Second block: `<details><summary>Prompts behind this PR</summary>`. Its first line names the
   model and effort level the session ran with, for example `Model: claude-fable-5-1, effort:
   medium`. Take them, and the prompts under it, as the bullet on printing the prompts in the
