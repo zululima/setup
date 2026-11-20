@@ -88,7 +88,31 @@ const marker = JSON.stringify({ machine: 'desk', runId: '2026-10-14', started: '
 // Work the pool starts, as against readings, listings and the scout.
 const work = s => /^(transcripts|prompt feedback|config|github|battery)( |$)/.test(s.label)
 
+// The eve run of 19 Nov on the desktop's Pro plan: 15:56 local, the 5-hour limit at 5% until 20:50, the week at 35% until 07:00, no earlier run measured, and work that costs about nine times what it does on the Mac, where a full 5-hour window moves the week about 12.5 points.
+const nov19pro = { five: 5, fiveReset: '2026-11-19T18:50:00Z', week: 35, weekReset: '2026-11-20T05:00:00Z', now: '2026-11-19T13:56:00Z', since: '2026-11-14T10:24:00Z', utcOffset: '+0200', sessions: 125, history: [], costScale: 9, ratio: 8 }
+// The 5-hour windows in which a run started work, as against readings, listings and the scout.
+const workWindows = st => new Set(st.started.filter(s => !/^(usage|clock|timer|list|scout|record)( |$)/.test(s.label)).map(s => st.windows.findIndex(([a, b]) => a <= s.at && s.at < b)))
+const everyScript = r => r.plan.length > 0 && r.plan.every(p => p.endsWith(' runs'))
+// The ledger a run on that plan leaves, each kind at the given part of what it costs there.
+const proLedger = part => JSON.stringify({ date: '2026-11-19', time: '2026-11-19T13:58:35Z', model: 'claude-opus-5-5', effort: 'xhigh', sources: ['transcripts'], pending: [], ledger: Object.fromEntries(Object.entries({ gather: [3, 11.7], merge: [2, 9], verify: [4, 10.8], scripts: [4, 13.5], report: [1, 18] }).map(([kind, [units, cost]]) => [kind, { '5-hour limit': { units, delta: units * cost * part }, 'Weekly · all models': { units, delta: units * cost * part / 8 } }])) })
 const scenarios = [
+  ['eve on a small plan, the 5-hour window too small for a piece and the checks it keeps room for', nov19pro, [
+    ['waits for the 20:50 reset instead of dropping the work', st => waited(st)],
+    ['starts work in each of the three 5-hour windows left before the reset', st => workWindows(st).size === 3],
+    ['writes the script of every proposal it kept', (st, r) => everyScript(r)],
+    ['spends more than two full 5-hour windows of the week', st => st.maxWeek - 35 > 2 * 100 / 8],
+    ['no window the run touched is open at 08:00 Friday', st => !st.windows.some(([a, b]) => a <= Date.parse('2026-11-20T06:00:00Z') && Date.parse('2026-11-20T06:00:00Z') < b && st.lastUse >= a)],
+    ['last use before the reset', st => st.lastUse < Date.parse('2026-11-20T05:00:00Z')],
+    noHits,
+  ]],
+  ['eve on that plan a week later, the ledger of the first run half of what the work costs', { ...nov19pro, five: 0, fiveReset: '2026-11-26T12:00:00Z', weekReset: '2026-11-27T05:00:00Z', now: '2026-11-26T14:30:00Z', since: '2026-11-19T13:56:00Z', history: [proLedger(0.5)] }, [
+    ['waits for a 5-hour reset', st => waited(st)],
+    ['starts work in three 5-hour windows', st => workWindows(st).size === 3],
+    ['writes the script of every proposal it kept', (st, r) => everyScript(r)],
+    ['writes its report', (st, r) => Boolean(r.report)],
+    ['last use before the reset', st => st.lastUse < Date.parse('2026-11-27T05:00:00Z')],
+    noHits,
+  ]],
   ['eve, real numbers', { ...fri, week: 54, sessions: 48 }, [
     ['mode is eve', (st, r) => r.mode.startsWith('eve')],
     ['the session is told to show only the points the run used', (st, r) => /show in the chat only how many percentage points/.test(r.forTheSession) && /get_usage/.test(r.forTheSession) && !/give a short review of it/.test(r.forTheSession)],

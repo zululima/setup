@@ -16,7 +16,8 @@ export async function simulate(wf, sc) {
     now: Date.parse(sc.now), five: sc.five, fiveReset: Date.parse(sc.fiveReset), week: sc.week, weekReset: Date.parse(sc.weekReset),
     windowStart: Date.parse(sc.fiveReset) - 5 * H, windows: [], hits: 0, afterWeekReset: 0, maxWeek: sc.week, lastUse: 0, labels: {}, prompts: {}, started: [],
   }
-  const RATIO = 1 / 5.9
+  // A scenario can set how many 5-hour points move the weekly limit one point, and scale what every agent costs, as on a smaller plan.
+  const RATIO = 1 / (sc.ratio || 5.9)
   const timers = []
   const waiting = []
   let running = 0
@@ -113,6 +114,7 @@ export async function simulate(wf, sc) {
       minutes = (sc.minutes || {})[label] || (sc.minutes || {})[kind] || minutes
       if (/^scripts \d/.test(label)) { const n = (prompt.match(/"id":"p\d+"/g) || []).length; cost = 1.5 * n; minutes = 3 * n }
       if (o.model === 'haiku') cost = Math.min(cost, 0.1)
+      cost *= sc.costScale || 1
       // A usage reading told to wait until a time returns once that time has come, and a timer after nine minutes at most.
       const until = /^Wait until (\S+),/m.exec(prompt)
       const most = /nine minutes at most/.test(prompt) ? st.now + 9 * M : Infinity

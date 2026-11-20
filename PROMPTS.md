@@ -6,9 +6,41 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## dream: spread a small plan's work over its 5-hour windows
+
+2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-fable-5-2, effort xhigh.
+
+**2.**
+> dream review. [an ask about two lights left out] also 48%? it should
+> be 99% explain
+
+Reply: [a part about the lights left out] dream review applied all four proposals, committed and pushed. The week ended at 50%: this plan's 5-hour limit allowed about 70%, and a dream.js rule dropped the rest of the work. That scheduler is not fixed yet.
+
+**3.** (answer to: shall I fix the dream scheduler here so a run waits for each 5-hour reset?)
+> yes [a question about the phone app left out]
+
+Reply: The dream scheduler is not fixed. No version I tried passed all the dream simulation checks, so dream.js is back at the pushed version and all checks pass. The attempt is saved as a diff for a later session.
+
+**4.** (answer to: shall I start a new session on Fable 5.2 at xhigh effort to fix the dream scheduler? a was to start it now)
+> a
+
+Reply: The new session for the dream scheduler fix is still on Opus 5.5 at xhigh: this desktop's Pro account runs Fable 5.2 only on usage credits, which are off. It has not been given its task. The models skill is unchanged.
+
+**5.** (answer to: where should the dream scheduler fix run? a was on the Mac, on Fable 5.2 at xhigh)
+> a, on the Mac
+
+Reply: The dream scheduler fix waits for the Mac as the prompt file dreamfix in ~/Misc/claude-prompts/mac/, written to run on Fable 5.2 at xhigh. The idle desktop session for it was already archived. Nothing is fixed until you type dreamfix on the Mac.
+
+**1.**
+> dreamfix
+
+Reply: The dream scheduler fix now runs in its own session on Fable 5.2 at xhigh in ~/Projects/setup. That session got the dreamfix task and will commit, push and file the report in ~/Misc/claude-prompts/mac/done/.
+
+**1.** Quoted under [bf10a4b](https://github.com/zululima/setup/commit/bf10a4bd00289053cfb763c76c5632126deb38a9).
+
 ## models: no Fable 5.2 session on the Linux desktop
 
-2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+2026-11-20, commit [7236eb0](https://github.com/zululima/setup/commit/7236eb0807438f151becfb1dbe2eda533bf4749a), model claude-opus-5-5, effort xhigh.
 
 **3.** (answer to: shall I fix the dream scheduler here so a run waits for each 5-hour reset?)
 > yes also doesnt ios remote have question ui

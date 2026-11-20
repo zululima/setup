@@ -86,6 +86,8 @@ const MIN_VERIFY = 3
 const PROPOSALS_PER_GATHER = 2
 const MAX_UNCHECKED = 80
 const TASK_MINUTES = 30
+// The proposals one scripts step writes and tests.
+const PLAN_CHUNK = 8
 const TAIL_MINUTES = 45
 const STALE_MINUTES = 10
 // Measured: the scouts of 16 to 31 Oct took 2 to 11 minutes, and a new run starts work only once its scout is done.
@@ -712,8 +714,11 @@ const WAITS_FOR_FIVE = (MODE === 'final' && Number.isFinite(weeklyResetMs)) || (
 // No earlier run of this machine measured what work costs on its plan with this model, so the defaults may be several times too low.
 const UNMEASURED_RUN = !pastRuns.length
 const measured = kind => Boolean(ledger[kind] && Object.values(ledger[kind]).some(e => e.units))
-// In such a run the first work of each kind runs with nothing beside it, so the next reading measures it before more of it starts.
-const alone1 = t => UNMEASURED_RUN && Boolean(usage) && !measured(t.kind)
+// Set once work starts whose room for what it keeps lies in later 5-hour windows, as fitsSpread decides: the run spreads from then on.
+let spreading = false
+const known = kind => measured(kind) || pastRuns.some(r => r.ledger[kind] && Object.values(r.ledger[kind]).some(e => e.units))
+// In such a run the first work of each kind runs with nothing beside it, so the next reading measures it before more of it starts. A run that spreads does the same for a kind no earlier run measured either.
+const alone1 = t => (UNMEASURED_RUN || spreading) && Boolean(usage) && !known(t.kind)
 // Waiting readings that came back before their reset; after three the run drops blocked work as before instead of starting reading after reading.
 let earlyWakes = 0
 let fiveHourResets = 0
@@ -729,9 +734,8 @@ function binds(w) {
   return scout.model.toLowerCase().includes(perModel[1].trim().split(/\s+/)[0].toLowerCase())
 }
 
-function estimate(kind, label) {
-  const own = ledger[kind] && ledger[kind][label]
-  if (own && own.units) return Math.max(own.delta, 1) / own.units
+// What the earlier runs' ledgers give for a unit of a kind, 0 when they measured none.
+function pastEstimate(kind, label) {
   let units = 0
   let delta = 0
   for (const r of pastRuns) {
@@ -741,10 +745,32 @@ function estimate(kind, label) {
       delta += entry.delta
     }
   }
-  if (units) return Math.max(delta, 1) / units
-  // Until a kind is measured in such a run, it counts as the dearest kind measured so far.
-  if (UNMEASURED_RUN) {
-    const seen = Object.values(ledger).map(byLabel => byLabel[label]).filter(e => e && e.units).map(e => Math.max(e.delta, 1) / e.units)
+  return units ? Math.max(delta, 1) / units : 0
+}
+
+// How many times over the work this run has measured cost what those ledgers gave for it, never under 1: a run that spreads raises its estimates of the kinds it has not measured yet by as much.
+function drift(label) {
+  let got = 0
+  let expected = 0
+  for (const k in ledger) {
+    const own = ledger[k][label]
+    if (own && own.units) {
+      got += own.delta
+      expected += own.units * pastEstimate(k, label)
+    }
+  }
+  return expected ? Math.max(1, got / expected) : 1
+}
+
+function estimate(kind, label) {
+  const own = ledger[kind] && ledger[kind][label]
+  if (own && own.units) return Math.max(own.delta, 1) / own.units
+  const past = pastEstimate(kind, label)
+  if (past) return spreading ? past * drift(label) : past
+  // Until a kind is measured in such a run, it counts as the dearest kind measured so far. So does a kind no run has measured in a run that spreads, apart from the scripts where a check's cost is known.
+  if (UNMEASURED_RUN || (spreading && !(kind === 'scripts' && known('verify')))) {
+    // A kind whose default is above theirs, as a review's is, keeps that proportion to them.
+    const seen = Object.entries(ledger).map(([k, byLabel]) => [k, byLabel[label]]).filter(([, e]) => e && e.units).map(([k, e]) => (Math.max(e.delta, 1) / e.units) * Math.max(1, DEFAULT_COST[kind] / DEFAULT_COST[k]))
     if (seen.length) return Math.max(DEFAULT_COST[kind], ...seen)
   }
   // Writing and testing a proposal's script is about the work of checking it, which earlier runs did measure.
@@ -794,21 +820,30 @@ const SKIP = reason => ({ skipped: true, reason })
 const round1 = n => Math.round(n * 10) / 10
 const taskMs = kind => Math.max(TASK_MINUTES * 60000, longestMs[kind] || 0)
 
-function timeStop(kind, readAt = lastNowMs) {
+// A run that spreads works until its time runs out, so work other than the scripts also leaves the time to write them for the proposals checked by then: a task's time for each scripts step, and one more for the backlog written before them.
+const scriptsMs = kind => spreading && kind !== 'scripts' && kind !== 'report' ? (Math.ceil((scriptsOwed() + stillOpen.length + 1) / PLAN_CHUNK) + 1) * taskMs('scripts') : 0
+
+function timeStop(kind, readAt = lastNowMs, fiveResetsAt = NaN) {
   if (weeklyResetSeen) return 'the weekly limit reset during the run'
   const now = readAt + STALE_MINUTES * 60000
-  const finish = now + taskMs(kind) + TAIL_MINUTES * 60000
+  const finish = now + taskMs(kind) + scriptsMs(kind) + TAIL_MINUTES * 60000
   if (guardLost) return 'the usage limits can no longer be read and nobody watches the run'
   if ((MODE === 'final' || RESET_FIRST) && Number.isFinite(weeklyResetMs) && finish > weeklyResetMs) return 'the weekly reset is too close'
   if (MODE === 'eve' && Number.isFinite(workAtMs) && usage) {
     const five = usage.windows.find(w => /hour/i.test(w.label))
-    const resetsAt = five ? Date.parse(five.resetsAt) : NaN
+    const resetsAt = Number.isFinite(fiveResetsAt) ? fiveResetsAt : five ? Date.parse(five.resetsAt) : NaN
     if (Number.isFinite(resetsAt)) {
       if (resetsAt > workAtMs) return `the 5-hour window would still be open at ${WORK_AT}`
       if (resetsAt + 5 * 3600 * 1000 > workAtMs && finish > resetsAt) return `the next 5-hour window would still be open at ${WORK_AT}`
     }
   }
   return null
+}
+
+// The proposals whose check is under way or done, each with a script still to write.
+let checkedKept = 0
+function scriptsOwed(t) {
+  return checkedKept + inFlight.filter(x => x !== t && x.scripted).length
 }
 
 // Verification that earlier tiers will need once merged, so later tiers do not spend it first.
@@ -818,26 +853,66 @@ function unmergedVerifyNeed(rank) {
   return n
 }
 
-function fits(t, card = usage) {
+const FIVE_HOURS = 5 * 3600 * 1000
+// The 5-hour windows after the one that resets at the given time in which a run that waits for those resets could still start work of a kind. Each opens a little after the one before it resets, since the reading that waited for the reset is its first use.
+function windowsAfter(resetsAt, kind) {
+  if (!WAITS_FOR_FIVE || earlyWakes >= 3 || !Number.isFinite(resetsAt)) return 0
+  let n = 0
+  for (let opens = resetsAt; n < 48 && !timeStop(kind, opens, opens + FIVE_HOURS); opens += FIVE_HOURS + 2 * 60000) n++
+  return n
+}
+
+const poolOf = t => Math.min(queue.length, Math.max(1, Math.floor(POOL / t.slots)))
+// On a small plan a pool of the work, with what it keeps room for, is more than even an emptied 5-hour window holds, so no reset would let it start. The room it keeps may then lie in the windows after this one that the run can still wait for, and the run spreads from there on. Later windows are then spoken for, so every piece also keeps room for the scripts of proposals already checked. And less is kept in each window to take up an estimate that runs over, so each window has to hold the work in it and the report, which is written at once when the limits can no longer be read, both counted half again.
+const OVERRUN = 1.5
+function fitsSpread(t, w, reserve, need, one, free, held) {
+  const emptied = 100 - FIVE_HOUR_MARGIN
+  const cost = kind => estimate(kind, w.label)
+  const report = (reserve.report || 0) * cost('report')
+  // Until the run spreads, fits leaves out the scripts of proposals already checked.
+  const owed = spreading || t.kind === 'scripts' || t.kind === 'report' ? 0 : scriptsOwed(t) * cost('scripts')
+  // The scripts step and the report have to fit the same way when their turn comes, so the room kept for them counts half again too.
+  const kept = held + owed + (OVERRUN - 1) * ((reserve.scripts || 0) * cost('scripts') + owed + report)
+  if (spreading && SAFETY * need + kept <= free && OVERRUN * (need + report) <= free) return true
+  // A pool of it that an emptied window holds the same way waits for that window instead.
+  const pool = t.units * poolOf(t) * cost(t.kind)
+  if (spreading ? SAFETY * pool + kept <= emptied && OVERRUN * (pool + report) <= emptied : SAFETY * pool + held <= emptied) return false
+  // Work of a kind this run has not measured yet, whose cost may be several times the estimate, starts by this rule only with nothing beside it.
+  if (!measured(t.kind) && one > t.units * cost(t.kind) + 1e-9) return false
+  const later = windowsAfter(Date.parse(w.resetsAt), t.kind)
+  if (!later || OVERRUN * (one + report) > free || SAFETY * one + kept > free + later * emptied) return false
+  if (!spreading) log(`A 5-hour window is too small for the work and the checks and scripts it keeps room for, so the run spreads them over the ${later + 1} windows it can still use`)
+  spreading = true
+  return true
+}
+
+// With expected false, the checks that tiers not yet merged are expected to need are left out, to tell work that only they block. A batch above 1 asks whether that many such pieces fit with what they keep room for.
+function fits(t, card = usage, expected = true, batch = 1) {
   if (!card) return true
   const reserve = { ...t.reserve }
-  reserve.verify = (reserve.verify || 0) + unmergedVerifyNeed(t.rank)
+  reserve.verify = (reserve.verify || 0) + (expected ? unmergedVerifyNeed(t.rank) : 0)
   // A gather keeps back the checks of what its own tier is expected to find, so reading never uses up the usage checking needs.
   if (t.kind === 'gather' && tierState[t.tier]) reserve.verify += Math.min(MAX_PROPOSALS, Math.max(MIN_VERIFY, PROPOSALS_PER_GATHER * (tierState[t.tier].started + 1)))
   // Every proposal checked, and every one still open, needs its script written and tested at the end.
-  if (t.kind !== 'scripts') reserve.scripts = (reserve.scripts || 0) + reserve.verify + (t.kind === 'verify' ? 1 : 0) + stillOpen.length
+  if (t.kind !== 'scripts' && t.kind !== 'report') reserve.scripts = (reserve.scripts || 0) + reserve.verify + (t.kind === 'verify' ? 1 : 0) + stillOpen.length + (spreading ? scriptsOwed(t) : 0)
   for (const w of card.windows) {
     if (!binds(w)) continue
-    let room = 100 - w.percentUsed - (/hour/i.test(w.label) ? FIVE_HOUR_MARGIN : MARGIN + RESERVE)
+    const five = /hour/i.test(w.label)
+    const free = 100 - w.percentUsed - (five ? FIVE_HOUR_MARGIN : MARGIN + RESERVE)
+    let room = free
     for (const r in reserve) room -= reserve[r] * estimate(r, w.label)
     // Work that finished after the last reading has not reached the card yet, nor has work the reading in progress measures.
-    let need = inFlight.concat([t]).reduce((sum, x) => sum + x.units * estimate(x.kind, w.label), 0)
+    let need = inFlight.concat([{ ...t, units: t.units * batch }]).reduce((sum, x) => sum + x.units * estimate(x.kind, w.label), 0)
     for (const k in doneUnits) need += doneUnits[k] * estimate(k, w.label)
     for (const k in readingUnits) need += readingUnits[k] * estimate(k, w.label)
     need += outsideRunning * estimate('merge', w.label)
     // A check the run stopped waiting for runs on and spends.
     need += abandoned * estimate('verify', w.label)
-    if (SAFETY * need > room) {
+    // The report keeps no room for anything after it, so it counts half again where an agent can fail, and no weekly limit holds it back.
+    const blocked = t.kind === 'report' ? five && OVERRUN * need > free
+      : five && (spreading || SAFETY * need > room) ? !fitsSpread(t, w, reserve, need, need - (batch - 1) * t.units * estimate(t.kind, w.label), free, free - room)
+      : SAFETY * need > room
+    if (blocked) {
       blockedBy = w
       return false
     }
@@ -862,7 +937,7 @@ function pump() {
   while (queue.length) {
     const t = queue[0]
     if (inFlight.length && (alone1(t) || inFlight.some(alone1) || inFlight.reduce((s, x) => s + x.slots, 0) + t.slots > POOL)) break
-    const stop = timeStop(t.kind)
+    const stop = t.must ? null : timeStop(t.kind)
     if (stop) {
       queue.shift()
       drop(t, stop)
@@ -880,13 +955,24 @@ function pump() {
       }
       const byFive = Boolean(blockedBy && /hour/i.test(blockedBy.label))
       const reopens = byFive ? Date.parse(blockedBy.resetsAt) : NaN
-      // Work waits for the reset only when it can still finish before the mode stops starting work and a pool of it fits the emptied window with its reserves; when the reserves alone block it, dropping it lets the checks they keep room for start now.
-      const emptied = { ...usage, windows: usage.windows.map(w => /hour/i.test(w.label) ? { ...w, percentUsed: 0 } : w) }
-      const batch = Math.min(queue.length, Math.max(1, Math.floor(POOL / t.slots)))
-      if (WAITS_FOR_FIVE && earlyWakes < 3 && reopens > lastNowMs && !timeStop(t.kind, reopens) && fits({ ...t, units: t.units * batch }, emptied)) {
+      // Work waits for the reset only when it can still finish before the mode stops starting work and a pool of it fits the emptied window with its reserves, or with them in the windows after that one on a plan too small for that; when the reserves alone block it, dropping it lets the checks they keep room for start now.
+      const waits = WAITS_FOR_FIVE && earlyWakes < 3 && reopens > lastNowMs && !timeStop(t.kind, reopens)
+      const emptied = waits && { ...usage, windows: usage.windows.map(w => /hour/i.test(w.label) ? { ...w, percentUsed: 0, resetsAt: new Date(reopens + FIVE_HOURS).toISOString() } : w) }
+      if (waits && fits(t, emptied, true, poolOf(t))) {
         log(`The 5-hour limit is full until ${localTime(reopens)}, so ${queue.length} pieces of work wait for its reset`)
         measure(reopens)
         return
+      }
+      // The report is written whatever the limits say.
+      if (t.must) {
+        queue.shift()
+        start(t)
+        continue
+      }
+      // In a run that spreads, work that only the checks expected of a tier not yet merged block waits for the merge instead, which tells how many checks there are.
+      if (spreading && unmergedVerifyNeed(t.rank) && (fits(t, usage, false) || (waits && fits(t, emptied, false, poolOf(t))))) {
+        stalled = true
+        break
       }
       queue.shift()
       if (byFive) fiveBlockedReset = reopens
@@ -1605,6 +1691,13 @@ ${proposalText(p)}
 ${GROUND}`, { label: `fit ${tag(p)}`, phase: phaseName, schema: FIT_CHECK }),
 ]).then(([evidence, fit]) => ({ ...p, evidenceCheck: evidence, fit }))
 
+// A checked proposal that holds and is no habit gets a script.
+const holds = p => p.evidenceCheck && p.evidenceCheck.holds && p.fit && p.fit.verdict !== 'drop'
+const counted = p => {
+  if (p && holds(p) && p.kind !== 'habit') checkedKept++
+  return p
+}
+
 const merged = { proposals: [], updates: [], dropped: [] }
 const verified = []
 const unchecked = []
@@ -1665,7 +1758,8 @@ function verifyTier(n, proposals) {
     source: 'verify',
     reserve: { report: 1 },
     timed: true,
-    run: () => verifyOne(p, TIER_PHASE[n]),
+    scripted: true,
+    run: () => verifyOne(p, TIER_PHASE[n]).then(counted),
   }).then(r => {
     if (r && r.skipped) unchecked.push({ ...p, why: r.reason })
     else if (r) verified.push(r)
@@ -1721,7 +1815,12 @@ function addTier(n, listOrPromise) {
   const outs = Array.isArray(listOrPromise) ? gatherTier(n, listOrPromise) : listOrPromise.then(list => gatherTier(n, list))
   const mergedHere = Promise.all([outs, mergeChain]).then(([o]) => mergeTier(n, o))
   mergeChain = mergedHere
-  tierRuns.push(mergedHere.then(ps => verifyTier(n, ps)))
+  // Work held for this merge starts again here, also when the merge had nothing to merge and so started no agent.
+  tierRuns.push(mergedHere.then(ps => {
+    const checks = verifyTier(n, ps)
+    pump()
+    return checks
+  }))
 }
 
 // Proposals an earlier run found but had no usage to check come before anything new.
@@ -1735,7 +1834,8 @@ tierRuns.push(...carriedUnchecked.map(p => submit({
   source: 'verify',
   reserve: { report: 1 },
   timed: true,
-  run: () => verifyOne(p, 'Recent'),
+  scripted: true,
+  run: () => verifyOne(p, 'Recent').then(counted),
 }).then(r => {
   if (r && r.skipped) unchecked.push({ ...p, why: r.reason })
   else if (r) verified.push(r)
@@ -1812,7 +1912,6 @@ for (const slice of deepSlices) {
 }
 if (DEEP && deepSlices.length) log(deepBack ? `Weekend: the deeper pass read back to ${deepBack.slice(0, 10)}` : 'Weekend: the deeper pass read nothing, for lack of usage or time')
 
-const holds = p => p.evidenceCheck && p.evidenceCheck.holds && p.fit && p.fit.verdict !== 'drop'
 const kept = verified.filter(holds)
 const rejectReason = p => !p.evidenceCheck ? 'the evidence check returned nothing'
   : !p.evidenceCheck.holds ? `evidence did not hold: ${p.evidenceCheck.notes}`
@@ -1975,12 +2074,23 @@ const ordered = openItems
   .map((item, index) => ({ item, index }))
   .sort((a, b) => (IMPACT_ORDER[a.item.impact] ?? 3) - (IMPACT_ORDER[b.item.impact] ?? 3) || a.index - b.index)
   .map(({ item }, n) => ({ ...item, pid: `p${n + 1}` }))
-const PLAN_CHUNK = 8
+// In a run that spreads, a step takes as many proposals as the limits hold now with the report after them, or as an emptied 5-hour window holds when not one fits now.
+function scriptsAtOnce(left) {
+  const most = Math.min(PLAN_CHUNK, left)
+  if (!spreading || !usage) return most
+  const emptied = { ...usage, windows: usage.windows.map(w => /hour/i.test(w.label) ? { ...w, percentUsed: 0 } : w) }
+  for (const card of [usage, emptied]) for (let n = most; n >= 1; n--) if (fits({ kind: 'scripts', units: n, slots: 1, rank: 0, reserve: { report: 1 } }, card)) return n
+  return most
+}
 const steps = []
-for (let c = 0; c < ordered.length; c += PLAN_CHUNK) {
-  const chunk = ordered.slice(c, c + PLAN_CHUNK)
+for (let c = 0, step = 1; c < ordered.length; step++) {
+  // A step is sized and timed from a fresh reading: the one that measures the step before it, or a new one after the backlog was written.
+  if (spreading && usage && !measuring) measure()
+  while (spreading && measuring) await measuring
+  const chunk = ordered.slice(c, c + scriptsAtOnce(ordered.length - c))
+  c += chunk.length
   const earlier = steps.filter(s => s.status === 'runs' && s.file).map(s => s.file)
-  const label = `scripts ${c / PLAN_CHUNK + 1}/${Math.ceil(ordered.length / PLAN_CHUNK)}`
+  const label = `scripts ${step}/${step + Math.ceil((ordered.length - c) / PLAN_CHUNK)}`
   const result = await submit({
     rank: 0,
     tier: 0,
@@ -2030,7 +2140,8 @@ const pace = Number.isFinite(perHour) ? {
   fitsAtThatPace: Number.isFinite(cutoffMs) ? (perHour * (cutoffMs - nowMs)) / 3600000 >= weeklyTarget - weeklyCard.percentUsed : null,
 } : null
 
-const report = await dreamAgent(`Write the report of a dream run for the user as Markdown to ${OUT}/${scout.runId}.md (expand ~, create the directory). This is the one file this step writes. The proposals' scripts are already in ${SCRIPTS_DIR}/.
+// The report waits for a 5-hour reset the run can still use when the window has no room for it, and is written whatever the limits say when there is none.
+const report = await submit({ rank: 0, tier: 0, kind: 'report', label: 'report', source: 'report', must: true, run: () => dreamAgent(`Write the report of a dream run for the user as Markdown to ${OUT}/${scout.runId}.md (expand ~, create the directory). This is the one file this step writes. The proposals' scripts are already in ${SCRIPTS_DIR}/.
 
 The user reads the report only in the chat, where the dream review shows all of it, so it has to read well there and stay short: at most about 2,500 characters, which the sections added after it bring to about 4,000, no scripts, no <details> blocks, nothing said twice, and no section that would only say there is nothing to report. Read the Prose section of ~/.claude/CLAUDE.md and the files in ~/.claude/rules/ first, and follow them. The file needs no "Prompt feedback" section.
 
@@ -2095,9 +2206,9 @@ Coverage notes:
 ${coverage.join('\n')}
 
 Return the path of the report and a summary of at most five lines.
-${GROUND}`, { label: 'report', phase: 'Report', schema: REPORT })
-doneUnits.report = (doneUnits.report || 0) + 1
-if (usage) await takeReading()
+${GROUND}`, { label: 'report', phase: 'Report', schema: REPORT }) })
+while (measuring) await measuring
+if (usage && completionsSinceRead) await takeReading()
 
 
 const ranSources = Object.keys(sourceDone).filter(s => sourceDone[s])
