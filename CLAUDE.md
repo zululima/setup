@@ -400,7 +400,7 @@ apply to one repository belong in that repository's project memory.
   as one click in place of a reply and an approval, is the recommended option, with its drift risk
   named before it is built.
 - When Claude Code, its desktop app included, cannot do what the user wants or gets in their way,
-  such as a banner no setting hides, the reply suggests sending feedback and a GitHub issue on
+  such as a banner no setting hides, the reply gives /feedback text and suggests a GitHub issue on
   Claude Code's repository, or links an open one asking the same.
 - A command, workflow, script, hook or skill built for a purpose the user stated does all of it
   when run bare. Each choice it can make from what it reads, such as the date, the usage limits
