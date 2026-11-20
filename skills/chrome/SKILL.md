@@ -49,6 +49,11 @@ description: Browser work in Claude in Chrome: starting the extension, reading b
   checked. A step that hands the user input to type in the browser names the button that saves it,
   and the session reads that page as it stands before its first navigate, reload or click away from
   it, saves what is still unsaved and leaves only once the input is saved.
+- A file that a member of another organisation posted in a shared channel, such as a Slack Connect
+  channel, lives in that organisation's workspace, which the connector's token cannot reach, so the
+  retry fails too and file search does not list it. Open such a file where the user is signed in:
+  the message's permalink in Chrome, the option to open it in the browser, then the app's own
+  viewer, read page by page from zoomed screenshots, since the viewer's frame blocks scripts.
 - While the user is in a call in a Chrome tab, such as Google Meet, no session opens, loads or
   closes a tab in Chrome, since its tab can take the call's place on the screen. Chrome holds the
   camera or the microphone then, so before its first browser step the session reads

@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Take install steps from the machine's own system
+## CLAUDE.md: they for anyone whose pronouns no source states
 
 2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**5.**
+> dont assume peoples genders. say they them. [an ask about another
+> product left out]
+
+## Take install steps from the machine's own system
+
+2026-11-20, commit [a041298](https://github.com/zululima/setup/commit/a041298692c98748b39b854224b5b6c28b1b72d0), model claude-opus-5-5, effort xhigh.
 
 **2.**
 > [a question on whether Arch or Debian runs a game machine best]

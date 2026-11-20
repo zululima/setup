@@ -178,6 +178,8 @@ apply to one repository belong in that repository's project memory.
   that draft first, in that format. Reasons, counts and sources come after it, outside the draft.
 - A Finnish reply to a yes-or-no question opens with the answer itself, as in "luku laski, koska
   ...", never with "joo" or "kyllä" in front of it.
+- A person whose pronouns no source states is they, them and their in every text a session writes: a
+  name or a role never decides a pronoun.
 - A message that owns up to a mistake, a draft the user sends or a reply, also says in a sentence
   what will be done differently from now on so that it does not happen again: the concrete check or
   change, in the sender's own voice, never only an apology. A reply makes that change in the same
@@ -642,14 +644,10 @@ apply to one repository belong in that repository's project memory.
   blocked or hands a step of it to the user, grep the project's memory directory for the task's
   words, such as upload, login or screenshot, and try each recipe it finds. A tool that has failed
   to connect twice is not tried a third time in that turn: look for another route.
-- A file a connector cannot open gets one retry of the same call. A file that a member of
-  another organisation posted in a shared channel, such as a Slack Connect channel, lives in that
-  organisation's workspace, which the connector's token cannot reach, so the retry fails too and
-  file search does not list it. Open such a file where the user is signed in: the message's
-  permalink in Chrome, the option to open it in the browser, then the app's own viewer, read page by
-  page from zoomed screenshots, since the viewer's frame blocks scripts. A reply calls a file
-  unreadable only after both routes fail, and says how many tries each took. When the file will be
-  read again, ask the user for a copy in the project instead.
+- A file a connector cannot open gets one retry of the same call, then is opened in Chrome as the
+  `chrome` skill says. A reply calls a file unreadable only after both routes fail, and says how
+  many tries each took. When the file will be read again, ask the user for a copy in the project
+  instead.
 - A desktop session started with No folder gets a new memory key each time, which no later
   session loads, so a deny rule in `settings.json` blocks memory writes there. Save a project
   fact to that project's memory instead, and a private fact that holds everywhere to a file in
