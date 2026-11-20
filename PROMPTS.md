@@ -6,9 +6,15 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Say where a session that changed dream.js runs its copy from
+## Refresh the evals after the 19 Nov dream run
 
 2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**2.** Quoted under [6f7fe95](https://github.com/zululima/setup/commit/6f7fe957235f9853ab5a2d896cdbef636fdab0c1).
+
+## Say where a session that changed dream.js runs its copy from
+
+2026-11-20, commit [6f7fe95](https://github.com/zululima/setup/commit/6f7fe957235f9853ab5a2d896cdbef636fdab0c1), model claude-opus-5-5, effort xhigh.
 
 **2.**
 > dream review. also 4 lights? remove the other two not used. also 48%?
