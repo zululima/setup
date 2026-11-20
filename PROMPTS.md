@@ -6,9 +6,26 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Give /feedback text when Claude Code falls short
+## No command for the user to check a result later
 
 2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> [an ask about a desktop window bug left out]
+
+**2.** (answer to: shall I make the fix job resize the Claude window too?)
+> [an answer about that bug left out]
+
+**3.**
+> [pasted: a reply paragraph with a command to read a job's log]
+>
+> dont give me these as ill just ask you in the future anyawys.
+>
+> [a question about signing a local tool left out]
+
+## Give /feedback text when Claude Code falls short
+
+2026-11-20, commit [d3ac1b6](https://github.com/zululima/setup/commit/d3ac1b688653a5aac875a9ff9bcaabff683e91fc), model claude-opus-5-5, effort xhigh.
 
 **3.** (answer to: shall I fill in a new Claude Code issue for the desktop    app's usage warning?)
 > yes, fill it in

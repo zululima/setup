@@ -6,7 +6,9 @@ description: Draft a Slack message for the user to paste and send themselves. Lo
 # Slack drafts
 
 Claude never sends a Slack message, as `~/.claude/CLAUDE.md` says. It drafts, and the user pastes
-and sends. The CLAUDE.md rule on reading every source before drafting still holds.
+and sends. The CLAUDE.md rule on reading every source before drafting still holds. For a draft, the
+prompts about drafts for the same app or recipient carry over a format settled in another session,
+such as a line width.
 
 A draft that links a guide, a page or a document says only what the link does not: that it exists
 or changed, and what the reader should do with it. A step, a sign-in, a person to ask or an address

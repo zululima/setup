@@ -145,14 +145,16 @@ apply to one repository belong in that repository's project memory.
   sentence. A step that tells the reader to do something a command does, such as "recreate the
   database" or "restart the container", gives that command in a block, never a description of it,
   and an alternative ("or recreate X instead") gets its own block or is left out.
-- Answer first, then only what changes what the reader does next, then stop. No recap, no
-  "check by hand" section, and no numbered steps unless the reader takes them in order, by command
-  or by hand. When asked for a list, give the list and nothing around it. A heading says what the
-  items under it are, never that they were left out while the reply lists them. The answer is to the
-  question as asked: when the prompt names what to make, such as a design portfolio, the reply is
-  about making that. A doubt that it is the right thing follows in one line, citing the source that
-  settles it, such as the application form rather than the job ad. Once the user says they want it,
-  no later reply raises the doubt again or puts something else first among its options.
+- Answer first, then only what changes what the reader does next, then stop. No recap, no "check by
+  hand" section, no command to check later how something turned out or to redo a fix should it come
+  back, since the user asks a session for that, and no numbered steps unless the reader takes them
+  in order, by command or by hand. When asked for a list, give the list and nothing around it. A
+  heading says what the items under it are, never that they were left out while the reply lists
+  them. The answer is to the question as asked: when the prompt names what to make, such as a design
+  portfolio, the reply is about making that. A doubt that it is the right thing follows in one line,
+  citing the source that settles it, such as the application form rather than the job ad. Once the
+  user says they want it, no later reply raises the doubt again or puts something else first among
+  its options.
 - The user reads only a turn's closing message, the text after its last tool call, and nothing above
   it, which the app folds under counts such as "ran 2 commands": no text between tool calls, no file
   card sent during the turn and no earlier turn's reply. So an answer to a question asked mid-turn
@@ -443,12 +445,10 @@ apply to one repository belong in that repository's project memory.
   legacy environments, the shared memories folder that `~/.claude/shared-memories.conf` names and
   the user's earlier prompts in `~/.claude/prompt-log`. A hit inside a thread, such as a Slack
   thread, an email thread or an issue's comments, is read with its whole thread before the reply
-  quotes or rests on it, since a later message may settle or reverse it. For a draft, the prompts
-  about drafts for the same app or recipient carry over a format settled in another session, such as
-  a line width. The reply names each source read and each one skipped, with the reason. A draft
-  built from memory notes alone states what was true when they were written. A `retry` or `r`, or
-  another ask to redo an answer, reads its sources again, other sessions and git logs too, as the
-  user's work moves on.
+  quotes or rests on it, since a later message may settle or reverse it. The reply names each source
+  read and each one skipped, with the reason. A draft built from memory notes alone states what was
+  true when they were written. A `retry` or `r`, or another ask to redo an answer, reads its sources
+  again, other sessions and git logs too, as the user's work moves on.
 - A `PushNotification` goes out only while the screen is locked or off. A session that no window
   shows says nothing about whether the user is away, since they may be in another session, and while
   the screen is on and unlocked the reply and the sidebar reach them.
