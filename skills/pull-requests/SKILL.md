@@ -19,6 +19,11 @@ GitHub.
   <default branch>`. In a direct checkout, open it with `--head <branch>`.
 - Upstream PRs only when asked. First check what is already open with `gh pr list --repo
   <upstream-owner>/<repo> --author @me` and prefer adding to an open PR.
+- A change on the branch of the PR in play to a file every branch of the repository reads, such as
+  the pull request template, `AGENTS.md` or `CLAUDE.md`, the test runner's config or the git hooks,
+  stays in the PR in play like any other, and no reply offers to move it to a PR of its own. It
+  holds nowhere else until the PR merges, so the reply that commits it says so, and until the merge
+  a memory note or reply about it names the PR it waits on, never a date it holds since.
 - Never add `Co-Authored-By: Claude`, "Generated with Claude Code", or any Claude or Anthropic
   attribution to commits, PR bodies, or issues. The `attribution` setting also enforces this.
 

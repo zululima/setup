@@ -63,11 +63,6 @@ apply to one repository belong in that repository's project memory.
   is opened only when the repository has no draft PR of the user's open, or when the user says so in
   that session, and never for a patch no teammate cares about, such as a rule for the repository's
   agents, which goes straight onto the default branch.
-- A change on that branch to a file every branch of the repository reads, such as the pull request
-  template, `AGENTS.md` or `CLAUDE.md`, the test runner's config or the git hooks, stays in the PR
-  in play like any other, and no reply offers to move it to a PR of its own. It holds nowhere else
-  until the PR merges, so the reply that commits it says so, and until the merge a memory note or
-  reply about it names the PR it waits on, never a date it holds since.
 - A session that pushes to a branch CI runs on, merges a PR or starts a workflow run waits in that
   session until each run it set off has finished, and reports the result, a green one too: Auto-fix
   wakes a session only on a failure, a merge conflict or a review comment, so a pass would reach no
@@ -91,9 +86,12 @@ apply to one repository belong in that repository's project memory.
   branch>`, push to `origin`, and open the PR against the upstream repo. Switch the checkout back to
   the branch it was on afterwards.
 - Direct checkouts: branch from `origin/<default branch>`, push to `origin`, and open the PR against
-  that default branch. The exception is a repository under the user's own account whose only
-  collaborator is the user, as `gh api repos/<owner>/<repo>/collaborators` lists them: commit on its
-  default branch and push there, with no branch and no PR.
+  that default branch. The exception is a repository the user is the sole contributor to: one under
+  the user's own account whose only collaborator is the user, as `gh api
+  repos/<owner>/<repo>/collaborators` lists them, or any other whose pull requests, as `gh pr list
+  --state all` lists them, and commits since its `created_at` are all the user's, history copied in
+  from another repository aside. There, commit on its default branch and push there, with no branch
+  and no PR.
 - No session asks which branch to use, `propose_branch` included.
 - A change for a branch that another live session works on goes to that session, never to a task
   chip and never through a switch of the checkout the two share: send it with SendMessage to the

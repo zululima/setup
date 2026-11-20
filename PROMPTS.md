@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Write every commit message in English
+## Push straight to the default branch where the user is the sole contributor
 
 2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**16.**
+> always push directly to main when im the sole contributor
+
+## Write every commit message in English
+
+2026-11-20, commit [d54b5bf](https://github.com/zululima/setup/commit/d54b5bf1274c4884441f09f33f423c2ff0790e21), model claude-opus-5-5, effort xhigh.
 
 **6.** Quoted under [05edd94](https://github.com/zululima/setup/commit/05edd941981f613960b92a145e40ebe69a66c5c2).
 
