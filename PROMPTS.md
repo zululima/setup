@@ -6,9 +6,15 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## pull-requests: a review session binds the PR it reviews
+## pull-requests: drop an unchecked cause from the bind rule
 
 2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** Quoted under [e0b60d4](https://github.com/zululima/setup/commit/e0b60d43131b0406061bcafc6e8d50d0cb861e22).
+
+## pull-requests: a review session binds the PR it reviews
+
+2026-11-20, commit [e0b60d4](https://github.com/zululima/setup/commit/e0b60d43131b0406061bcafc6e8d50d0cb861e22), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > the pr it shows is wrong
