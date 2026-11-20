@@ -363,3 +363,6 @@ GitHub.
   dialog in Claude in Chrome, each one the repository has none of, and carry a few short topics, a
   word each where one does, that fit one line of the sidebar. The description is as short as it
   takes, one line if need be, for About and Languages to show without scrolling at 1440x730.
+- The user's public software, such as a repository or a store listing, takes AGPL-3.0-or-later for
+  its code, in `LICENSE`, and CC BY-SA 4.0 for the rest, such as the README, docs and images, in
+  `LICENSE-PROSE`, unless the user names another licence.

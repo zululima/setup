@@ -6,9 +6,22 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Keep symlinked project folders as one in dream's scripts and sandbox
+## Suggest feedback and an issue when Claude Code falls short
 
 2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> can you not show this its distracting me
+
+Reply: No app setting turns off the weekly usage limit warning, so nothing was changed. The X at the right end of the warning closes it.
+
+**2.**
+> when things like these happen suggest to send feedback and maybe
+> github issue on the claude code repostiroy
+
+## Keep symlinked project folders as one in dream's scripts and sandbox
+
+2026-11-20, commit [4bbfb6d](https://github.com/zululima/setup/commit/4bbfb6d83c7b878048f76ce220eb66dd9f1fab76), model claude-opus-5-5, effort xhigh.
 
 **2.** Quoted under [6f7fe95](https://github.com/zululima/setup/commit/6f7fe957235f9853ab5a2d896cdbef636fdab0c1).
 

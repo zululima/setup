@@ -274,9 +274,6 @@ apply to one repository belong in that repository's project memory.
   app-scheme link, such as `vscode://`, included, since the app's side pane, where a click on either
   lands, opens only the session's folders and asks the user to add the folder instead, and the user
   adds none for this.
-- The user's public software, such as a repository or a store listing, takes AGPL-3.0-or-later for
-  its code, in `LICENSE`, and CC BY-SA 4.0 for the rest, such as the README, docs and images, in
-  `LICENSE-PROSE`, unless the user names another licence.
 
 ## Prompt feedback
 
@@ -402,6 +399,9 @@ apply to one repository belong in that repository's project memory.
   the same. Glue that alone does what the user asked for, or spares them a step on every use, such
   as one click in place of a reply and an approval, is the recommended option, with its drift risk
   named before it is built.
+- When Claude Code, its desktop app included, cannot do what the user wants or gets in their way,
+  such as a banner no setting hides, the reply suggests sending feedback and a GitHub issue on
+  Claude Code's repository, or links an open one asking the same.
 - A command, workflow, script, hook or skill built for a purpose the user stated does all of it
   when run bare. Each choice it can make from what it reads, such as the date, the usage limits
   or its last run, it makes itself. An argument is only for an exception the user named or for
