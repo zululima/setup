@@ -6,9 +6,24 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## No command for the user to check a result later
+## Put the prompts behind an issue in its body
 
 2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**2.** (answer to: shall I push the fixes and ask for a re-review?)
+> [an answer about a downstream project left out]
+
+**3.** Quoted under [c558028](https://github.com/zululima/setup/commit/c5580280d88009eaee4bebd8703b6ba173c54888).
+
+**4.** Quoted under [8f63649](https://github.com/zululima/setup/commit/8f6364920b100a9d53dedb44ef924140fa0c665c).
+
+**5.**
+> you can also put in the future prompts behind this issue in issues as
+> well
+
+## No command for the user to check a result later
+
+2026-11-20, commit [6cbc7e7](https://github.com/zululima/setup/commit/6cbc7e745b7cafb520c2caa65b7c9b3ae497f833), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > [an ask about a desktop window bug left out]

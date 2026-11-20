@@ -356,6 +356,12 @@ GitHub.
   nothing submitted. The tab stays open on it, and the reply names that tab and the account the page
   is signed in as, read from the page. The issue is created only on the user's go after that, with
   the page's own submit button, so what goes out is what the user saw.
+- An issue the session opens carries the prompts behind it, as a PR body does: a
+  `<details><summary>Prompts behind this issue</summary>` block at the end of the body, below the
+  fields of the repository's issue form or template, built and redacted as the prompts block of a PR
+  body is. A later prompt about the issue, such as one that changes its body or its assignees, is
+  added to the block in the same turn, with the body read and written back as a PR body's is. An
+  issue someone else opened keeps the body they wrote.
 
 ## The repository
 
