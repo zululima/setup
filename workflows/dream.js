@@ -38,6 +38,9 @@ export const meta = {
 // The Workflow tool's name dream starts the copy of this file the session loaded when it began, and
 // its scriptPath takes only a file in the session's working directory or a folder added to it, so a
 // session that changed this file copies it into its working directory and runs that copy.
+// A machine may start runs unattended from timers that the file for background facts lists, so a
+// change to what a run does changes those runs too, and the reply that makes it names each timer,
+// when and where it runs and what its run now does.
 
 const opts = typeof args === 'object' && args !== null ? args : {}
 const UNATTENDED = opts.unattended === true || /^\s*unattended\s*$/i.test(typeof args === 'string' ? args : '')
