@@ -6,9 +6,15 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Refresh the evals after the 19 Nov dream run
+## sync.sh re-pins the PR links itself, trimming each body
 
 2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**2.** Quoted under [6f7fe95](https://github.com/zululima/setup/commit/6f7fe957235f9853ab5a2d896cdbef636fdab0c1).
+
+## Refresh the evals after the 19 Nov dream run
+
+2026-11-20, commit [c39f1b1](https://github.com/zululima/setup/commit/c39f1b13a0cec444148806b4f6ac5f5af8b7f2fe), model claude-opus-5-5, effort xhigh.
 
 **2.** Quoted under [6f7fe95](https://github.com/zululima/setup/commit/6f7fe957235f9853ab5a2d896cdbef636fdab0c1).
 

@@ -90,6 +90,20 @@ function ahead(s, local, commits = [pulled]) {
 }
 
 const suites = [
+  ['sync.sh --commit and an open PR that links the checkout at an older commit', () => [
+    ['pins the link to the commit just pushed and writes the body back without the newlines gh adds', () => {
+      const s = scene(), stub = path.join(home, `gh-${scenes}`), old = 'a'.repeat(40)
+      const body = `A change.\n\n\`\`\`\n${s.remote.replace(/\.git$/, '')}/tree/${old}/me\n\`\`\`\n\nThe rest.`
+      write(path.join(stub, 'body'), `${body}\n\n`)
+      write(path.join(stub, 'gh'), '#!/bin/sh\nd="$(dirname "$0")"\ncase "$1 $2" in\n  "search prs") echo https://github.invalid/o/r/pull/1 ;;\n  "pr view") cat "$d/body"; echo ;;\n  "pr edit") cat > "$d/edited" ;;\nesac\n')
+      fs.chmodSync(path.join(stub, 'gh'), 0o755)
+      arrives(s, change(base, { 6: ['- Rule 6 as a session rewrote it.'] }))
+      const r = sync(s, ['--commit', write(path.join(home, 'message'), MESSAGE), FILE], { PATH: `${stub}:${ENV.PATH}` })
+      return r.code === 0 && r.err.includes('sync: re-pinned https://github.invalid/o/r/pull/1') && !/older commit/.test(r.out) &&
+        read(path.join(stub, 'edited')) === body.replace(old, git(s, 'rev-parse HEAD', s.remote))
+    }],
+  ]],
+
   ['a first run', () => {
     const s = scene()
     return [

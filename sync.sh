@@ -14,12 +14,14 @@
 #                      message, list what stays uncommitted and push, then
 #                      commit and push the same paths in every mirror, the
 #                      message gaining a line that names the commit here, then
-#                      list the open PRs of the gh user whose body links this
-#                      repository or a mirror's but not the commit just pushed
-#                      there. Named paths of which none but PROMPTS.md has a
-#                      change stop the run before the commit, and a message
-#                      without the prompts heading the commit-messages skill
-#                      gives stops it before the sync.
+#                      point every <URL>/tree/<hash> link to this repository or
+#                      a mirror's in the open PRs of the gh user at the commit
+#                      just pushed there, and list the PRs whose body still
+#                      links one of them without that commit. Named paths of
+#                      which none but PROMPTS.md has a change stop the run
+#                      before the commit, and a message without the prompts
+#                      heading the commit-messages skill gives stops it before
+#                      the sync.
 #
 # Reconciling: a file the pull changed is installed locally, a file changed
 # only in the checkout, its local copy still as committed, is installed
@@ -1115,6 +1117,15 @@ elif [ -n "$message_file" ]; then
     stale="$(gh search prs --author @me --state open --limit 100 --json url --jq '.[].url' |
       while IFS= read -r pr; do
         body="$(gh pr view "$pr" --json body --jq .body)" || continue
+        new="$body"
+        for i in "${!repo_urls[@]}"; do
+          url_re="$(printf '%s' "${repo_urls[$i]}" | LC_ALL=C sed 's/[][\.*^$#+?{}|]/\\&/g')"
+          new="$(printf '%s\n' "$new" | LC_ALL=C sed -E "s#${url_re}/tree/[0-9a-f]{40}#${pins[$i]}#g")"
+        done
+        if [ "$new" != "$body" ] && printf '%s' "$new" | gh pr edit "$pr" --body-file - > /dev/null; then
+          echo "sync: re-pinned $pr" >&2
+          body="$new"
+        fi
         for i in "${!repo_urls[@]}"; do
           if [[ "$body" == *"${repo_urls[$i]}/"* && "$body" != *"${pins[$i]}"* ]]; then
             echo "  $pr"
