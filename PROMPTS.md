@@ -6,9 +6,27 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## hooks: verify-gate keeps a turn going until the checks pass
+## Take install steps from the machine's own system
 
 2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**2.**
+> [a question on whether Arch or Debian runs a game machine best]
+
+Reply: For Melee on a GTX 960, Arch and Debian give the same frame rate. The difference is the driver: Debian 13 supports the card with its own packaged driver, while Arch now needs a legacy driver from the AUR. Nothing was installed or changed.
+
+**3.**
+> [a question on a launcher for games on that machine]
+
+Reply: ES-DE is the front end to use: it has ready-made entries for standalone PCSX2 and MAME, and Melee runs from a script. GameCube adapter navigation through its input library is supported in the source but not tried on hardware. Nothing was installed.
+
+**4.**
+> [the adapter model] also you show aur but you said debian.
+> [a crash report about a game left out]
+
+## hooks: verify-gate keeps a turn going until the checks pass
+
+2026-11-20, commit [b16f2bd](https://github.com/zululima/setup/commit/b16f2bd15cc72e938bc393690b02b7741c2b57fa), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > [pasted: the address of Relay, a coding agent harness] does this do
@@ -8081,6 +8099,7 @@ Stop, add it to dotclaude?)
 - APK: Android application package
 - arch: Arch Linux
 - asap: as soon as possible
+- AUR: Arch User Repository
 - bg: background
 - btw: by the way
 - ccbysa4.0: Creative Commons Attribution-ShareAlike 4.0 International

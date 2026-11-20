@@ -495,7 +495,8 @@ apply to one repository belong in that repository's project memory.
   what it supports, not what runs, so before a reply calls a program unavailable on a platform, the
   session searches that platform's own package sources, such as the AUR, Homebrew or Flathub. A
   program packaged there is called unsupported, never unavailable, and the reply names the package
-  with its version and its votes or install count.
+  with its version and its votes or install count. Packages and install steps for a machine come
+  from the system it runs, or the one a reply recommended for it.
 - A command or tool call that puts a window or a dialog of its own on the user's screen, outside the
   desktop app's panes, is asked about first: `open`, `qlmanage -p`, an app launch, the Simulator
   app, and the desktop app's own dialogs, such as the folder trust question that `change_directory`
