@@ -6,9 +6,31 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Refuse a Chrome a session starts itself
+## models: no Fable 5.2 session on the Linux desktop
 
 2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**3.** (answer to: shall I fix the dream scheduler here so a run waits for each 5-hour reset?)
+> yes also doesnt ios remote have question ui
+
+Reply: The dream scheduler is not fixed. No version I tried passed all the dream simulation checks, so dream.js is back at the pushed version and all checks pass. The attempt is saved as a diff for a later session.
+
+**4.** (answer to: shall I start a new session on Fable 5.2 at xhigh effort to fix the dream scheduler?)
+> a
+
+Reply: The new session for the dream scheduler fix is still on Opus 5.5 at xhigh: this desktop's Pro account runs Fable 5.2 only on usage credits, which are off. It has not been given its task. The models skill is unchanged.
+
+**5.** (answer to: where should the dream scheduler fix run?)
+> a, on the Mac
+
+Reply: The dream scheduler fix waits for the Mac as the prompt file dreamfix in ~/Misc/claude-prompts/mac/, written to run on Fable 5.2 at xhigh. The idle desktop session for it was already archived. Nothing is fixed until you type dreamfix on the Mac.
+
+**6.** (answer to: have you typed dreamfix on the Mac, and shall I add this rule to the models skill?)
+> done and yes
+
+## Refuse a Chrome a session starts itself
+
+2026-11-20, commit [b629e4e](https://github.com/zululima/setup/commit/b629e4e23e4dc6e43b937a3febfe9629244decb6), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > [an ask about business cards for work left out]

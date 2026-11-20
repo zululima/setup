@@ -92,6 +92,14 @@ description: Which Claude model and effort each kind of work runs on, when a tas
   at xhigh for it: the strongest pick on software, 49.1 on FrontierCode 2.0 against 45.3 at high,
   for 2.1 times the cost per task. The offer comes once a task, on that model and effort also
   while the pace is `tight`, and on yes the task goes there as a fork, as above.
+- The Linux desktop's account runs Fable 5.2 only on usage credits, which are off there, so
+  `set_session_model` refuses Fable 5.2 there with a 429 error. A session on that machine starts no
+  session on Fable 5.2 and offers none. A task that the bullets above move up to Fable 5.2, or
+  offer it to after two failures, is offered in the next-step box as a prompt file for the Mac in
+  the folder `~/.claude/rules/` names, whose first part has the session there start the task's
+  session on that model and effort as the bullets above say, unless it already runs on them. The
+  first button writes that file, and the second keeps the task here on this session's model and
+  effort.
 
 | Task | Model | Effort | Benchmarks behind it |
 |---|---|---|---|
