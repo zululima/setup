@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## pull-requests: re-read a PR before handing over a draft review
+## docs(claude-md): file Claude Code issues, never offer /feedback
 
 2026-11-21, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**7.**
+> just paste it to claude code issues. we cant use feedback at
+> [the user's employer] because we cant train models with customer data
+
+## pull-requests: re-read a PR before handing over a draft review
+
+2026-11-21, commit [8ed753c](https://github.com/zululima/setup/commit/8ed753c8ccdd2ad677872ce2c110034edc800d06), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > [a question about a pull request in another project left out]
