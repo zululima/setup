@@ -305,6 +305,10 @@ GitHub.
   suggested, and a session still running a review in the same repository holds its one stack, so the
   reply then suggests no review at all and names that session instead. A next PR named in the
   session's brief is checked the same way, since the brief predates the sessions started since.
+- A review or comment on a PR that a session drafts over more than one turn is read against the PR
+  again in the turn that hands over its final text: the PR's state, its title and each point the
+  text calls open, since the author may have pushed, fixed or merged in the meantime. A point fixed
+  since is dropped, and a PR merged since gets a comment in place of a review that asks for changes.
 
 ## Merging
 

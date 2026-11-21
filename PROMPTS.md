@@ -6,9 +6,51 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## pull-requests: re-read a PR before handing over a draft review
+
+2026-11-21, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> [a question about a pull request in another project left out]
+
+Reply: [a summary of that pull request left out]
+
+**2.**
+> [an ask for a comment on that pull request left out]
+
+Reply: [a summary of the drafted comment left out]
+
+**3.**
+> [an ask to move part of the comment into an issue left out]
+
+Reply: [a summary of the drafted issue left out]
+
+**4.**
+> [a correction and an ask for two issues in that project left out]
+
+Reply: [a summary of the filled-in issues left out]
+
+**5.**
+> [an ask for a review of that pull request left out]
+
+Reply: [a summary of the drafted review left out]
+
+**6.**
+> [an ask to quote the prompts in the review left out]
+
+Reply: [a summary of the updated review left out]
+
+**7.** (answer to: shall I submit both issues as filled in?)
+> Yes, submit both
+
+Reply: [a summary of the submitted issues and the final review left out]
+
+**8.** (answer to: have you posted the review?)
+> Done
+
 ## CLAUDE.md: they for anyone whose pronouns no source states
 
-2026-11-20, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+2026-11-20, commit [ca7af72](https://github.com/zululima/setup/commit/ca7af72b84f6a0b2164d069ec54ea25bb03f0e10), model claude-opus-5-5, effort xhigh.
 
 **5.**
 > dont assume peoples genders. say they them. [an ask about another
