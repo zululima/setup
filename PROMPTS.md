@@ -6,9 +6,26 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## chrome: read "the bridge" as the cookie bridge
+## Ask before starting a sudo prompt
 
 2026-11-22, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**6.**
+> your step1 timed out. you should probably ask me next time before you
+> put a sudo request on
+
+Reply: Your sudo password prompt timed out, so Proton Mail Bridge's package is still installed and Firefox's cookie bridge file isn't there yet. The cachyos skill now says to ask before starting a sudo prompt. The script is ready in the "bridge removal" tab, not started.
+
+**7.** [the answer to a sudo prompt question left out]
+
+**8.** [a done for browser steps left out]
+
+**9.** (answer to: shall I raise the CLAUDE.md size limit to 64,000 bytes to add the sudo rule there?)
+> Yes, raise it
+
+## chrome: read "the bridge" as the cookie bridge
+
+2026-11-22, commit [0ab4d4c](https://github.com/zululima/setup/commit/0ab4d4c47e481eb2d20ab89b2ea7015a191f4ed8), model claude-opus-5-5, effort xhigh.
 
 **1.** [an ask about an email left out]
 
