@@ -466,8 +466,9 @@ apply to one repository belong in that repository's project memory.
   with `close_pane`, once unused, before the reply. The tool refuses a tab the user typed in, such
   as one that took a sudo password. When `list_terminal_tabs` shows nothing running in such a tab,
   the session ends its shell, the app's child shell in that tab's folder, with `kill -HUP`, which
-  closes the tab; a tab with something running, or one the user opened, the reply names, linked, as
-  theirs to close.
+  closes the tab. A tab with something running, or one the user opened, the reply names, linked, and
+  says outright that the session cannot close it and why, such as what still runs in it, before
+  leaving it to the user.
 - A run a session starts in the background, with Bash's `run_in_background`, a `Monitor`, a workflow
   or a subagent, gets `show_pane` with `tasks` in the message that starts it, and in each later
   message calling a tool and before each reply while it goes on, which says the run is in the tasks

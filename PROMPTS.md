@@ -6,9 +6,21 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Close idle Terminal tabs the user typed in by ending their shell
+## Say outright why a Terminal tab is left to the user
 
 2026-11-22, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**11.**
+> ok so next time be explicit that you cant close them
+
+Reply: No rule is changed yet. Your words can mean the tab rule stays and hand-offs get clearer, or that I stop ending shells, so I'm asking which before writing anything.
+
+**12.** (answer to: which reading should the tab rule take?)
+> a: keep closing them
+
+## Close idle Terminal tabs the user typed in by ending their shell
+
+2026-11-22, commit [a19b458](https://github.com/zululima/setup/commit/a19b45827d6b24c7063d748aa57d842b309791a5), model claude-opus-5-5, effort xhigh.
 
 **10.**
 > claude code cant close the terminal tabs?
