@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Ask before starting a sudo prompt
+## Close idle Terminal tabs the user typed in by ending their shell
 
 2026-11-22, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**10.**
+> claude code cant close the terminal tabs?
+
+## Ask before starting a sudo prompt
+
+2026-11-22, commit [88fb58d](https://github.com/zululima/setup/commit/88fb58d7ea01e28a2a15d4139208a664f7e3b28e), model claude-opus-5-5, effort xhigh.
 
 **6.**
 > your step1 timed out. you should probably ask me next time before you
