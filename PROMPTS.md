@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Say outright why a Terminal tab is left to the user
+## chrome: quit Chrome once no session needs a tab
 
 2026-11-22, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**13.**
+> also if you have no need for open chrome tabs close chrome / chormium
+> wholly
+
+## Say outright why a Terminal tab is left to the user
+
+2026-11-22, commit [abfed04](https://github.com/zululima/setup/commit/abfed04a3769d3157224edaea60c18b73c883c20), model claude-opus-5-5, effort xhigh.
 
 **11.**
 > ok so next time be explicit that you cant close them

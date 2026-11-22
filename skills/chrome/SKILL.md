@@ -79,10 +79,17 @@ description: Browser work in Claude in Chrome: starting the extension, the cooki
   its offer to save one, not by importing passwords from Firefox, and not in a password manager's
   Chrome extension that fills logins there. A sign-in in Chrome is the user's to type or paste each
   time a site asks, from the password manager they keep outside Chrome.
-- Chrome tabs stay open, so the user never waits on a close: archiving a session closes every
-  Chrome tab no open session names, the user's own too, through the app and the `archive-files` mod,
-  which first takes those tabs out of their tab groups so Chrome deletes the saved groups, and
-  deletes groups closed earlier while Chrome is out of sight.
+- A Chrome tab stays open while a step still needs it, such as a sign-in left to the user. Once
+  the session needs no tab and no other open session names one, as the `archive-files` mod reads it
+  from their transcripts, the session quits Chrome wholly before the reply: it first sends its tab
+  ids as `{"ungroup": [ids]}` to the bridge's `run/chrome.sock`, so Chrome keeps no saved group,
+  then quits with `osascript -e 'quit app "Google Chrome"'` on macOS, which leaves Chrome behind,
+  and on Linux with SIGTERM to Chromium's browser process, the one without `--type=`, which Chromium
+  records as a session end and so shows no restore bar. `chrome-background.sh` starts it again for
+  the next browser step. Archiving a session closes every Chrome tab no open session names, the
+  user's own too, through the app and the `archive-files` mod, which first takes those tabs out of
+  their tab groups so Chrome deletes the saved groups, and deletes groups closed earlier while
+  Chrome is out of sight.
 - Chrome opens its next window at the size of the last one, so a session that resized a Chrome
   window, with `resize_window` or otherwise, makes it fill the screen less the menu bar and the
   Dock again before the reply, never only the size it read before its first resize: other sessions
