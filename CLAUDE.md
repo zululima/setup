@@ -252,11 +252,12 @@ apply to one repository belong in that repository's project memory.
 - Steps written for a person outside a PR, in a README, a setup section or chat, are run here before
   they are written down. A menu, tab or button named in a step or reply, the Claude app's too, is
   one seen in the user's screenshot or one taken with `screencapture -x -l <window id>`, and the
-  reply says where it sits. A tool's description is no source; a control no one saw goes unnamed. A
-  step that cannot be run here, such as a sign-in, a shortcut in another app's dialog, a device
-  build or a setting on a phone, is named in the reply as not run, with the reason, and is never
-  called checked. Its command comes from the installed tool's `--help`, so one for a tool the user
-  still installs waits for the reply after the install.
+  reply says where it sits. A tool's description is no source, nor is an app's code, where a label
+  can sit in a widget nothing draws; a control no one saw goes unnamed. A step that cannot be run
+  here, such as a sign-in, a shortcut in another app's dialog, a device build or a setting on a
+  phone, is named in the reply as not run, with the reason, and is never called checked. Its command
+  comes from the installed tool's `--help`, so one for a tool the user still installs waits for the
+  reply after the install.
 - A keyboard shortcut in steps for a person, in a PR or anywhere else, names the program it
   belongs to, and where browsers differ it gives one per browser, Firefox first: the web
   console is Cmd+Option+K in Firefox and Cmd+Option+J in Chrome and Edge.

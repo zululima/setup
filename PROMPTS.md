@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## CLAUDE.md: an app's code is no source for a control's name
+
+2026-11-22, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**7.**
+> are you srue hide connection managemtn window exists in security.
+> [an ask about generating a password left out]
+
 ## docs(claude-md): file Claude Code issues, never offer /feedback
 
-2026-11-21, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+2026-11-21, commit [3bba976](https://github.com/zululima/setup/commit/3bba9762d719d37f2d69d0ea4108ad66ad297fa1), model claude-opus-5-5, effort xhigh.
 
 **7.**
 > just paste it to claude code issues. we cant use feedback at
