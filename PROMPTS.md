@@ -6,9 +6,21 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## CLAUDE.md: an app's code is no source for a control's name
+## Check for the Dock gap every 5 s instead of every 20 s
 
 2026-11-22, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> omg again with the resizing
+
+Reply: The gap is gone: the Dock gap fix job restarted the Dock at 17:01:56, the space cleared at 17:03:01 and it grew Claude's window from 833 to 923 points. Nothing changed in the job itself; your profile note now records this gap.
+
+**2.** (answer to: shall I make the job act after 20 seconds of gap instead    of about 80?)
+> Yes, make it 20 s
+
+## CLAUDE.md: an app's code is no source for a control's name
+
+2026-11-22, commit [13f6409](https://github.com/zululima/setup/commit/13f640943a578032007568030ad6e4a621c219e4), model claude-opus-5-5, effort xhigh.
 
 **7.**
 > are you srue hide connection managemtn window exists in security.

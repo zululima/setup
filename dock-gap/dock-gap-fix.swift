@@ -2,7 +2,7 @@
 // the Dock's space reserved after the Dock has hidden, so maximized windows stop that far above the
 // screen's edge. No single restart of the Dock or WindowManager has cleared it; three times it
 // cleared on the third to fifth restart, once both had restarted. launchd starts both again. Every
-// 20 s this reads the Dock's rectangle from the window server, and when auto-hide is on and the
+// 5 s this reads the Dock's rectangle from the window server, and when auto-hide is on and the
 // rectangle has kept a size for four readings in a row, it restarts the Dock, waits, and restarts
 // WindowManager if the space is still held, logging each step. After three tries that leave it
 // stuck it stops trying until the space clears. The LaunchAgent that install.sh writes runs it at
@@ -52,7 +52,7 @@ else {
 let interval: UInt32 = 1
 let dockSettleSeconds: UInt32 = 2
 #else
-let interval: UInt32 = 20
+let interval: UInt32 = 5
 let dockSettleSeconds: UInt32 = 45
 #endif
 let readingsBeforeRestart = 4
