@@ -6,9 +6,28 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Check for the Dock gap every 5 s instead of every 20 s
+## chrome: read "the bridge" as the cookie bridge
 
 2026-11-22, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** [an ask about an email left out]
+
+**2.**
+> bro lets setup the proton bridge
+
+Reply: Two Terminal tabs are waiting on you. "proton bridge" asks for your sudo password, installs Proton Mail Bridge 3.27.2 from Arch extra and then opens Bridge's command line. "bridge password" waits for the Bridge password. Nothing is installed yet, Bridge isn't a service yet.
+
+**3.** [a retry left out]
+
+**4.**
+> waiiiiiit what. i did not mean this brdige i mean the cookie bridge
+
+**5.**
+> remove the proton bridge
+
+## Check for the Dock gap every 5 s instead of every 20 s
+
+2026-11-22, commit [1b73206](https://github.com/zululima/setup/commit/1b732066d517760f870971ad99ecf876476019ea), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > omg again with the resizing

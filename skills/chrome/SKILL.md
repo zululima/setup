@@ -1,6 +1,6 @@
 ---
 name: chrome
-description: Browser work in Claude in Chrome: starting the extension, reading before each click, local files, rendering a page to a file, Google APIs and sign-ins. Load before the first browser step of a turn.
+description: Browser work in Claude in Chrome: starting the extension, the cookie bridge (also "the bridge" or "the proton bridge"), reading before each click, local files, rendering a page to a file, Google APIs and sign-ins. Load before the first browser step of a turn.
 ---
 
 # Browser work
@@ -40,6 +40,10 @@ description: Browser work in Claude in Chrome: starting the extension, reading b
   page's own code for signed-in state kept elsewhere, such as in IndexedDB or session storage, which
   the bridge does not carry, and names the cause in the reply. When only an unloaded Firefox tab
   stands in the way, the step for the user is to open that tab in Firefox, never the sign-in.
+  The user calls the cookie bridge the bridge or the proton bridge too, so those words mean it,
+  never Proton Mail Bridge or another program of that name. On a machine where it is not set up,
+  with no `run/` folder in `~/.claude/cookie-bridge`, setting it up is the step before any sign-in:
+  `install-host.sh` registers the host for both browsers, and the user adds each half.
   When a step needs the user in the browser, such as a sign-in, personal data to type or a click the
   session may not make, the session opens the page that step happens on in a tab of its group,
   leaves that tab open, selects it with `~/.claude/cookie-bridge/front-tab <tab id>`, puts the
