@@ -6,9 +6,18 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## pull-requests: simulate both landing orders of overlapping PRs
+## chrome: read a link's target before opening it on a file site
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** to 9. [asks about setting up a game on a console left out]
+
+**10.** (answer to: shall I add the line about checking a link's target on download sites to the chrome skill?)
+> Yes, add it
+
+## pull-requests: simulate both landing orders of overlapping PRs
+
+2026-11-23, commit [1d32481](https://github.com/zululima/setup/commit/1d32481666be3db43a3fa65629146c478c64daa3), model claude-opus-5-5, effort xhigh.
 
 **1.** Quoted under [27b102b](https://github.com/zululima/setup/commit/27b102be9389750bc51481b956fdba27e2348237).
 

@@ -75,6 +75,14 @@ description: Browser work in Claude in Chrome: starting the extension, the cooki
   the user may have scrolled, typed or clicked there since. A click that submits, sends or posts
   first checks that the page still holds what the user approved, and a change the user made is named
   in the reply before it asks again.
+- Before a navigate to, or a click on, a link on a page that offers files, such as a download, save
+  or mod site, the session reads where the link goes: its address from `find` or the page's code,
+  and its headers from `curl -sI`, or from `fetch(<address>, {method: "HEAD"})` run in the page
+  when the site refuses curl. A target that answers with `Content-Disposition: attachment` or a
+  type other than HTML is a download, which Chrome saves to `~/Downloads` without a prompt, so it
+  first gets the ask a download needs, naming the file, its source and its size. On a yes the file
+  is fetched and moved to where the work keeps its files, as Running things in
+  `~/.claude/CLAUDE.md` says.
 - No reply suggests storing a password in Chrome: not in Chrome's own password manager or through
   its offer to save one, not by importing passwords from Firefox, and not in a password manager's
   Chrome extension that fills logins there. A sign-in in Chrome is the user's to type or paste each
