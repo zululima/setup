@@ -443,6 +443,16 @@
             "command": "\"$HOME/.claude/hooks/no-own-chrome.sh\""
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.claude/hooks/commit-message-width.sh\"",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "Stop": [

@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## verify-gate: send the turn back once when the check itself changed
+## hooks: refuse a commit message with lines over 72 columns
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**3.** (answer to: shall I add a hook that refuses a commit message with a line over 72 columns?)
+> Yes, add the hook
+
+## verify-gate: send the turn back once when the check itself changed
+
+2026-11-23, commit [e7bdd4a](https://github.com/zululima/setup/commit/e7bdd4addb52bdbf0e5cc235f1167680396aa1a1), model claude-opus-5-5, effort xhigh.
 
 **4.**
 > was there anything else on the video worth looking into

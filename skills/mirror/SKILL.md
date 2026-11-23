@@ -264,6 +264,10 @@ run and its commit in the same turn.
   `PushNotification` rule in Running things of `~/.claude/CLAUDE.md`.
 - A `PreToolUse` hook, `~/.claude/hooks/no-git-checkout.sh`, refuses `git checkout`. It backs the
   rule in `~/.claude/CLAUDE.md` on `git switch` and `git restore`.
+- A `PreToolUse` hook, `~/.claude/hooks/commit-message-width.sh`, refuses a commit whose message,
+  read from `git commit -F` or `--file`, a heredoc after `-F -` or `sync.sh --commit`, has a line
+  over 72 columns with a space to break at. It backs the rule in the `commit-messages` skill on
+  wrapping at 72 columns.
 - The `PreToolUse` hook `~/.claude/hooks/no-github-posts.sh` refuses a GitHub post that no prompt
   asked for and gave every word of, apart from an approval with no comment. It backs the rule in
   `~/.claude/CLAUDE.md` that never posts on GitHub.

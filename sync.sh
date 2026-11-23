@@ -193,6 +193,7 @@ mirrored=(
   hooks/git-submodule-update-after-switch.sh
   hooks/check-not-piped.sh
   hooks/no-git-checkout.sh
+  hooks/commit-message-width.sh
   hooks/no-identity-override.sh
   hooks/no-own-email-in-requests.sh
   hooks/no-secrets-in-commands.sh

@@ -38,6 +38,8 @@
   under a second.
 - [`no-git-checkout.sh`](../hooks/no-git-checkout.sh): stops Claude from using `git checkout`, which
   can overwrite files by mistake, and names the `git switch` or `git restore` command instead.
+- [`commit-message-width.sh`](../hooks/commit-message-width.sh): stops a commit whose message has a
+  line over 72 columns, which GitHub and `git log` show unwrapped, and names each such line.
 - [`no-identity-override.sh`](../hooks/no-identity-override.sh): stops Claude from making up a git
   author, even in a throwaway test repository, and asks you before it changes the name or address
   your commits carry.
