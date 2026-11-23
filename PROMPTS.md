@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## chrome: read a link's target before opening it on a file site
+## Letter choices in the order they stand
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**32.**
+> [a choice about another repository left out] also why was b a first
+> one. fix
+
+## chrome: read a link's target before opening it on a file site
+
+2026-11-23, commit [a591369](https://github.com/zululima/setup/commit/a591369954e7a5db72ee205174cdfe5ad3631bcc), model claude-opus-5-5, effort xhigh.
 
 **1.** to 9. [asks about setting up a game on a console left out]
 

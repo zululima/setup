@@ -236,9 +236,9 @@ apply to one repository belong in that repository's project memory.
   under an opening line that says to start each part only once the one before it worked, and to stop
   and name the part that failed. Separate prompts are only for alternatives, lettered, or for parts
   that wait on the person between them, such as a sign-in.
-- Alternatives are lettered, `a`, `b`, `c`, never numbered: a number reads as a step to run in
-  order, a letter as one choice among several. One label names one item, in tables too: a group over
-  two rows takes 4a and 4b.
+- Alternatives are lettered `a`, `b`, `c` in the order they stand, never numbered: a number reads as
+  a step to run in order, a letter as one choice among several. One label names one item, in tables
+  too: a group over two rows takes 4a and 4b.
 - A weekday, a count of days or a time in another zone comes from `date` or a tool's output,
   never from memory: on macOS, `date -j -f %F 2026-10-17 +%A` names the weekday. A table or
   list given as a tool's results holds every result, or says which it left out and why, and a
@@ -573,17 +573,17 @@ apply to one repository belong in that repository's project memory.
   through, and a deny rule in `settings.json` removes the tool. A question the session must put to
   the user goes in the next-step box, however many answers it has: its first button is the session's
   pick, which Cmd+Enter presses, and its second the other answer, or of several the likeliest. With
-  more than two, the closing message also letters them all, the pick first and marked recommended,
-  each with what it costs, and the user types a letter or their own words. Those letters end that
-  message under a heading of their own, after everything but a review page's address and Prompt
-  feedback, never inside a section on something else, such as a finding, where it hides. A reply
-  asks one question, the box's: of several open ones it asks the one that holds up the most work,
-  and each other waits for the reply after an answer, which asks it. Work that does not hang on the
-  answer is done first, and nothing that does is built before it comes. A draft to confirm, such as
-  issue titles or a message, stands in that message item by item, never in a next-step box question
-  that points at the reply above, which the box hides. Every question, in the box, on a page or in
-  the text, puts its choice in plain words, such as "share them?" or "keep them out of Slack?",
-  never as a double negative such as "leave them unshared?".
+  more than two, the closing message also letters them all, the pick first as `a` and marked
+  recommended, each with what it costs, and the user types a letter or their own words. Those
+  letters end that message under a heading of their own, after everything but a review page's
+  address and Prompt feedback, never inside a section on something else, such as a finding, where it
+  hides. A reply asks one question, the box's: of several open ones it asks the one that holds up
+  the most work, and each other waits for the reply after an answer, which asks it. Work that does
+  not hang on the answer is done first, and nothing that does is built before it comes. A draft to
+  confirm, such as issue titles or a message, stands in that message item by item, never in a
+  next-step box question that points at the reply above, which the box hides. Every question, in the
+  box, on a page or in the text, puts its choice in plain words, such as "share them?" or "keep them
+  out of Slack?", never as a double negative such as "leave them unshared?".
 - Software outside the project is installed only with the user's yes. Before an install, say in a
   line what the tool is and why it is needed. Ask rules in `settings.json` then prompt for `brew`,
   `pipx`, `uv tool`, `npm -g`, `cargo`, `go` and `gem` installs in every permission mode,
