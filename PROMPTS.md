@@ -6,9 +6,18 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## pull-requests: show the bug before fixing an issue
+## verify-gate: test the guard on changes to the check
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**5.** (answer to: which of a to d to build?) Quoted under [e7bdd4a](https://github.com/zululima/setup/commit/e7bdd4addb52bdbf0e5cc235f1167680396aa1a1).
+
+**8.** (answer to: which should I build next?)
+> [a pick of the next idea and a question about the dream left out]
+
+## pull-requests: show the bug before fixing an issue
+
+2026-11-23, commit [7cea58f](https://github.com/zululima/setup/commit/7cea58f712cac7bdae82379a78dc19e5bb5a1125), model claude-opus-5-5, effort xhigh.
 
 **7.** (answer to: which idea should I build next?)
 > a. [an ask about the next idea and the dream left out]

@@ -1533,7 +1533,9 @@ esac`)
     const repo = path.join(home, 'gate-repo'), file = path.join(repo, 'app.txt'), runs = path.join(home, 'gate-runs')
     const ok = path.join(repo, 'ok')
     const count = () => fs.existsSync(runs) ? fs.readFileSync(runs, 'utf8').split('\n').filter(Boolean).length : 0
-    const edit = (session = 'g1') => run({ hook_event_name: 'PostToolUse', tool_name: 'Edit', tool_input: { file_path: file }, cwd: home, session_id: session })
+    const touch = (f, session) => run({ hook_event_name: 'PostToolUse', tool_name: 'Edit', tool_input: { file_path: f }, cwd: home, session_id: session })
+    const edit = (session = 'g1') => touch(file, session)
+    const spec = path.join(repo, 'app.test.js')
     const stop = (session = 'g1') => run({ hook_event_name: 'Stop', session_id: session, stop_hook_active: false, cwd: repo })
     const change = text => write(file, `${text}\n`)
     const verify = cmd => sh(`git -C ${q(repo)} config claude.verify ${q(cmd)}`)
@@ -1588,6 +1590,33 @@ esac`)
         change('twelve'); edit('g7')
         const r = run({ hook_event_name: 'Stop', session_id: 'g7', stop_hook_active: false, cwd: repo }, { env: { PATH: `${bin}:${ENV.PATH}` } })
         return blocked(r) && output(r).reason.includes('npm run verify') && fs.readFileSync(runs, 'utf8').includes('run verify')
+      }],
+      ['sends back a turn that skips a test, before it runs the command', () => {
+        write(spec, "it('adds', () => {\n  expect(1 + 1).toBe(2)\n})\n")
+        sh(`git -C ${q(repo)} add -A && git -C ${q(repo)} commit -qm spec`)
+        verify(`echo run >>${runs}; true`)
+        const before = count()
+        write(spec, "it.skip('adds', () => {\n  expect(1 + 1).toBe(2)\n})\n"); touch(spec, 'g8')
+        const r = stop('g8')
+        return blocked(r) && output(r).reason.includes('app.test.js: skips or narrows tests') && count() === before
+      }],
+      ['lets the same change through once it was shown, and runs the command', () => {
+        const before = count()
+        return quiet(stop('g8')) && count() === before + 1
+      }],
+      ['counts an assertion the session changed and committed', () => {
+        write(spec, "it.skip('adds', () => {\n  expect(1 + 1).toBe(3)\n})\n"); touch(spec, 'g9')
+        sh(`git -C ${q(repo)} commit -qam weaken`)
+        const r = stop('g9')
+        return blocked(r) && output(r).reason.includes('changes or removes an assertion: expect(1 + 1).toBe(2)')
+      }],
+      ['sends back a turn that changes an npm script the verify script runs', () => {
+        const pkg = path.join(repo, 'package.json')
+        sh(`git -C ${q(repo)} config --unset claude.verify`)
+        write(pkg, JSON.stringify({ scripts: { verify: 'npm test', test: 'exit 0', dev: 'vite' } })); touch(pkg, 'g10')
+        const r = stop('g10')
+        return blocked(r) && output(r).reason.includes('the script "test", which the verify command runs, was added')
+          && !output(r).reason.includes('"dev"')
       }],
     ]
   }],
