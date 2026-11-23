@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## feat(dream): flag a moved weekly reset against its calendar event
+## fix(dream): check limit resets, not the weekly reset
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**3.**
+> nope not weekly resets but the one thats like push to reset
+
+## feat(dream): flag a moved weekly reset against its calendar event
+
+2026-11-23, commit [1631a7f](https://github.com/zululima/setup/commit/1631a7f17e6b98deb05b9c32f7a4caba53b31525), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > can you put the claude resets to my work calendar as whole day events
