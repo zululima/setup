@@ -3,7 +3,7 @@ export const meta = {
   description: 'Review Claude Code use since the last run in idle time, carry open proposals forward, and propose changes to the global setup',
   whenToUse: 'In idle time with tokens to spare: at the end of a day, overnight or over a weekend. Run bare, it picks its mode from the weekly reset; its options are in the comment under the meta block of ~/.claude/workflows/dream.js.',
   phases: [
-    { title: 'Scout', detail: 'Hue lights off, time window, mode, due sources, transcripts, pull requests, backlog, usage and its history' },
+    { title: 'Scout', detail: 'Hue lights off, time window, mode, due sources, transcripts, pull requests, backlog, usage and its history, the weekly reset against its calendar event' },
     { title: 'Recent', detail: 'tier 1: the window\'s transcripts newest first, config, GitHub reviews and battery use, merged and checked first' },
     { title: 'Weekly', detail: 'tier 2: rule effectiveness, token waste, harness, doctor, Anthropic, Hacker News, Finnish terms and skill repositories' },
     { title: 'Work', detail: 'tier 3: project audits, what derived projects should take over from their upstreams, reviews of open pull requests and, in a final run, a Monday brief' },
@@ -20,7 +20,9 @@ export const meta = {
 // open backlog; with {review: true, gm: true}, as the gm skill runs it, the short review comes, and
 // the evals rerun with none of their lines shown, only at the first gm after the weekly reset. A
 // run, unlike a review, first turns off every light on the Hue bridge that HUE_BRIDGE and HUE_KEY
-// in ~/.config/hue-strip/env name, on a machine that has that file.
+// in ~/.config/hue-strip/env name, on a machine that has that file. A run and a review both
+// compare the weekly reset with the one ~/.claude/dream/claude-reset.json records for the calendar
+// event it names, on the machine it names, and tell the session to move the event when it moved.
 // Optional args: {mode:
 // "eve", "final", "night" or "day", workAt: "HH:MM" the user starts on the reset day (default
 // 08:00), keep: <5-hour windows an eve run keeps
@@ -51,6 +53,8 @@ const UPSTREAMS_FILE = '~/.claude/dream/upstreams.txt'
 const HISTORY_FILE = '~/.claude/dream/usage-history.jsonl'
 const WEEKS_FILE = '~/.claude/dream/weekly-usage.jsonl'
 const EVALS_FILE = '~/.claude/dream/evals-checkout.txt'
+// The weekly reset as a calendar event shows it: the machine whose account it is, weekday, local time, title, and where the event lives.
+const RESET_FILE = '~/.claude/dream/claude-reset.json'
 // One run goes at a time across the machines that share this folder: a run keeps its machine, id, start and last sign of life here.
 const MARKER_FILE = '~/.claude/dream/running.json'
 const MARKER_MINUTES = 30
@@ -390,7 +394,7 @@ const CLOCK = { type: 'object', required: ['now'], properties: { now: { type: 's
 
 // Agents read each other's prompt cache only when type and tools match, so all run as dream-worker.
 let watching = false
-const PRE_USAGE = { ...USAGE, required: [...USAGE.required, 'utcOffset', 'machine', 'running', 'historyLines', 'weekLines', 'lights'], properties: { ...USAGE.properties, lights: { type: 'string', description: 'What the Hue command printed' }, utcOffset: { type: 'string' }, machine: { type: 'string' }, running: { type: 'string', description: 'The line the marker command printed, or an empty string' }, historyLines: { type: 'array', items: { type: 'string' } }, weekLines: { type: 'array', items: { type: 'string' } } } }
+const PRE_USAGE = { ...USAGE, required: [...USAGE.required, 'utcOffset', 'machine', 'running', 'historyLines', 'weekLines', 'lights', 'resetRecord'], properties: { ...USAGE.properties, lights: { type: 'string', description: 'What the Hue command printed' }, utcOffset: { type: 'string' }, machine: { type: 'string' }, running: { type: 'string', description: 'The line the marker command printed, or an empty string' }, historyLines: { type: 'array', items: { type: 'string' } }, weekLines: { type: 'array', items: { type: 'string' } }, resetRecord: { type: 'string' } } }
 
 // The harness puts the prompt of the session that started the run above every agent's task as the user's request, and an agent once took a spawner's prompt about prompt files for its own job.
 const STEP = 'This task is one step of the dream run that the request relayed above started, itself or through a prompt file it names. The session that started the run carries out the rest of that request, such as reading, reporting on and moving prompt files, so do only the task below and return its result.'
@@ -433,10 +437,25 @@ const walkText = (backlogFile, reportFile) => `test the script of every step in 
 
 const EVALS = `Then, when ${EVALS_FILE} exists, refresh the evals of the checkout it names: run node <checkout>/test/evals.mjs --write and show none of its lines in the reply. When git -C <checkout> status --porcelain docs/evals.md then lists the file, commit and push docs/evals.md alone with <checkout>/sync.sh --commit <message file> docs/evals.md, as the Public configuration repository section of ~/.claude/CLAUDE.md says.`
 
+const READ_RESET = `cat ${RESET_FILE} 2>/dev/null`
+// Each machine runs on an account of its own, so only the machine the record names compares its reset with the calendar event.
+function resetMoved(resetsAt, utcOffset, machine, recordText) {
+  let rec = null
+  try { rec = JSON.parse(recordText || '') } catch (e) { return '' }
+  const ms = Math.round(Date.parse(resetsAt) / 60000) * 60000
+  if (!rec || rec.machine !== machine || !Number.isFinite(ms) || !/^[+-]\d{2}:?\d{2}$/.test(utcOffset || '')) return ''
+  const local = new Date(ms + parseOffset(utcOffset))
+  const weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][local.getUTCDay()]
+  const time = local.toISOString().slice(11, 16)
+  const date = local.toISOString().slice(0, 10)
+  if (weekday === rec.weekday && time === rec.time) return ''
+  return `Before anything else: the weekly limit for all models now resets on ${weekday}s at ${time} local time, next on ${date}, while ${RESET_FILE} records ${rec.weekday}s at ${rec.time}. Move the recurring all-day event that file names so it falls on ${weekday}s from ${date} on, with ${time} in place of ${rec.time} in its title, through the Google Calendar connector, or in Google Calendar in Claude in Chrome, signed in as the account the file names, when the connector refuses the write. Then write the new weekday, time and title into that file, and say in one line what moved. `
+}
+
 const REVIEW_SETUP = {
   type: 'object',
-  required: ['today', 'report', 'backlog', 'shown', 'weeklyResetsAt'],
-  properties: { today: { type: 'string' }, report: { type: 'string' }, backlog: SCOUT.properties.backlog, shown: { type: 'string' }, weeklyResetsAt: { type: 'string' } },
+  required: ['today', 'report', 'backlog', 'shown', 'weeklyResetsAt', 'utcOffset', 'machine', 'resetRecord'],
+  properties: { today: { type: 'string' }, report: { type: 'string' }, backlog: SCOUT.properties.backlog, shown: { type: 'string' }, weeklyResetsAt: { type: 'string' }, utcOffset: { type: 'string' }, machine: { type: 'string' }, resetRecord: { type: 'string' } },
 }
 const SHOWN_FILE = `${OUT}/shown.txt`
 // A review skips the run, shows a short review of the latest report unless a review showed it already, reruns the evals and asks about the open backlog.
@@ -449,6 +468,7 @@ if (opts.review === true || /^\s*review\s*$/i.test(runNote)) {
 3. Return as report the path of the newest file in ${OUT} named YYYY-MM-DD.md or YYYY-MM-DD-N.md, or an empty string when there is none.
 4. Return as shown the first line of ${SHOWN_FILE}, or an empty string when the file does not exist.
 5. Load the tool mcp__ccd_session_mgmt__get_usage with ToolSearch and call it with no arguments. Return as weeklyResetsAt the resetsAt of the window whose label names all models, exactly as reported, or an empty string when the tool cannot be found or its plan status is not "ok".
+6. Run date +%z and return it as utcOffset, ${MACHINE_SH} and return it as machine, and ${READ_RESET} and return what it prints as resetRecord, verbatim, or an empty string when it prints nothing.
 ${GROUND}`, { label: 'review setup', phase: 'Scout', model: 'haiku', effort: 'low', schema: REVIEW_SETUP })
   if (!r || !r.backlog || !r.backlog.valid) return { error: `${BACKLOG_FILE} could not be read, so there is nothing to review.` }
   const rank = { high: 0, medium: 1, low: 2 }
@@ -466,11 +486,11 @@ ${GROUND}`, { label: 'review setup', phase: 'Scout', model: 'haiku', effort: 'lo
   const seen = !!r.report && fileName(r.report) === fileName(shownReport)
   const showReport = !!r.report && !seen && (opts.gm !== true || !(Date.parse(shownWeek) >= weekStartMs))
   const weekStart = new Date(Number.isFinite(weekStartMs) ? weekStartMs : Date.now()).toISOString()
-  const shown = showReport
+  const shown = resetMoved(r.weeklyResetsAt, r.utcOffset, r.machine, r.resetRecord) + (showReport
     ? `Read ${r.report} and give a short review of it in the chat first, since the user reads the dream report only here. When the report is of a final run, which has a section headed Where the run stopped, the review opens with one sentence on whether the week reached the final run's target of 99% of the weekly limit for all models: where that limit ended and how many points short of the target or over it, as in "The week ended at 96% of the weekly limit, 3 points short of the 99% target." Then come the changes to the setup, one line each in plain words, what carries over to the next run in one line, and one line with the weekly limit for all models this week beside the weeks before it. Leave out the 5-hour limit, the figures of any single model such as Fable or Haiku, the cost, tokens and energy of the run and the week, its pace, its agents and its coverage counts. Write it as rendered Markdown, never inside a code block or another copyable block. Then write the line "${weekStart} ${r.report}" to ${SHOWN_FILE}, replacing what it held. ${EVALS} `
     : opts.gm === true ? ''
     : seen ? `Say in one line that no dream has run since ${fileName(r.report).replace(/\.md$/, '')}, whose report was shown already, and show nothing of that report again, neither its text nor its proposals. ${EVALS} `
-    : `Say in one line that no dream report was found. ${EVALS} `
+    : `Say in one line that no dream report was found. ${EVALS} `)
   return {
     forTheSession: due.length
       ? `${shown}${waiting ? `${waiting} open proposals wait for their askAgainAfter date and are left out. ` : ''}${waitingOnPr ? `${waitingOnPr} wait for their pull request to merge and are left out until a dream run checks it. ` : ''}${walk[0].toUpperCase()}${walk.slice(1)} A script was tested against the files as they stood when its run wrote it, so test it in a sandbox before running it for real, and regenerate it when it fails.${uncheckedCount ? ` Say in one line that ${uncheckedCount} unchecked proposals wait for the next dream run, which checks them first.` : ''} The steps, in order, each with its script file where it has one: ${JSON.stringify(due.map(i => ({ key: i.key, title: i.title, impact: i.impact, target: i.target, scriptFile: i.scriptFile || '', ...(i.waitsOn && i.unmerged ? { waitsOn: i.waitsOn, unmerged: i.unmerged.note } : {}) })))}`
@@ -482,7 +502,7 @@ ${GROUND}`, { label: 'review setup', phase: 'Scout', model: 'haiku', effort: 'lo
   }
 }
 
-const parseOffset = s => {
+function parseOffset(s) {
   const m = /^([+-])(\d{2}):?(\d{2})$/.exec(s || '')
   return m ? (m[1] === '-' ? -1 : 1) * (Number(m[2]) * 60 + Number(m[3])) * 60000 : 0
 }
@@ -540,7 +560,7 @@ const LIGHTS_OFF = `if [ -r ~/.config/hue-strip/env ]; then . ~/.config/hue-stri
 phase('Scout')
 const pre = await dreamAgent(`First turn off the Hue lights: run this command as given and return what it prints as lights.
 ${LIGHTS_OFF}
-${READ_USAGE} Then run date +%z and return it as utcOffset, and ${MACHINE_SH} and return it as machine. Then run ${READ_MARKER} and return the line it prints as running, or an empty string when it prints nothing. Then run ${READ_LEDGERS} and return each line it prints as historyLines, and run cat ${WEEKS_FILE} 2>/dev/null and return each line it prints as weekLines, both verbatim, in order, and an empty list when the command prints nothing.`, { label: 'usage before the scout', phase: 'Scout', model: 'haiku', effort: 'low', schema: PRE_USAGE })
+${READ_USAGE} Then run date +%z and return it as utcOffset, and ${MACHINE_SH} and return it as machine. Then run ${READ_MARKER} and return the line it prints as running, or an empty string when it prints nothing. Then run ${READ_LEDGERS} and return each line it prints as historyLines, and run cat ${WEEKS_FILE} 2>/dev/null and return each line it prints as weekLines, both verbatim, in order, and an empty list when the command prints nothing. Then run ${READ_RESET} and return what it prints as resetRecord, verbatim, or an empty string when it prints nothing.`, { label: 'usage before the scout', phase: 'Scout', model: 'haiku', effort: 'low', schema: PRE_USAGE })
 if (pre && pre.lights) log(`Hue lights off: ${pre.lights}`)
 const preShift = ms => new Date(ms + parseOffset(pre && pre.utcOffset)).toISOString()
 let going = null
@@ -550,6 +570,7 @@ if (going && going.machine) {
   return { error: `Nothing ran. The dream run ${going.runId || 'not yet numbered'} on ${going.machine} is still going: it started at ${when(going.started)} and gave its last sign of life at ${when(going.alive)}, in this machine's local time. One run goes at a time, so this one stopped before its scout. A run that gives no sign of life for ${MARKER_MINUTES} minutes no longer counts.` }
 }
 const preCard = pre && pre.available && Array.isArray(pre.windows) ? pre.windows.find(w => /all models/i.test(w.label)) : null
+const RESET_NOTE = preCard ? resetMoved(preCard.resetsAt, pre.utcOffset, pre.machine, pre.resetRecord) : ''
 if (UNATTENDED && !preCard) {
   return { error: `Nothing ran. This run is unattended and the plan's limits cannot be read here: no usage card, and no ${LIMITS_FILE} that the status line script ~/.claude/hooks/plan-limits.sh wrote for this machine in the last ${LIMITS_MINUTES} minutes with the weekly limit in it. The run would spend without a guard, so it stopped before its scout.` }
 }
@@ -2285,7 +2306,7 @@ const STOP = `Then read ${USAGE_CARD}, and add to the end of the report file a s
 const POINTS = `${MODE === 'final' ? 'Then' : `Then read ${USAGE_CARD}, and`} show in the chat only how many percentage points of the plan limits the run used: a table with a row per limit and the columns at the start of the run, from verification.start of this result, now, and points used, now minus the start, or "reset during the run" for a limit whose resetsAt moved since the start. Then say in one line that ${steps.length ? `${steps.length} proposals and the report wait` : 'the report waits'} for dream review, and end the reply with the step to start a new session in ~/Projects/setup and type "dream review" there, never in this session: the review shows the report and reads the backlog from their files, while this session would send its whole context again with each request. Nothing else of the run goes in the chat: not the report, its other figures, why the run stopped or the evals, which the review shows or runs.`
 
 return {
-  forTheSession: `${report ? `The report file is ${report.path}.` : NO_REPORT} ${MODE === 'final' ? `${SPENT} ${WEEKS} ${STOP}` : ENERGY} ${POINTS}`,
+  forTheSession: `${RESET_NOTE}${report ? `The report file is ${report.path}.` : NO_REPORT} ${MODE === 'final' ? `${SPENT} ${WEEKS} ${STOP}` : ENERGY} ${POINTS}`,
   report: report ? report.path : null,
   scripts: SCRIPTS_DIR,
   verification: { weeklyTarget, stoppedBy, start: startUsage ? startUsage.windows : null, end: usage ? usage.windows : null },

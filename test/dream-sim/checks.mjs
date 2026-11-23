@@ -12,6 +12,7 @@ const noHits = ['no agent reaches a limit and fails', st => st.hits === 0]
 const sat = { five: 8, fiveReset: '2026-10-17T10:00:00Z', weekReset: '2026-10-17T13:59:59Z', now: '2026-10-17T07:00:00Z', since: '2026-10-16T22:00:00Z' }
 const fri = { five: 10, fiveReset: '2026-10-16T16:49:59Z', weekReset: '2026-10-17T13:59:59Z', now: '2026-10-16T15:10:00Z', since: '2026-10-14T00:00:00Z' }
 const wed = { five: 5, fiveReset: '2026-10-14T21:00:00Z', weekReset: '2026-10-17T13:59:59Z', now: '2026-10-14T18:00:00Z', since: '2026-10-13T18:00:00Z' }
+const resetRecord = (weekday, time, machine = 'mac') => JSON.stringify({ machine, weekday, time, title: `Claude weekly reset ${time}` })
 // The final run of 31 Oct: 13:12 local, the 5-hour limit at 70% until 14:00, the week at 73% until 16:00, and 13 open proposals whose checks the reserve keeps room for.
 const oct31 = { five: 70, fiveReset: '2026-10-31T12:00:00Z', week: 73, weekReset: '2026-10-31T14:00:00Z', now: '2026-10-31T11:12:00Z', since: '2026-10-30T20:14:00Z', utcOffset: '+0200', sessions: 200, backlog: {
   valid: true,
@@ -455,6 +456,20 @@ const scenarios = [
   ]],
   ['weekly readings of two machines', { ...wed, week: 30, sessions: 4, weekLines: [on('desk', weekRow('final', '2026-10-09T05:00:00Z', '2026-10-09T04:50:00Z', 80, 0)), on('mac', weekRow('final', '2026-10-10T13:59:59Z', '2026-10-10T12:00:00Z', 70, 5))] }, [
     ['the recap counts this machine\'s weeks alone', (st, r) => r.weekly.lastWeek.endsAt === '2026-10-10T14:00:00.000Z' && r.weekly.month.weeks === 1 && r.weekly.loggedSince === '2026-10-10T14:00:00.000Z'],
+  ]],
+  ['review when the weekly reset moved from the calendar event', { ...wed, week: 30, sessions: 4, args: 'review', resetRecord: resetRecord('Friday', '16:00') }, [
+    ['reads the record', st => (st.prompts['review setup'] || '').includes('cat ~/.claude/dream/claude-reset.json 2>/dev/null')],
+    ['tells the session to move the event first, with the new weekday and local time', (st, r) => r.forTheSession.startsWith('Before anything else: the weekly limit for all models now resets on Saturdays at 17:00 local time, next on 2026-10-17, while ~/.claude/dream/claude-reset.json records Fridays at 16:00.')],
+  ]],
+  ['review when the weekly reset is where the calendar event has it', { ...wed, week: 30, sessions: 4, args: 'review', resetRecord: resetRecord('Saturday', '17:00') }, [
+    ['says nothing about the event', (st, r) => !/calendar/i.test(r.forTheSession)],
+  ]],
+  ['review on another machine than the reset record names', { ...wed, week: 30, sessions: 4, args: 'review', machine: 'desk', resetRecord: resetRecord('Friday', '16:00') }, [
+    ['says nothing about the event, since that machine has an account of its own', (st, r) => !/calendar/i.test(r.forTheSession)],
+  ]],
+  ['run when the weekly reset moved from the calendar event', { ...wed, week: 30, sessions: 4, resetRecord: resetRecord('Friday', '16:00') }, [
+    ['reads the record before the scout', st => (st.prompts['usage before the scout'] || '').includes('cat ~/.claude/dream/claude-reset.json 2>/dev/null')],
+    ['tells the session to move the event first', (st, r) => r.forTheSession.startsWith('Before anything else: the weekly limit for all models now resets on Saturdays at 17:00 local time')],
   ]],
 ]
 

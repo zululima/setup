@@ -6,9 +6,20 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Sign commits built with git commit-tree
+## feat(dream): flag a moved weekly reset against its calendar event
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> can you put the claude resets to my work calendar as whole day events
+
+**2.**
+> probably should be put to google calendar and cehcked on dreaming if
+> there any new cresets
+
+## Sign commits built with git commit-tree
+
+2026-11-23, commit [284aced](https://github.com/zululima/setup/commit/284aced61b81488efc535dcbbab8f192399d28a3), model claude-opus-5-5, effort xhigh.
 
 **1.** Quoted under [27b102b](https://github.com/zululima/setup/commit/27b102be9389750bc51481b956fdba27e2348237).
 

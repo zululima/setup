@@ -55,7 +55,7 @@ export async function simulate(wf, sc) {
   const fit = { verdict: 'keep', reason: 'ok', finalProposal: '', script: 'echo', exactChange: 'a line', exampleWrong: 'it broke', exampleFixed: 'it works' }
   function respond(label, prompt) {
     st.prompts[label] = prompt
-    if (label === 'review setup') return { today: sc.now.slice(0, 10), report: '~/.claude/dream/2026-10-17.md', backlog: sc.backlog || { valid: true, open: [], closed: [], unchecked: [] }, shown: sc.shown || '', weeklyResetsAt: new Date(st.weekReset).toISOString() }
+    if (label === 'review setup') return { today: sc.now.slice(0, 10), report: '~/.claude/dream/2026-10-17.md', backlog: sc.backlog || { valid: true, open: [], closed: [], unchecked: [] }, shown: sc.shown || '', weeklyResetsAt: new Date(st.weekReset).toISOString(), utcOffset: sc.utcOffset || '+0300', machine: sc.machine || 'mac', resetRecord: sc.resetRecord || '' }
     if (label === 'scout') return {
       now: sc.now, today: sc.now.slice(0, 10), utcOffset: sc.utcOffset || '+0300', machine: sc.machine || 'mac', runId: sc.now.slice(0, 10), since: sc.since, lookbackFrom: new Date(Date.parse(sc.since) - 7 * 24 * H).toISOString(),
       oldestTranscript: '2026-09-21T08:00:00Z', installedVersion: '2.1.299', previousReports: [],
@@ -70,7 +70,7 @@ export async function simulate(wf, sc) {
     // sc.marker is the line another run's marker holds while that run gives signs of life.
     // Its history lines are what the jq in its prompt prints: each run's machine and ledger.
     if (label === 'usage before the scout') return {
-      ...usageCard(), utcOffset: sc.utcOffset || '+0300', machine: sc.machine || 'mac', running: sc.marker || '', weekLines: sc.weekLines || [],
+      ...usageCard(), utcOffset: sc.utcOffset || '+0300', machine: sc.machine || 'mac', running: sc.marker || '', weekLines: sc.weekLines || [], resetRecord: sc.resetRecord || '',
       historyLines: (sc.history || [history]).concat(sc.extraHistory || []).map(l => JSON.parse(l)).filter(r => r.ledger).map(r => JSON.stringify({ machine: r.machine ?? null, ledger: r.ledger })),
     }
     if (label === 'record reading') { st.weekLine = prompt.split('\n').find(x => x.startsWith('{')); return { ok: true } }
