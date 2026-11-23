@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## hooks: refuse a commit message with lines over 72 columns
+## settings: turn off feedback that sends a conversation to Anthropic
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**4.** (answer to: shall I add both feedback switches to your own settings.json?)
+> Yes, add them
+
+## hooks: refuse a commit message with lines over 72 columns
+
+2026-11-23, commit [fdd71aa](https://github.com/zululima/setup/commit/fdd71aaa70355b496f8e75132b066b54bdb179dd), model claude-opus-5-5, effort xhigh.
 
 **3.** (answer to: shall I add a hook that refuses a commit message with a line over 72 columns?)
 > Yes, add the hook
