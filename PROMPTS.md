@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## verify-gate: test the guard on changes to the check
+## dream: check weekly whether hooks and skills help
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**8.** (answer to: which should I build next?)
+> a. also doesnt dream measure all my setup anyways?
+
+## verify-gate: test the guard on changes to the check
+
+2026-11-23, commit [baf6d5c](https://github.com/zululima/setup/commit/baf6d5c40a41f299845c66d5fb442a887c667d96), model claude-opus-5-5, effort xhigh.
 
 **5.** (answer to: which of a to d to build?) Quoted under [e7bdd4a](https://github.com/zululima/setup/commit/e7bdd4addb52bdbf0e5cc235f1167680396aa1a1).
 

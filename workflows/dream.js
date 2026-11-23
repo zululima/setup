@@ -5,7 +5,7 @@ export const meta = {
   phases: [
     { title: 'Scout', detail: 'Hue lights off, time window, mode, due sources, transcripts, pull requests, backlog, usage and its history' },
     { title: 'Recent', detail: 'tier 1: the window\'s transcripts newest first, config, GitHub reviews and battery use, merged and checked first' },
-    { title: 'Weekly', detail: 'tier 2: rule effectiveness, token waste, harness, doctor, Anthropic, Hacker News, Finnish terms and skill repositories' },
+    { title: 'Weekly', detail: 'tier 2: rule effectiveness, how hooks and skills help, token waste, harness, doctor, Anthropic, Hacker News, Finnish terms and skill repositories' },
     { title: 'Work', detail: 'tier 3: project audits, what derived projects should take over from their upstreams, reviews of open pull requests and, in a final run, a Monday brief' },
     { title: 'Older', detail: 'tier 4, eve and final runs: subagent transcripts, then older transcripts a week at a time, newest first' },
     { title: 'Usage', detail: 'readings of the plan usage card as work finishes and as one agent is left working alone, and timers for checks that run long' },
@@ -29,7 +29,7 @@ export const meta = {
 // back instead of its default: none when the reset comes before workAt, else the most the user
 // spent outside dream runs on one of the last four reset days, or 2 windows when none is
 // measured>, since: "<ISO time>", only: [transcripts,
-// config, github, battery, rules, waste, harness, doctor, anthropic, hn, finnish, skills,
+// config, github, battery, rules, tools, waste, harness, doctor, anthropic, hn, finnish, skills,
 // projects, library, upstreams, prs, brief, subagents], all: true for every source, out: "<dir>",
 // margin: <points to leave free, default 5>, pool: <default 7>, unattended: true for a run nobody
 // watches, which stops before its scout when the limits of the plan cannot be read and starts no
@@ -64,10 +64,10 @@ const LIMITS_MINUTES = 5
 const BACKLOG_FILE = `${OUT}/backlog.json`
 // The glossary of Finnish words for terms from English: its own rules say how sessions use it and that the user's entries are final.
 const TERMS_FILE = '~/.claude/rules/finnish-terms.md'
-const SOURCES = ['transcripts', 'config', 'github', 'battery', 'rules', 'waste', 'harness', 'doctor', 'anthropic', 'hn', 'finnish', 'skills', 'projects', 'library', 'upstreams', 'prs', 'brief', 'subagents']
+const SOURCES = ['transcripts', 'config', 'github', 'battery', 'rules', 'tools', 'waste', 'harness', 'doctor', 'anthropic', 'hn', 'finnish', 'skills', 'projects', 'library', 'upstreams', 'prs', 'brief', 'subagents']
 const TIER_PHASE = { 1: 'Recent', 2: 'Weekly', 3: 'Work', 4: 'Older' }
 const TIER_PREFIX = { 1: 'n', 2: 'w', 3: 'k', 4: 'd' }
-const CADENCE_HOURS = { transcripts: 0, config: 0, github: 20, battery: 20, rules: 160, waste: 160, harness: 160, doctor: 160, anthropic: 160, hn: 160, finnish: 160, skills: 160, projects: 160, library: 160, upstreams: 160, prs: 160, brief: 0, subagents: 0 }
+const CADENCE_HOURS = { transcripts: 0, config: 0, github: 20, battery: 20, rules: 160, tools: 160, waste: 160, harness: 160, doctor: 160, anthropic: 160, hn: 160, finnish: 160, skills: 160, projects: 160, library: 160, upstreams: 160, prs: 160, brief: 0, subagents: 0 }
 // In eve and final runs a weekly source is due once per weekend, so a final run picks up what the eve run had no usage for.
 const WEEKEND_CADENCE_HOURS = 36
 const LOOKBACK_DAYS = 7
@@ -1399,6 +1399,38 @@ Evidence may come from any transcript kept, since a rule's record is the point. 
 ${OUTPUT}
 ${GROUND}`,
   })
+}
+
+if (only.includes('tools')) {
+  tasks.push({
+    source: 'tools',
+    tier: 2,
+    label: 'tools: hooks',
+    prompt: `Check whether the hooks in ~/.claude/settings.json help in practice.
+1. List each script under ~/.claude/hooks that settings.json runs, with its events. For each, find when its current behaviour landed: git -C ~/Projects/setup log --format='%cs %h %s' -- hooks/<script>. Leave out a script that prints nothing Claude reads, such as one that only logs or syncs, and list it in coverage as not measured.
+2. Search the main session transcripts modified after that date, the files ${FIND_MAIN} -newermt <that date> prints, for the moments it acted. What a hook prints shows in a transcript as text, such as a user message that starts with "Stop hook feedback" or a tool result with "hook blocking error", so read the script for the words its messages start with, such as "Verify gate:", and grep for them with -exec grep -l on that find, then read the conversation around each hit with jq. ${FIND_ONCE}
+3. Sort each act into helped, where the turn changed course as the message asked, such as a fix, an undo, or a reason the user needed; noise, where the hit was false or the turn went on as before; and harm, where it blocked work the user wanted, looped or cost a turn for nothing. Give the counts per hook, and call a hook that never acted since it landed never triggered.
+A hook with more noise than help, or with any harm, is a finding of kind "hook" with a change that would have kept the help and cut the rest. A hook never triggered since it landed, at least four weeks ago, is a finding of kind "hook" with impact low that says since when it exists and which events run it. A hook whose acts helped is no finding: give its counts in coverage.
+Evidence may come from any transcript kept, since a hook's record is the point. ${BACKLOG_NOTE}
+${OUTPUT}
+${GROUND}`,
+  })
+  for (const [from, to] of [['a', 'g'], ['h', 'p'], ['q', 'z']]) {
+    tasks.push({
+      source: 'tools',
+      tier: 2,
+      label: `tools: skills ${from} to ${to}`,
+      prompt: `Check whether the user's own skills whose names start with the letters ${from} to ${to} help in practice.
+1. List the folders under ~/.claude/skills whose names start with those letters and that hold a SKILL.md. For each, find when it landed and when its text last changed: git -C ~/Projects/setup log --format='%cs %h %s' -- skills/<name>, or the modification time of its SKILL.md for a skill the checkout does not hold.
+2. Count its loads in the main session transcripts modified after it landed, the files ${FIND_MAIN} -newermt <that date> prints: Skill tool calls that name it, a slash command or a word the user typed that runs it, and Bash runs of a script in its folder, such as recall.py. ${FIND_ONCE} Read the turns around a few loads with jq and say whether its result was used, such as a search hit that a reply rested on, or ignored, or corrected by the user.
+3. Find moments the triggers its description names came up and no load followed.
+4. For each bullet that git -C ~/Projects/setup log -p --since=28.days -- skills/<name>/SKILL.md shows added or changed, sort the moments it applied since it landed into followed, broken or never triggered, with counts.
+A skill never loaded since it landed, at least four weeks ago, is a finding of kind "rule-remove" with impact low that says since when it exists and how many characters its description adds to every session. A skill whose results were ignored or corrected more often than used, or a missed load seen twice or more, is a finding of kind "rule-change" on its body or its description. A bullet broken twice or more, or once at a high cost, is a finding: kind "hook" when a hook could enforce it, else "rule-change" with wording that would have held. A skill that was loaded, used and followed is no finding: give its counts in coverage.
+Evidence may come from any transcript kept, since a skill's record is the point. ${BACKLOG_NOTE}
+${OUTPUT}
+${GROUND}`,
+    })
+  }
 }
 
 if (only.includes('waste')) {

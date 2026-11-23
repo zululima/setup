@@ -320,7 +320,13 @@ const scenarios = [
     ['its changes keep the user\'s work as it is', st => /a change that keeps the user's work as it is/.test(battery(st))],
     ['the run records the source', st => /"battery"/.test(st.historyLine || '')],
   ]],
-  ['battery read 10 hours ago', { ...wed, week: 30, sessions: 4, extraHistory: [ranBattery('2026-10-14T08:00:00Z')] }, [
+  ['hooks and skills', { ...wed, week: 30, sessions: 4, args: { only: ['tools'] } }, [
+    ['one agent for the hooks and three for the skills by first letter', st => st.labels['tools:'] === 4 && ['tools: hooks', 'tools: skills a to g', 'tools: skills h to p', 'tools: skills q to z'].every(l => l in st.prompts)],
+    ['the hooks agent sorts each act into helped, noise and harm', st => /into helped, where the turn changed course/.test(st.prompts['tools: hooks'] || '') && /noise, where the hit was false/.test(st.prompts['tools: hooks'] || '') && /harm, where it blocked work/.test(st.prompts['tools: hooks'] || '')],
+    ['the skills agents count loads and check the bullets of the last 28 days', st => /Count its loads/.test(st.prompts['tools: skills h to p'] || '') && /log -p --since=28\.days/.test(st.prompts['tools: skills h to p'] || '')],
+    ['the run records the source', st => /"tools"/.test(st.historyLine || '')],
+  ]],
+  ['battery read 10 hours ago',{ ...wed, week: 30, sessions: 4, extraHistory: [ranBattery('2026-10-14T08:00:00Z')] }, [
     ['is not due yet', (st, r) => !st.labels.battery && r.sources.notDue.includes('battery')],
   ]],
   ['battery read 21 hours ago', { ...wed, week: 30, sessions: 4, extraHistory: [ranBattery('2026-10-13T21:00:00Z')] }, [
