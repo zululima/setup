@@ -6,9 +6,18 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## models: keep access workarounds out of agent briefs
+## pull-requests: simulate both landing orders of overlapping PRs
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** Quoted under [27b102b](https://github.com/zululima/setup/commit/27b102be9389750bc51481b956fdba27e2348237).
+
+**2.** (answer to: shall I add the landing rule to your own setup?)
+> yes add it [an aside about a colleague left out]
+
+## models: keep access workarounds out of agent briefs
+
+2026-11-23, commit [f141932](https://github.com/zululima/setup/commit/f141932da554c50f225302d2c25cbe15ac3b2464), model claude-opus-5-5, effort xhigh.
 
 **3.**
 > [pasted: a sentence from Claude's reply saying auto mode refused a

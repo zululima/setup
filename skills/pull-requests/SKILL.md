@@ -24,17 +24,30 @@ GitHub.
   stays in the PR in play like any other, and no reply offers to move it to a PR of its own. It
   holds nowhere else until the PR merges, so the reply that commits it says so, and until the merge
   a memory note or reply about it names the PR it waits on, never a date it holds since.
+- A change that has to reach code another open PR adds, moves or rewrites, such as an entry in a
+  menu the other PR creates, is never left to whichever of the two lands second. Before a PR opens,
+  and in every review of one, list the open PRs that touch any of its files, fetch each head from
+  `refs/pull/<n>/head`, and simulate the landing of this PR and each of them in both orders, the way
+  the repository lands PRs: `git merge-tree --write-tree` of the first head onto the base branch's
+  remote-tracking ref, `git commit-tree -S` of that tree with the ref as its parent, and the head as
+  a second one where the repository keeps merge commits, then `git merge-tree --write-tree` of the
+  second head onto that commit. Read the shared code in each result tree, not only the exit status.
+  When an order conflicts or leaves the shared part undone, the PR body says so in the landing note
+  that The body places and names the order it recommends, and the follow-up change waits on a pushed
+  branch of its own for the PR that lands second, built on the two combined, with the repository's
+  verify command and end to end run passing there. A review reports such an order as a finding.
 - Never add `Co-Authored-By: Claude`, "Generated with Claude Code", or any Claude or Anthropic
   attribution to commits, PR bodies, or issues. The `attribution` setting also enforces this.
 
 ## The body
 
 - Claude's part of the body is, in this order: the one sentence on what has changed, a list of the
-  changes, the line that closes issues (`Closes #n`, with any related documents), the two blocks
-  below, then the rest of the repository's pull request template filled in as described further
-  down. Nothing else: no free-form summary or test plan outside that. The sentence, the list and the
-  closing line stand on their own, without a heading, even where the template gives them sections of
-  their own. Without a template the body ends after the blocks and the user writes the description.
+  changes, the line that closes issues (`Closes #n`, with any related documents), the landing note
+  when there is one, the two blocks below, then the rest of the repository's pull request template
+  filled in as described further down. Nothing else: no free-form summary or test plan outside that.
+  The sentence, the list, the closing line and the landing note stand on their own, without a
+  heading, even where the template gives them sections of their own. Without a template the body
+  ends after the blocks and the user writes the description.
 - The list of changes under the sentence is built from the PR's final diff against its base, from
   the merge base to the head; the commits only help to understand intent. One short bullet per
   meaningful change, or per group of related ones, saying what it does and, when that helps the
@@ -48,12 +61,18 @@ GitHub.
   the check runs again whenever the closing line is written or the body refreshed, as a sub-issue
   may close elsewhere in the meantime. A parent whose body names work that none of its sub-issues
   covers stays off the line, and the reply says why.
+- The landing note is there when the landing simulation under Opening finds an order that conflicts
+  or leaves shared code undone. It is one short paragraph: the other PR by number, what each order
+  leaves (the conflicting files, the part still undone), the order recommended, and the branch that
+  holds the follow-up change for the PR that lands second. It is rewritten whenever the body is
+  refreshed, and dropped once the follow-up change is in the PR that lands second or the other PR
+  has closed.
 - When a PR, draft or not, closes an issue, assign the user to that issue, with `gh issue edit <n>
   --add-assignee <handle>` and the handle from `gh api user --jq .login`. Do it when the PR is
   opened and again whenever its `Closes` list changes, and skip the issue silently when the edit is
   refused for lack of permission. The board then shows who holds the work without a separate step.
-- The two blocks come straight after the closing line and above the rest of the template. They
-  are a TL;DR for the reviewer.
+- The two blocks come straight after the closing line, or the landing note, and above the rest of
+  the template. They are a TL;DR for the reviewer.
 - First block: a fenced code block holding the URL of the public configuration repository described
   under Public configuration repository in `~/.claude/CLAUDE.md`, pinned to a commit as `<repository
   URL>/tree/<full hash>`, so teammates can read and copy the rules the body was last checked
