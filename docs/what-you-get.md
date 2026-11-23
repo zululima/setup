@@ -303,6 +303,11 @@
   found, without asking you. Claude keeps only the findings the code shows, since a small model gets
   many wrong. It does nothing until you install Ollama and pull `gpt-oss:20b`, which needs about 15
   GB of free memory.
+- [`skills/recall`](../skills/recall/SKILL.md): one search over what your earlier Claude Code
+  sessions said, your memory notes and your meeting notes, by keywords, by meaning and by regex, so
+  Claude looks there before it asks you something it was told before. The index stays on your
+  computer and the meaning part runs in Ollama there, so it costs none of your Claude plan. Without
+  Ollama and `qwen3-embedding:0.6b` (about 640 MB) it searches by keywords alone.
 - [`skills/mirror`](../skills/mirror/SKILL.md): how Claude keeps this copy and my own `~/.claude`
   the same, and what it must never publish here. Claude reads it only before it changes the setup,
   which keeps the rules every session reads shorter.

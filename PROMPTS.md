@@ -6,9 +6,30 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Commit only after a git add that worked
+## Add recall, a local search over earlier sessions
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> [pasted: the address of a YouTube video]
+> transcribe and analyze the video frames too.
+> tell me which parts my setup already does and what could actually be
+> done instead and whats just scifi. lets not think of any idea as
+> dumb. its clearly satire but i think some of the ideas could be useful
+
+Reply: Transcribed a satirical video about an over-automated engineer from its captions, checked them against a local Whisper run, read the on-screen text in the frames and sorted each idea against the ~/.claude setup. yt-dlp is now installed from Homebrew.
+
+**2.** (answer to: which idea should I build first?)
+> a, search index
+
+Reply: The recall search skill works: 36,747 chunks indexed, 34,456 with meaning embeddings, answering in about a second. It is not committed or pushed. The safety check blocked my edit of another session's record, so the mirror commit waits on one command you run.
+
+**3.** (answer to: did you run the command?)
+> Done
+
+## Commit only after a git add that worked
+
+2026-11-23, commit [1b50e7b](https://github.com/zululima/setup/commit/1b50e7b073161a9f29adb25c1dfc223ef9c6cc30), model claude-opus-5-5, effort xhigh.
 
 **32.** Quoted under [b3fe124](https://github.com/zululima/setup/commit/b3fe1242fec15e609f3554a7c825a91174de2402).
 

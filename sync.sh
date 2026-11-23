@@ -282,6 +282,8 @@ mirrored=(
   skills/models/pace.sh
   skills/local-review/SKILL.md
   skills/local-review/local-review.sh
+  skills/recall/SKILL.md
+  skills/recall/recall.py
   workflows/dream.js
   agents/dream-worker.md
 )
