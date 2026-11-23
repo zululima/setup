@@ -1,6 +1,6 @@
 ---
 name: pull-requests
-description: Procedures for a pull request: body, How to verify, review page, merge, pictures and issues, and the About settings of the user's repository. Load before opening, editing, reviewing or merging a PR, writing its test steps, capturing pictures for one, opening a GitHub issue, or creating or publishing a repository of the user's.
+description: Procedures for a pull request: the bug shown first, body, How to verify, review page, merge, pictures and issues, and the About settings of the user's repository. Load before starting work on an issue, and before opening, editing, reviewing or merging a PR, writing its test steps, capturing pictures for one, opening a GitHub issue, or creating or publishing a repository of the user's.
 ---
 
 # Pull requests
@@ -8,6 +8,22 @@ description: Procedures for a pull request: body, How to verify, review page, me
 These procedures sit beside the Pull requests rules in `~/.claude/CLAUDE.md`, which still hold:
 drafts only, one draft PR per issue and every other change on one already open, and never post on
 GitHub.
+
+## Starting on an issue
+
+- A session that starts on an issue reporting wrong behaviour shows the bug before it changes any
+  code, on the base branch its branch starts from: a test that fails on the behaviour the issue
+  names, not on a missing import or function, where the repository has tests that can reach it, and
+  otherwise the fewest steps on the running stack or in Claude in Chrome, with a screenshot or the
+  output that shows the wrong behaviour. The fix lands with that test, which then passes. The reply
+  that reports the fix names the test and the failure it gave before the fix, or gives the steps and
+  the picture, which the PR body shows as the state before the fix.
+- When the bug does not show with the issue's steps on the repository's seed data, once the issue's
+  comments and the sources the project's memory lists for it have been read, the session writes no
+  fix: a fix for a bug nobody has shown cannot be checked. Its reply says what it ran and what it
+  saw, and the next-step box asks the user what the issue needs.
+- An issue that asks for something new has no bug to show first: its How to verify steps are its
+  check.
 
 ## Opening
 

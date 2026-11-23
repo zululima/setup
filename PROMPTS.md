@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Keep a session open while offered options wait for a pick
+## pull-requests: show the bug before fixing an issue
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**7.** (answer to: which idea should I build next?)
+> a. [an ask about the next idea and the dream left out]
+
+## Keep a session open while offered options wait for a pick
+
+2026-11-23, commit [eca4ddd](https://github.com/zululima/setup/commit/eca4dddc8a5d49b9d5dd22224c768cc3383198b4), model claude-opus-5-5, effort xhigh.
 
 **6.**
 > i can archive this? but wasnt there more things i coudl benefit from
