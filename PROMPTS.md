@@ -6,9 +6,15 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## dream: check weekly whether hooks and skills help
+## Read a project's memory before editing it from No folder
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**8.** (answer to: which should I build next?) Quoted under [baf6d5c](https://github.com/zululima/setup/commit/baf6d5c40a41f299845c66d5fb442a887c667d96).
+
+## dream: check weekly whether hooks and skills help
+
+2026-11-23, commit [75d2fe4](https://github.com/zululima/setup/commit/75d2fe4b7326d9a633504d6944efde038fa7b6ea), model claude-opus-5-5, effort xhigh.
 
 **8.** (answer to: which should I build next?)
 > a. also doesnt dream measure all my setup anyways?

@@ -648,8 +648,8 @@ apply to one repository belong in that repository's project memory.
 ## Memory hygiene
 
 - Memory is per start directory. When a rule should hold everywhere, put it in this file, not in
-  memory. When starting in a parent folder like `~/Projects`, also read the memory of the project
-  you end up working in, under
+  memory. When starting in a parent folder like `~/Projects` or with No folder, read the memory of
+  the project you end up working in before its first edit, under
   `~/.claude/projects/-Users-<user>-Projects-<project>/memory/MEMORY.md`.
 - Only `MEMORY.md` loads when a session starts, the notes it links to do not. Before a step that an
   index line names, such as adding a worktree, starting the stack, switching a shared checkout, an
