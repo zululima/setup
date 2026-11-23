@@ -51,6 +51,8 @@ apply to one repository belong in that repository's project memory.
   other as unsigned. `git commit-tree`, which builds a commit without a checkout, ignores that
   setting, so it always runs with `-S`, and `git log --format='%h %G?'` over the commits a push adds
   shows no `N` before the push.
+- A `git commit` runs only through `&&` after its `git add`, so an add that fails, such as on a path
+  a move took away, commits nothing.
 
 ## Pull requests
 

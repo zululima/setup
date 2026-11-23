@@ -6,9 +6,15 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Letter choices in the order they stand
+## Commit only after a git add that worked
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**32.** Quoted under [b3fe124](https://github.com/zululima/setup/commit/b3fe1242fec15e609f3554a7c825a91174de2402).
+
+## Letter choices in the order they stand
+
+2026-11-23, commit [b3fe124](https://github.com/zululima/setup/commit/b3fe1242fec15e609f3554a7c825a91174de2402), model claude-opus-5-5, effort xhigh.
 
 **32.**
 > [a choice about another repository left out] also why was b a first
