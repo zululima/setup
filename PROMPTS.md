@@ -6,9 +6,18 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## fix(dream): check limit resets, not the weekly reset
+## models: keep access workarounds out of agent briefs
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**3.**
+> [pasted: a sentence from Claude's reply saying auto mode refused a
+> Fable 5.2 research subagent] can i fix this somehow. [an ask about a
+> draft and a calendar left out]
+
+## fix(dream): check limit resets, not the weekly reset
+
+2026-11-23, commit [73c5552](https://github.com/zululima/setup/commit/73c5552096ec27d752bc57f50f8a70df5cee576a), model claude-opus-5-5, effort xhigh.
 
 **3.**
 > nope not weekly resets but the one thats like push to reset

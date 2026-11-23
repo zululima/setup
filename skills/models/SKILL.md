@@ -30,6 +30,11 @@ description: Which Claude model and effort each kind of work runs on, when a tas
   opened in a split pane, a window or the main pane unless the user asks for that, and a session
   that stays links it in its reply.
 - A tool that cannot set the model or effort its row asks for is named in the reply with that row.
+- A brief, for a subagent, a workflow agent or a session, never asks its agent to get past an
+  access control, such as a paywall, a sign-in or a block on automated reads, through an archived
+  copy or another endpoint: auto mode refuses to start such work as unauthorized access, whatever
+  its model. The brief asks for each page the agent could not read to be named, and the session
+  reads those in Claude in Chrome, where the user's own sign-ins hold, or names them as not read.
 - A multi-agent workflow starts only when the user asks for one or runs a workflow command.
   Propose one, with a rough token cost, only for read-only work across a wide area: a deep
   review of a large diff, research across several read-only sources, or a sweep of a codebase
