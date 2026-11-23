@@ -6,9 +6,21 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Add recall, a local search over earlier sessions
+## verify-gate: send the turn back once when the check itself changed
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**4.**
+> was there anything else on the video worth looking into
+
+Reply: Checked the remaining video ideas against your setup: verify-gate.sh still trusts a check the session can edit, issue work has no reproduce-first step, and dictation still has nothing behind it. Nothing was built this turn.
+
+**5.** (answer to: which of a to d to build?)
+> a. [an aside about how the user works left out]
+
+## Add recall, a local search over earlier sessions
+
+2026-11-23, commit [3541c6e](https://github.com/zululima/setup/commit/3541c6ea926a32a7a3a340a147af2bcfbf705df0), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > [pasted: the address of a YouTube video]

@@ -63,7 +63,11 @@
   repository's verify command fails at the end of a turn, so "done" means the checks passed. It
   reads the command from `git config claude.verify`, a `verify` script in `package.json` or a
   `verify` target in the `Makefile`, runs it only after Claude changed files there, and gives up
-  after three tries or when Claude ends the turn again without a change.
+  after three tries or when Claude ends the turn again without a change. Before it runs the command,
+  it checks whether Claude weakened the check instead of fixing the code: a changed verify script or
+  a script it runs, a changed test, lint or type checker config, a deleted test file, fewer tests, a
+  changed assertion, an added skip, `.only` or suppression comment, or a rewritten snapshot. It
+  sends the turn back once with the list, so the reply says why each one was needed.
 - [`stack-held-by-peer.sh`](../hooks/stack-held-by-peer.sh): stops one Claude window from stopping
   Docker containers that another window is using.
 
