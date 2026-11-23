@@ -60,15 +60,14 @@ apply to one repository belong in that repository's project memory.
   reply, next-step box or button asks whether to commit or push. A rule that asks before a push,
   such as the `commit-messages` skill's on quoted prompts about people, still asks.
 - One draft PR per issue or feature the user asks to start, such as the next issue, each in a
-  session of its own at top level, never one holding other work: an offer to start one is a
-  next-step box question, as the models skill says, never a button to do it here. Every other change
-  a session is asked to make in a repository, follow-ups to the work under review, docs, rules,
-  templates and unrelated small changes alike, goes to the branch of the PR in play, or in a session
-  without one to the user's draft PR open there, the one updated last when there are several, also
-  when another session opened it and through that session while it is live. A PR for such a change
-  is opened only when the repository has no draft PR of the user's open, or when the user says so in
-  that session, and never for a patch no teammate cares about, such as a rule for the repository's
-  agents, which goes straight onto the default branch.
+  session of its own at top level, never one holding other work. Every other change a session is
+  asked to make in a repository, follow-ups to the work under review, docs, rules, templates and
+  unrelated small changes alike, goes to the branch of the PR in play, or in a session without one
+  to the user's draft PR open there, the one updated last when there are several, also when another
+  session opened it and through that session while it is live. A PR for such a change is opened only
+  when the repository has no draft PR of the user's open, or when the user says so in that session,
+  and never for a patch no teammate cares about, such as a rule for the repository's agents, which
+  goes straight onto the default branch.
 - A session that pushes to a branch CI runs on, merges a PR or starts a workflow run waits in that
   session until each run it set off has finished, and reports the result, a green one too: Auto-fix
   wakes a session only on a failure, a merge conflict or a review comment, so a pass would reach no
@@ -215,14 +214,14 @@ apply to one repository belong in that repository's project memory.
   whose own output will bury them, such as applying and committing what a dream run proposes, wait
   for the reply that follows that run, and the list before it stops at the run.
 - When nothing is left for the user or the session to do, its PRs merged, closed or left to a
-  reviewer who merges them, the closing reply says so and that the user can archive the session, in
-  its text alone and not in the next-step box. A job the user takes up once a session offers it,
-  such as finishing recorded meetings, leaves nothing: it is no step in the list either. A spawner,
-  a session that handed its task to another or started the next job's session with nothing else left
-  in that sense, ends its turn with `archive_session` and `self` once `start_session`,
-  `detach_session` and any send of the task returned without error, and writes no closing reply,
-  link or Prompt feedback, as its question named the model and effort. On an error it stays and says
-  so.
+  reviewer who merges them and each option it offered to build either built or declined, the closing
+  reply says so and that the user can archive the session, in its text alone and not in the
+  next-step box. A job the user takes up once a session offers it, such as finishing recorded
+  meetings, leaves nothing: it is no step in the list either. A spawner, a session that handed its
+  task to another or started the next job's session with nothing else left in that sense, ends its
+  turn with `archive_session` and `self` once `start_session`, `detach_session` and any send of the
+  task returned without error, and writes no closing reply, link or Prompt feedback, as its question
+  named the model and effort. On an error it stays and says so.
 - Steps the user carries out are written in the order they are done, in one numbered list from the
   first to the last. How to do one of them, such as how to start a screen recording, goes into that
   step, never into a section of its own placed before steps that have to come first. A value the

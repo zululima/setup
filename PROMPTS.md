@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## settings: keep the feedback switches out of the shared settings
+## Keep a session open while offered options wait for a pick
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**6.**
+> i can archive this? but wasnt there more things i coudl benefit from
+> implementing?
+
+## settings: keep the feedback switches out of the shared settings
+
+2026-11-23, commit [7feca12](https://github.com/zululima/setup/commit/7feca1270e5ffd05e80a353c1f98a5e877925f70), model claude-opus-5-5, effort xhigh.
 
 **5.**
 > bruh lets not do that to the cachyos desktop because that claude uses
