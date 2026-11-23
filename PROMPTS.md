@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Refresh the evals after the 21 Nov dream run
+## fix(hooks): keep Chrome hidden when it starts from closed
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**3.**
+> can you not open chrome so it pops up in my screen i always want it
+> in backgroudn. just tell me if thats not possible
+
+## Refresh the evals after the 21 Nov dream run
+
+2026-11-23, commit [94dea7e](https://github.com/zululima/setup/commit/94dea7efa31f80ddc589967e55d885c3651e195a), model claude-opus-5-5, effort xhigh.
 
 **1.** Quoted under [57858d1](https://github.com/zululima/setup/commit/57858d106b34f34ffd55daa49fe2437fb51eaadb).
 

@@ -58,7 +58,7 @@ jxa() {
   osascript -l JavaScript -e 'ObjC.import("AppKit"); ObjC.import("CoreGraphics");
     function chrome() {
       const a = $.NSRunningApplication.runningApplicationsWithBundleIdentifier("com.google.Chrome");
-      return a.count ? a.objectAtIndex(0) : null;
+      return Number(a.count) ? a.objectAtIndex(0) : null;
     }
     function windows(c) {
       const list = ObjC.castRefToObject($.CGWindowListCopyWindowInfo($.kCGWindowListOptionAll, 0));
@@ -78,8 +78,8 @@ state=$(jxa 'const c = chrome(); !c ? "none" : windows(c) ? "window" : c.active 
 case "$state" in
   window) echo "Chrome already has a window for Claude in Chrome"; exit 0 ;;
   front) open -g -a "Google Chrome" "$anchor"; exit 0 ;;
-  none) open -g -j -a "Google Chrome" "$anchor" ;;
-  *) jxa 'chrome().hide; ""' >/dev/null; open -g -a "Google Chrome" "$anchor" ;;
+  back) jxa 'chrome().hide; ""' >/dev/null; open -g -a "Google Chrome" "$anchor" ;;
+  *) open -g -j -a "Google Chrome" "$anchor" ;;
 esac
 
 jxa 'for (let i = 0; i < 100; i++) { const c = chrome(); if (c && !c.hidden) c.hide; delay(0.05); } ""' >/dev/null
