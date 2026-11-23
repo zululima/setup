@@ -6,9 +6,19 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Send back a reply that calls someone he or she
+## Refresh the evals after the 21 Nov dream run
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** Quoted under [57858d1](https://github.com/zululima/setup/commit/57858d106b34f34ffd55daa49fe2437fb51eaadb).
+
+Reply: The weekend's hours are logged, no meeting recording waits and no dream run is needed tonight. The dream review was still running.
+
+**2.** [an ask about other work left out] Quoted under [8e8b60e](https://github.com/zululima/setup/commit/8e8b60ef8bcebe486593997367444c9ff7e5d0f3).
+
+## Send back a reply that calls someone he or she
+
+2026-11-23, commit [8e8b60e](https://github.com/zululima/setup/commit/8e8b60ef8bcebe486593997367444c9ff7e5d0f3), model claude-opus-5-5, effort xhigh.
 
 **1.** Quoted under [57858d1](https://github.com/zululima/setup/commit/57858d106b34f34ffd55daa49fe2437fb51eaadb).
 
