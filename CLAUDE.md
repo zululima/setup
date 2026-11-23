@@ -47,6 +47,10 @@ apply to one repository belong in that repository's project memory.
   each commit sets the committer date again, so it runs the amend with `GIT_COMMITTER_DATE` set to
   the commit's author date, and a `--reset-author` in it comes with `--date` set to that date too,
   since on its own it resets the author date as well.
+- Every commit a session makes is signed when git's `commit.gpgSign` is on, since GitHub shows any
+  other as unsigned. `git commit-tree`, which builds a commit without a checkout, ignores that
+  setting, so it always runs with `-S`, and `git log --format='%h %G?'` over the commits a push adds
+  shows no `N` before the push.
 
 ## Pull requests
 

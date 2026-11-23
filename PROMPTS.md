@@ -6,9 +6,20 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## fix(hooks): keep Chrome hidden when it starts from closed
+## Sign commits built with git commit-tree
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** Quoted under [27b102b](https://github.com/zululima/setup/commit/27b102be9389750bc51481b956fdba27e2348237).
+
+Reply: [a reply about a downstream project left out]
+
+**2.**
+> why do my commits show unsigned
+
+## fix(hooks): keep Chrome hidden when it starts from closed
+
+2026-11-23, commit [9b1fbbc](https://github.com/zululima/setup/commit/9b1fbbcdf4f5b0d1df1485131a19bd8e7a63f5f1), model claude-opus-5-5, effort xhigh.
 
 **3.**
 > can you not open chrome so it pops up in my screen i always want it
