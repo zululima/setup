@@ -221,6 +221,7 @@ mirrored=(
   hooks/permission-mode-changed.sh
   hooks/no-foreground-wait.sh
   hooks/stop-unreachable-claim.sh
+  hooks/stop-gendered-pronoun.sh
   hooks/no-slow-binary-grep.sh
   hooks/own-hunks.sh
   hooks/push-only-when-locked.sh

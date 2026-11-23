@@ -465,6 +465,11 @@
           },
           {
             "type": "command",
+            "command": "\"$HOME/.claude/hooks/stop-gendered-pronoun.sh\"",
+            "timeout": 10
+          },
+          {
+            "type": "command",
             "command": "\"$HOME/.claude/hooks/archive-when-done.sh\"",
             "timeout": 10
           },

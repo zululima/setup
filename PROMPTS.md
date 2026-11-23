@@ -6,9 +6,19 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## Send back a reply that calls someone he or she
+
+2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** Quoted under [57858d1](https://github.com/zululima/setup/commit/57858d106b34f34ffd55daa49fe2437fb51eaadb).
+
+Reply: The weekend's hours are logged, no meeting recording waits and no dream run is needed tonight. The dream review was still running.
+
+**2.** [an ask about other work left out]
+
 ## chrome: quit Chrome once no session needs a tab
 
-2026-11-22, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+2026-11-22, commit [f8ea852](https://github.com/zululima/setup/commit/f8ea85291b7e26abdb6ee51a9e201afa7ca1f3b8), model claude-opus-5-5, effort xhigh.
 
 **13.**
 > also if you have no need for open chrome tabs close chrome / chormium

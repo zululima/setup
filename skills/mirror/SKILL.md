@@ -228,6 +228,11 @@ run and its commit in the same turn.
   or uploaded, and no Claude in Chrome tool ran since the prompt. Its phrase list is a heuristic
   that backs the rule in the `chrome` skill that tries Claude in Chrome before calling a page out of
   reach.
+- A `Stop` hook, `~/.claude/hooks/stop-gendered-pronoun.sh`, sends a turn back once when its closing
+  message calls someone he, him, his, she or her outside code, quotes and links, unless the reply
+  names a person whom `~/.claude/rules/pronouns.md` lists with those pronouns and their source. It
+  backs the rule in Prose of `~/.claude/CLAUDE.md` that a person whose pronouns no source states is
+  they.
 - Two hooks back the two stack rules in Running things of `~/.claude/CLAUDE.md` and replace
   neither. A `Stop` hook, `~/.claude/hooks/stop-running-stack.sh`, sends a turn back once when it
   started a stack that is still up. A `PreToolUse` hook, `~/.claude/hooks/stack-held-by-peer.sh`,

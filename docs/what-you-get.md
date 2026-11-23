@@ -110,6 +110,9 @@
   you switched its permission mode, so it never names the old one.
 - [`prompt-feedback-box.sh`](../hooks/prompt-feedback-box.sh): makes sure every reply to a prompt
   you typed ends with a short note on how your prompt could have been better.
+- [`stop-gendered-pronoun.sh`](../hooks/stop-gendered-pronoun.sh): sends Claude back when its reply
+  calls someone he or she outside commands, quotes and links, unless you listed that person's
+  pronouns, with where they come from, in `~/.claude/rules/pronouns.md`. Everyone else is they.
 - [`archive-when-done.sh`](../hooks/archive-when-done.sh): when Claude finishes with nothing left to
   ask or do, makes it say that you can archive the session, or, when it only handed its task to
   another session, archive itself without a closing reply.
