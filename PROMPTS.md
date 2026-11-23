@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## settings: turn off feedback that sends a conversation to Anthropic
+## settings: keep the feedback switches out of the shared settings
 
 2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**5.**
+> bruh lets not do that to the cachyos desktop because that claude uses
+> my personal claude account
+
+## settings: turn off feedback that sends a conversation to Anthropic
+
+2026-11-23, commit [cf6ae89](https://github.com/zululima/setup/commit/cf6ae893267266f3107219ada5ae6ae5abbab243), model claude-opus-5-5, effort xhigh.
 
 **4.** (answer to: shall I add both feedback switches to your own settings.json?)
 > Yes, add them
