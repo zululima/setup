@@ -453,6 +453,16 @@
             "timeout": 10
           }
         ]
+      },
+      {
+        "matcher": "^mcp__ccd_turn__wrap_up$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.claude/hooks/ask-recall.sh\"",
+            "timeout": 30
+          }
+        ]
       }
     ],
     "Stop": [
@@ -504,6 +514,11 @@
             "type": "command",
             "command": "\"$HOME/.claude/hooks/verify-gate.sh\"",
             "timeout": 900
+          },
+          {
+            "type": "command",
+            "command": "\"$HOME/.claude/hooks/ask-recall.sh\"",
+            "timeout": 30
           }
         ]
       }

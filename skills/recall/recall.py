@@ -3,8 +3,9 @@
 and meeting notes, by keywords (SQLite FTS5, BM25), by meaning (an embedding
 model in a local Ollama) and by regex.
 
-  recall.py "query" [--kind K,K] [--project P] [--role R] [--since DATE]
+  recall.py "query" [--kind K,K] [--project P] [--role R|!R] [--since DATE]
                     [--until DATE] [--regex PATTERN] [--limit N] [--all-sessions]
+                    [--json]
   recall.py --regex PATTERN [...]   the newest text matching the pattern
   recall.py show ID [--around N]    a hit with the messages around it
   recall.py index                   add what changed and embed everything left
@@ -384,7 +385,10 @@ def filters(args):
         kinds = args["kind"].split(",")
         conds.append("c.kind IN (%s)" % ",".join("?" * len(kinds)))
         params += kinds
-    for key, cond, value in (("project", "c.project LIKE ?", "%%%s%%"), ("role", "c.role = ?", "%s"),
+    if args["role"]:
+        conds.append("c.role != ?" if args["role"].startswith("!") else "c.role = ?")
+        params.append(args["role"].lstrip("!"))
+    for key, cond, value in (("project", "c.project LIKE ?", "%%%s%%"),
                              ("since", "c.ts >= ?", "%s"), ("until", "c.ts <= ?", "%sT23:59:59Z"),
                              ("session", "c.session LIKE ?", "%s%%")):
         if args[key]:
@@ -467,7 +471,7 @@ def search(db, ollama, args):
                 rows[r[0]] = r
                 if len(order) >= args["limit"] * 3:
                     break
-    shown, seen = 0, set()
+    shown, seen, hits = 0, set(), []
     for cid in order:
         r = rows.get(cid)
         if not r:
@@ -479,16 +483,26 @@ def search(db, ollama, args):
         seen.add(opening)
         shown += 1
         _, kind, project, session, ts, role, path, line, _, text = r
+        found = [m.group(0) for m in rx.finditer(text)][:1] if rx and not terms else terms
+        if args["json"]:
+            hits.append({"id": cid, "time": local_time(ts), "kind": kind, "project": project,
+                         "session": session, "role": role, "cosine": cosine.get(cid),
+                         "snippet": snippet(text, found), "path": tilde(path), "line": line})
+            if shown >= args["limit"]:
+                break
+            continue
         head = " ".join(x for x in ("%d. [%d]" % (shown, cid), local_time(ts), kind, project,
                                     (session or "")[:8], role) if x)
         if DEBUG:
             head += "  rrf %.4f cos %s" % (score.get(cid, 0), "%.3f" % cosine[cid] if cid in cosine else "-")
         print(head)
-        found = [m.group(0) for m in rx.finditer(text)][:1] if rx and not terms else terms
         print("   " + snippet(text, found))
         print("   %s:%d" % (tilde(path), line))
         if shown >= args["limit"]:
             break
+    if args["json"]:
+        print(json.dumps({"hits": hits, "notes": notes}))
+        return
     if not shown:
         print("no hits")
     for note in notes:
@@ -544,12 +558,12 @@ def main(argv):
         show(db, int(argv[1]), around)
         return
     args = {"query": "", "kind": None, "project": None, "role": None, "since": None, "until": None,
-            "session": None, "regex": None, "limit": 10, "all_sessions": False}
+            "session": None, "regex": None, "limit": 10, "all_sessions": False, "json": False}
     words, it = [], iter(argv)
     for a in it:
         key = a[2:].replace("-", "_")
-        if a == "--all-sessions":
-            args["all_sessions"] = True
+        if a in ("--all-sessions", "--json"):
+            args[key] = True
         elif a.startswith("--") and key in args:
             args[key] = int(next(it)) if key == "limit" else next(it)
         else:

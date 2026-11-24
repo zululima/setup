@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## pull-requests: read who merges before offering a merge
+## Search earlier sessions before asking the user a fact
 
 2026-11-24, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**9.** (answer to: shall I build search before asking next?)
+> Yes, build it
+
+## pull-requests: read who merges before offering a merge
+
+2026-11-24, commit [99794c1](https://github.com/zululima/setup/commit/99794c10d071e6bf72b573b4350b77d53fc9bd58), model claude-opus-5-5, effort xhigh.
 
 **1.** Quoted under [57858d1](https://github.com/zululima/setup/commit/57858d106b34f34ffd55daa49fe2437fb51eaadb).
 

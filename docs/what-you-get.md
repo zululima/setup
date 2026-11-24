@@ -70,6 +70,12 @@
   a script it runs, a changed test, lint or type checker config, a deleted test file, fewer tests, a
   changed assertion, an added skip, `.only` or suppression comment, or a rewritten snapshot. It
   sends the turn back once with the list, so the reply says why each one was needed.
+- [`ask-recall.sh`](../hooks/ask-recall.sh): before Claude asks you a fact, such as which phone you
+  test on, it searches your earlier prompts, memory notes, meeting notes and background files with
+  `skills/recall`, and when one comes close in meaning it sends Claude back once to read it, so you
+  are not asked what you already said. It reads the question in the desktop app's next-step box or
+  at the end of the closing message, leaves go-ahead questions and questions about a step you take
+  alone, and lets the same question through the second time.
 - [`stack-held-by-peer.sh`](../hooks/stack-held-by-peer.sh): stops one Claude window from stopping
   Docker containers that another window is using.
 

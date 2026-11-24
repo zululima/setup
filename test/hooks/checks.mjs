@@ -59,6 +59,38 @@ const suites = [
     ]
   }],
 
+  ['ask-recall.sh', run => {
+    const searched = path.join(home, 'ask-recall-searched')
+    const search = cosine => write(path.join(home, 'bin', `search-${cosine}`), `#!/bin/bash\necho "$1" >> ${q(searched)}\necho '${JSON.stringify({ hits: [{ id: 7, kind: 'prompt', time: '2026-11-01T10:00:00Z', project: 'demo', cosine, snippet: 'i test on the pixel 7' }] })}'\n`)
+    for (const c of [0.8, 0.5]) fs.chmodSync(search(c), 0o755)
+    const env = cosine => ({ env: { ASK_RECALL_SEARCH: path.join(home, 'bin', `search-${cosine}`) } })
+    const box = (ask, session_id = 'a1') => ({ hook_event_name: 'PreToolUse', tool_name: 'mcp__ccd_turn__wrap_up', session_id, tool_input: { recap: 'Built it.', ask } })
+    const closing = (text, session_id = 'a2') => ({ hook_event_name: 'Stop', session_id, stop_hook_active: false, last_assistant_message: text })
+    const prompts = n => jsonl(path.join(config, 'prompt-log', 'a3.jsonl'), Array.from({ length: n }, (_, i) => ({ prompt: `p${i}` })))
+    return [
+      ['sends back a box question that asks a fact an earlier prompt comes close to', () => {
+        const r = run(box('Which phone do you use for testing?'), env(0.8))
+        return refused(r) && r.err.includes('i test on the pixel 7')
+      }],
+      ['lets the same question through the second time', () => quiet(run(box('Which phone do you use for testing?'), env(0.8)))],
+      ['lets a go-ahead through without searching', () => {
+        fs.rmSync(searched, { force: true })
+        return quiet(run(box('Which one should I build next?', 'a4'), env(0.8))) && quiet(run(box('Have you signed in to Slack?', 'a4'), env(0.8))) && !fs.existsSync(searched)
+      }],
+      ['lets a question through when no hit comes close', () => quiet(run(box('Where do you keep the recordings?', 'a5'), env(0.5)))],
+      ['sends back a closing message that ends with a fact question, past its Prompt feedback', () =>
+        refused(run(closing('Built the hook.\n\nWhich exam are you preparing for?\n\n## Prompt feedback\n\nWhat did the prompt miss?'), env(0.8)))],
+      ['lets a closing message through on its second stop', () => quiet(run({ ...closing('Which exam are you preparing for?', 'a6'), stop_hook_active: true }, env(0.8)))],
+      ['sends back once a prompt, and again at the next prompt', () => {
+        prompts(1)
+        const first = refused(run(box('Which bank do you use?', 'a3'), env(0.8)))
+        const same = quiet(run(box('Which card do you use?', 'a3'), env(0.8)))
+        prompts(2)
+        return first && same && refused(run(box('Which shop do you use?', 'a3'), env(0.8)))
+      }],
+    ]
+  }],
+
   ['calendar-free-busy-only.sh', run => [
     ['lets the user\'s own calendar through', () => quiet(run({ tool_input: { calendarId: 'primary' } }))],
     ['lets a shared group calendar through', () => quiet(run({ tool_input: { calendarId: address('team', 'group.calendar.google.com') } }))],
