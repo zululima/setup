@@ -299,8 +299,9 @@ GitHub.
   feedback, where the reader's eye is when they go to copy it.
 - Once no finding of a review of a PR another author opened is left open, the reply asks in its
   next-step box whether the session approves and merges it, naming any PR the merge waits on, such
-  as the one that holds its base branch. Approving and merging are never listed as the user's
-  steps: the session takes both on the yes, the approval with no comment, as Merging says.
+  as the one that holds its base branch, unless the PR's reviews or comments name someone else to
+  merge it, as Merging says. Approving and merging are never listed as the user's steps: the session
+  takes both on the yes, the approval with no comment, as Merging says.
 - Where the PR's steps fall short, the overlay's `added_steps` put the fix on the page, marked as
   added by the review: the two command steps when the PR lacks them (an empty `after` puts a step
   before the PR's first), a step for a change the PR's steps skip, and the bug steps below. They
@@ -347,6 +348,11 @@ GitHub.
 
 ## Merging
 
+- Whoever a PR's reviews or comments name to merge it merges it. Before a session merges a PR,
+  offers to, asks whether it approves and merges one or lists its merge as anyone's step, it reads
+  every review body and comment on the PR, not only the review states. When one names someone else,
+  such as a review that tells the author to fix and merge when happy, the session neither merges the
+  PR nor offers to, and names that person as the one the merge waits on.
 - Delete the head branch of every PR a session merges, on GitHub and in the local checkout: `gh pr
   merge` gets `--delete-branch`. A local branch the merge leaves behind, such as when it ran with
   `--repo` outside the checkout, goes with `git branch -D` once the PR shows as merged, and the

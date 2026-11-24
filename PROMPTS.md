@@ -6,9 +6,21 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## pull-requests: read who merges before offering a merge
+
+2026-11-24, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** Quoted under [57858d1](https://github.com/zululima/setup/commit/57858d106b34f34ffd55daa49fe2437fb51eaadb).
+
+Reply: [a reply about the morning's hours and tasks left out]
+
+**2.**
+> [two PRs] if told in comment there that [a colleague] merges them.
+> not me. [a note on another step left out]
+
 ## Read a project's memory before editing it from No folder
 
-2026-11-23, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+2026-11-23, commit [d2574e8](https://github.com/zululima/setup/commit/d2574e888c41a7ce2e33859a861133518214b1a6), model claude-opus-5-5, effort xhigh.
 
 **8.** (answer to: which should I build next?) Quoted under [baf6d5c](https://github.com/zululima/setup/commit/baf6d5c40a41f299845c66d5fb442a887c667d96).
 
@@ -8503,7 +8515,7 @@ Stop, add it to dotclaude?)
 - perms: permissions
 - pls: please
 - PR: pull request
-- prs: pull requests
+- PRs: pull requests
 - px: pixels
 - QR: Quick Response (a two-dimensional barcode)
 - qr: quick response code
