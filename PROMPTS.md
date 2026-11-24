@@ -6,9 +6,24 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## no-own-chrome: check what runs after a heredoc
+## Show no tasks pane for background runs until issue 111704 closes
 
 2026-11-24, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** Quoted under [be53eb7](https://github.com/zululima/setup/commit/be53eb7b18143a232e6a7b1846fb3d8d848bb76c).
+
+**2.**
+> why does that side panel stay there
+
+Reply: The empty side panel comes from a known desktop app bug: closing the last pane leaves the panel open (issue 111704), and no session tool can hide it. I didn't file a new issue. [a note on other work left out]
+
+**3.** (answer to: stop opening the tasks pane for background runs until    issue 111704 is fixed?)
+> yes stop opening also does the mod keep the icon for background tasks
+> still running on the left side?
+
+## no-own-chrome: check what runs after a heredoc
+
+2026-11-24, commit [3a9cfbb](https://github.com/zululima/setup/commit/3a9cfbbe552a4e315e21c85b6d165f883b7de1a6), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > [an ask about an employer's GitHub organisation left out]

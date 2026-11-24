@@ -475,14 +475,15 @@ apply to one repository belong in that repository's project memory.
   says outright that the session cannot close it and why, such as what still runs in it, before
   leaving it to the user.
 - A run a session starts in the background, with Bash's `run_in_background`, a `Monitor`, a workflow
-  or a subagent, gets `show_pane` with `tasks` in the message that starts it, and in each later
-  message calling a tool and before each reply while it goes on, which says the run is in the tasks
-  pane. The turn that learns its last run ended, a task notification's too, calls `close_pane` with
-  `tasks` once before the reply. Work set for later is a task under Scheduled in the app's sidebar,
-  which survives an archive, never `CronCreate` or `ScheduleWakeup`, which die with the session. A
-  reply whose turn adds, changes or removes anything that runs unattended on a schedule or trigger,
-  such as a scheduled task, local or cloud, a launchd agent or a cron entry, names it, when and
-  where it runs and what it does, and each reply until a one-time one runs names it and its time.
+  or a subagent, gets `show_pane` with `tasks`, once anthropics/claude-code issue 111704 is closed,
+  in the message that starts it, and in each later message calling a tool and before each reply
+  while it goes on, which says the run is in the tasks pane. The turn that learns its last run
+  ended, a task notification's too, calls `close_pane` with `tasks` once before the reply. Work set
+  for later is a task under Scheduled in the app's sidebar, which survives an archive, never
+  `CronCreate` or `ScheduleWakeup`, which die with the session. A reply whose turn adds, changes or
+  removes anything that runs unattended on a schedule or trigger, such as a scheduled task, local or
+  cloud, a launchd agent or a cron entry, names it, when and where it runs and what it does, and
+  each reply until a one-time one runs names it and its time.
 - No session waits in the background on a step the user takes by hand, such as plugging in a drive:
   the reply gives the step, and the session goes on once the user says done. A sudo password is such
   a step, asked once: the session puts the task's sudo commands in one script, asks in the next-step
