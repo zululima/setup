@@ -6,9 +6,22 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## settings: allow removing a PR from the session's PR bar
+## Name a store's whole library as a two-way reading
 
 2026-11-24, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> [an ask for a menu entry for each game installed from Steam, left
+> out]
+
+Reply: [the reply on that work left out]
+
+**2.**
+> melee aint there
+
+## settings: allow removing a PR from the session's PR bar
+
+2026-11-24, commit [fdc2d2e](https://github.com/zululima/setup/commit/fdc2d2e946bcb950ad4b857abb1e2c71dbddb854), model claude-opus-5-5, effort xhigh.
 
 **9.**
 > huh how can i do that

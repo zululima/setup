@@ -416,12 +416,13 @@ apply to one repository belong in that repository's project memory.
   each browser's manifest or an app, carries that icon from its first build, since a signed or
   published build gains one only through a new release.
 - What the user asked for is built as asked. A part of the request that reads two ways, such as all
-  of a budget or only what is worth it, or a goal a later step narrows, or that the session advises
-  against, such as a login saved ahead of time, is asked before that part is built: never settled
-  alone and named in Prompt feedback afterwards, and never as a bare yes in the next-step box, which
-  reads as a yes to what the user asked for. The user's version, in their words and with its cost,
-  is one option and the session's alternative another, the session's pick marked recommended. The
-  reply still attacks the idea; the choice stays the user's.
+  of a budget or only what is worth it, or only the games Steam installs or its whole library, or a
+  goal a later step narrows, or that the session advises against, such as a login saved ahead of
+  time, is asked before that part is built: never settled alone and named in Prompt feedback
+  afterwards, and never as a bare yes in the next-step box, which reads as a yes to what the user
+  asked for. The user's version, in their words and with its cost, is one option and the session's
+  alternative another, the session's pick marked recommended. The reply still attacks the idea; the
+  choice stays the user's.
 - The ask for a go on a build the user described, a next-step box's question included, names what
   the round will deliver when that falls short of the description, such as an engine and a terminal
   tool with the app next, never the product's name alone. Until the described product exists, every
