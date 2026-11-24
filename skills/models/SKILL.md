@@ -164,10 +164,11 @@ description: Which Claude model and effort each kind of work runs on, when a tas
   task got wrong twice starts. A task the pace keeps off its row is asked about before any step
   of it, and the turn ends with that question: the next-step box asks whether to move the task to
   its row's model and effort, and the reply gives what `pace.sh` printed for the limit that binds.
-  Its first button, which Cmd+Enter presses, keeps the task here on this session's model and
-  effort, where software that is hard or open on Opus 5.5 at xhigh scores 1.9 points under its
-  row at 38% of Fable 5.2's cost per response. Its second starts the fork on the task's row, as
-  the bullet on moving a task up says.
+  Its first button, which Cmd+Enter presses, runs the task on the second rung of its line below:
+  here on this session's model and effort for software, where software that is hard or open on
+  Opus 5.5 at xhigh scores 1.9 points under its row at 38% of Fable 5.2's cost per response, and
+  in a subagent on that rung for research and chart reading. Its second starts the fork on the
+  task's row, as the bullet on moving a task up says.
 - A session keeps its own task whatever the verdict, and no reply asks to move it to a cheaper
   model. A reply that kept a task off its row for the limit, or started work on a second rung,
   gives what `pace.sh` printed for the limit that binds.
@@ -175,9 +176,13 @@ description: Which Claude model and effort each kind of work runs on, when a tas
   session, takes the second rung of its line: Opus 5.5 at xhigh for software that is hard or open,
   Opus 5.5 at high for other software and for everything else, and Fable 5.2 at low for research
   and chart reading, or Opus 5.5 at medium when the limit that binds is the weekly Fable one. The
-  Sonnet and Haiku rows stay as they are. It takes that rung without a question of its own, and
-  an offer to start a session names it. The brief of a session started on such a rung says the
-  user picked its model and effort for the pace, so that session keeps them and moves no task up.
+  Sonnet and Haiku rows stay as they are. No such work starts before the user picks: the turn ends
+  with a question in the next-step box that names both picks in full, its first button, which
+  Cmd+Enter presses, starting the work on that rung, and its second on the model and effort of its
+  row, the pick when the 5-hour and weekly limits are left out of the count. The reply gives what
+  `pace.sh` printed for the limit that binds, and an offer to start a session asks the same way.
+  The brief of a session started on such a rung says the user picked its model and effort for the
+  pace, so that session keeps them and moves no task up.
 - A reply that offers a session reads the limits again first, with `get_usage` and `pace.sh`,
   unless the session read them in the last 10 minutes, and a figure or time the offer or the brief
   gives for a limit is quoted from that read. When it has the 5-hour limit within 5 points of full,

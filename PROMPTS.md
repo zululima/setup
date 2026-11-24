@@ -6,9 +6,24 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Show no tasks pane for background runs until issue 111704 closes
+## models: ask before work starts on a cheaper pick for the pace
 
 2026-11-24, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> [a question about nonprofit pricing left out]
+
+**2.**
+> [an ask to research five countries left out] also you said The
+> country research ran in a subagent on Fable 5.2 at low effort,
+> because the 5-hour limit was 22% used and on pace for 158% by its
+> reset at 12:20. next time ask as cmd enter the fable 2 low and the
+> model you would have recommeneded and effort as the other option if
+> 5h and weekly resets werent noticed in the calculation
+
+## Show no tasks pane for background runs until issue 111704 closes
+
+2026-11-24, commit [7169681](https://github.com/zululima/setup/commit/71696813b9efda8f4e1af6d0988d6fc9e05052a5), model claude-opus-5-5, effort xhigh.
 
 **1.** Quoted under [be53eb7](https://github.com/zululima/setup/commit/be53eb7b18143a232e6a7b1846fb3d8d848bb76c).
 
