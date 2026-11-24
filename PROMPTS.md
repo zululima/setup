@@ -6,9 +6,26 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Retry a folder move that did not take
+## settings: allow removing a PR from the session's PR bar
 
 2026-11-24, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**9.**
+> huh how can i do that
+
+Reply: Auto mode refused to let me remove the closed PR from this session's PR bar a second time.
+
+**10.** (answer to: keep the closed PR in the PR bar?)
+> Add the rule
+
+Reply: The allow rule for removing a PR from the PR bar is not in ~/.claude/settings.json yet; only you can add it. Once it's there, I remove the PR from the bar and commit the settings change to the setup mirror.
+
+**11.** (answer to: have you run the script that adds the rule?)
+> Done
+
+## Retry a folder move that did not take
+
+2026-11-24, commit [dee8c97](https://github.com/zululima/setup/commit/dee8c97e8d9276cc4334a6bf7e4af9baa81896c0), model claude-opus-5-5, effort xhigh.
 
 **3.** (answer to: shall I try moving this session to the [a project] folder again?)
 > yes always try again if doesnt work first time

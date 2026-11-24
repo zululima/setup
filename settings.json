@@ -66,7 +66,8 @@
       "Bash(scripts/release.sh apk-android:*)",
       "Bash(scripts/release.sh upload-android:*)",
       "mcp__ccd_session_mgmt__archive_session",
-      "mcp__ccd_session__start_session"
+      "mcp__ccd_session__start_session",
+      "mcp__ccd_pr__unbind_pr"
     ],
     "ask": [
       "Bash(brew install:*)",
