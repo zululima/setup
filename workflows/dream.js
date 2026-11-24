@@ -5,7 +5,7 @@ export const meta = {
   phases: [
     { title: 'Scout', detail: 'Hue lights off, time window, mode, due sources, transcripts, pull requests, backlog, usage and its history' },
     { title: 'Recent', detail: 'tier 1: the window\'s transcripts newest first, config, GitHub reviews and battery use, merged and checked first' },
-    { title: 'Weekly', detail: 'tier 2: rule effectiveness, how hooks and skills help, token waste, harness, doctor, Anthropic, Hacker News, Finnish terms and skill repositories' },
+    { title: 'Weekly', detail: 'tier 2: rule effectiveness, how hooks and skills help, token waste, harness, doctor, Anthropic, Hacker News, Finnish terms and skill repositories; a piece a week past its cadence goes ahead of tier 1' },
     { title: 'Work', detail: 'tier 3: project audits, what derived projects should take over from their upstreams, reviews of open pull requests and, in a final run, a Monday brief' },
     { title: 'Older', detail: 'tier 4, eve and final runs: subagent transcripts, then older transcripts a week at a time, newest first' },
     { title: 'Usage', detail: 'readings of the plan usage card as work finishes and as one agent is left working alone, and timers for checks that run long' },
@@ -70,6 +70,7 @@ const TIER_PREFIX = { 1: 'n', 2: 'w', 3: 'k', 4: 'd' }
 const CADENCE_HOURS = { transcripts: 0, config: 0, github: 20, battery: 20, rules: 160, tools: 160, waste: 160, harness: 160, doctor: 160, anthropic: 160, hn: 160, finnish: 160, skills: 160, projects: 160, library: 160, upstreams: 160, prs: 160, brief: 0, subagents: 0 }
 // In eve and final runs a weekly source is due once per weekend, so a final run picks up what the eve run had no usage for.
 const WEEKEND_CADENCE_HOURS = 36
+const OVERDUE_HOURS = 7 * 24
 const LOOKBACK_DAYS = 7
 const HN_FIRST_DAYS = 30
 const HN_MIN_POINTS = 150
@@ -650,9 +651,11 @@ const nowMs = Date.parse(scout.now)
 // BSD find and bfs reject the milliseconds toISOString adds, so a time that goes into find -newermt drops them.
 const findTime = ms => new Date(ms).toISOString().replace(/\.\d{3}Z$/, 'Z')
 const lastRan = {}
+const lastRead = {}
 for (const r of history) {
   const at = Date.parse(r.time || `${r.date}T00:00:00Z`)
   for (const s of r.sources || []) if (!lastRan[s] || at > lastRan[s]) lastRan[s] = at
+  for (const l of r.pieces || []) if (!lastRead[l] || at > lastRead[l]) lastRead[l] = at
 }
 const lastEntry = history.length ? history[history.length - 1] : null
 const pending = lastEntry && Array.isArray(lastEntry.pending) ? lastEntry.pending : []
@@ -827,6 +830,7 @@ let readingUnits = {}
 const longestMs = {}
 const skippedWork = []
 const sourceDone = {}
+const piecesRead = []
 const tierState = {}
 for (const k of [1, 2, 3, 4]) tierState[k] = { gathers: 0, started: 0, merged: false }
 
@@ -1765,8 +1769,11 @@ function gatherTier(n, list) {
     label: t.label,
     source: t.source,
     reserve: { merge: 1, report: 1 },
-    run: () => dreamAgent(t.prompt, { label: t.label, phase: TIER_PHASE[n], schema: FINDINGS }),
-  }).then(result => ({ task: t, result }))))
+    run: () => dreamAgent(t.prompt, { label: t.label, phase: t.phase || TIER_PHASE[n], schema: FINDINGS }),
+  }).then(result => {
+    if (t.weekly && result && !result.skipped) piecesRead.push(t.label)
+    return { task: t, result }
+  })))
 }
 
 async function mergeTier(n, outs) {
@@ -1887,7 +1894,16 @@ tierRuns.push(...carriedUnchecked.map(p => submit({
   if (r && r.skipped) unchecked.push({ ...p, why: r.reason })
   else if (r) verified.push(r)
 })))
-addTier(1, tasks.filter(t => t.tier === 1))
+// A weekly piece of work a week past its source's cadence, or never read, goes ahead of the transcripts, the longest unread first and a source of one piece before a larger one, so a run with room for little else still reaches it. Each piece keeps its own time, since a source of many pieces seldom finishes in such a run.
+const readAt = t => Math.max(lastRan[t.source] || 0, lastRead[t.label] || 0)
+const piecesOf = s => tasks.filter(t => t.source === s).length
+for (const t of tasks) if (t.tier === 2) t.weekly = true
+const overdue = tasks
+  .filter(t => t.weekly && nowMs - readAt(t) > (CADENCE_HOURS[t.source] + OVERDUE_HOURS) * 3600 * 1000)
+  .sort((a, b) => readAt(a) - readAt(b) || piecesOf(a.source) - piecesOf(b.source))
+for (const t of overdue) Object.assign(t, { tier: 1, phase: TIER_PHASE[2] })
+if (overdue.length) log(`Overdue, so read before the transcripts: ${overdue.map(t => t.label).join(', ')}`)
+addTier(1, overdue.concat(tasks.filter(t => t.tier === 1 && !overdue.includes(t))))
 addTier(2, tasks.filter(t => t.tier === 2))
 
 if (only.includes('brief')) {
@@ -2267,6 +2283,7 @@ const entry = {
   machine: MACHINE,
   mode: MODE,
   sources: ranSources,
+  pieces: piecesRead,
   model: scout.model,
   effort: scout.effort,
   margin: MARGIN,

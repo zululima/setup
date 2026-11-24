@@ -6,9 +6,24 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Search earlier sessions before asking the user a fact
+## dream: read overdue weekly pieces before the transcripts
 
 2026-11-24, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> [pasted: the address of a model release post] this came out 3 days
+> ago. was there some reason why dreaming didnt catch this hacker news
+> from [pasted: the address of Hacker News' best stories]? or is it not
+> useful for my workflow
+
+Reply: Dream missed Inkling 2 Mini because its Hacker News check has never run: every run since 24 Oct ran out of usage after one transcript batch. Inkling 2 Mini's 20 GB Ollama build doesn't fit the M5 Air's 17.8 GB graphics memory. Nothing in dream.js is changed yet.
+
+**2.** (answer to: shall I make dream run overdue weekly checks before transcript batches?)
+> Yes, do a
+
+## Search earlier sessions before asking the user a fact
+
+2026-11-24, commit [2824b37](https://github.com/zululima/setup/commit/2824b37f2522625da7d87066229aab87e5f9e6a8), model claude-opus-5-5, effort xhigh.
 
 **9.** (answer to: shall I build search before asking next?)
 > Yes, build it

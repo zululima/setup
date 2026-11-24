@@ -52,6 +52,7 @@ export async function simulate(wf, sc) {
   // With dupes, a symlinked project folder shows the first three files of each list a second time, and the last run carried one over under that path.
   const linked = list => list.concat(sc.dupes ? list.slice(0, 3).map(s => ({ ...s, path: s.path.replace(/^\/(\w+)\//, '/$1/link/'), project: 'link' })) : [])
   const history = sc.dupes ? JSON.stringify({ ...JSON.parse(HISTORY), pending: [{ path: '/t/link/s5.jsonl', project: 'link', bytes: 1e6, mtime: sc.since, from: '2026-10-12T00:00:00Z' }] }) : HISTORY
+  // sc.earlierHistory goes before the last run's line, so the window still starts from that run.
   const fit = { verdict: 'keep', reason: 'ok', finalProposal: '', script: 'echo', exactChange: 'a line', exampleWrong: 'it broke', exampleFixed: 'it works' }
   function respond(label, prompt) {
     st.prompts[label] = prompt
@@ -60,7 +61,7 @@ export async function simulate(wf, sc) {
       now: sc.now, today: sc.now.slice(0, 10), utcOffset: sc.utcOffset || '+0300', machine: sc.machine || 'mac', runId: sc.now.slice(0, 10), since: sc.since, lookbackFrom: new Date(Date.parse(sc.since) - 7 * 24 * H).toISOString(),
       oldestTranscript: '2026-09-21T08:00:00Z', installedVersion: '2.1.299', previousReports: [],
       sessions: linked(Array.from({ length: sc.sessions }, (_, i) => ({ path: `/t/s${i}.jsonl`, project: `p${i % 5}`, bytes: 1e6 + i, mtime: new Date(Date.parse(sc.now) - i * H).toISOString(), lastActivity: new Date(Date.parse(sc.now) - i * H).toISOString() }))),
-      skillRepos: [], model: 'claude-opus-5-5', effort: 'xhigh', usage: usageCard(), historyLines: (sc.history || [history]).concat(sc.extraHistory || []), weekLines: sc.weekLines || [],
+      skillRepos: [], model: 'claude-opus-5-5', effort: 'xhigh', usage: usageCard(), historyLines: (sc.earlierHistory || []).concat(sc.history || [history], sc.extraHistory || []), weekLines: sc.weekLines || [],
       backlog: sc.backlog || { valid: true, open: [], closed: [], unchecked: [] },
       ruleSections: ['Git', 'Remote', 'Commands', 'Commits', 'PRs', 'Prose', 'Feedback', 'Comments', 'Running', 'Permissions', 'Public', 'Memory'],
       repos: [1, 2, 3, 4, 5].map(i => ({ path: `~/Projects/r${i}`, projectDirs: [`-r${i}`] })),
@@ -71,7 +72,7 @@ export async function simulate(wf, sc) {
     // Its history lines are what the jq in its prompt prints: each run's machine and ledger.
     if (label === 'usage before the scout') return {
       ...usageCard(), utcOffset: sc.utcOffset || '+0300', machine: sc.machine || 'mac', running: sc.marker || '', weekLines: sc.weekLines || [], resetsRecord: sc.resetsRecord || '',
-      historyLines: (sc.history || [history]).concat(sc.extraHistory || []).map(l => JSON.parse(l)).filter(r => r.ledger).map(r => JSON.stringify({ machine: r.machine ?? null, ledger: r.ledger })),
+      historyLines: (sc.earlierHistory || []).concat(sc.history || [history], sc.extraHistory || []).map(l => JSON.parse(l)).filter(r => r.ledger).map(r => JSON.stringify({ machine: r.machine ?? null, ledger: r.ledger })),
     }
     if (label === 'record reading') { st.weekLine = prompt.split('\n').find(x => x.startsWith('{')); return { ok: true } }
     if (label === 'clear marker') return { ok: true }

@@ -88,6 +88,12 @@ const readings = st => Object.entries(st.prompts).filter(([k]) => /^usage \d/.te
 const marker = JSON.stringify({ machine: 'desk', runId: '2026-10-14', started: '2026-10-14T13:30:00Z', alive: '2026-10-14T17:48:00Z', aliveEpoch: 1 })
 // Work the pool starts, as against readings, listings and the scout.
 const work = s => /^(transcripts|prompt feedback|config|github|battery)( |$)/.test(s.label)
+// The weekly sources as a run that read them days before a scenario's time records them. Read 8 days before, they are due again but not a week past their cadence, so they keep their place behind tier 1.
+const WEEKLY = ['rules', 'tools', 'waste', 'harness', 'doctor', 'anthropic', 'hn', 'finnish', 'skills']
+const ranWeekly = (time, more = {}) => JSON.stringify({ date: time.slice(0, 10), time, model: 'claude-opus-5-5', effort: 'xhigh', ledger: {}, sources: WEEKLY, ...more })
+const daysBefore = (sc, days) => new Date(Date.parse(sc.now) - days * 24 * 3600000).toISOString()
+const notOverdue = (sc, machine) => ({ ...sc, earlierHistory: [machine ? on(machine, ranWeekly(daysBefore(sc, 8))) : ranWeekly(daysBefore(sc, 8))] })
+const firstRead = st => (st.started.find(s => /^(transcripts \d|token waste$|harness overlap$)/.test(s.label)) || {}).label
 
 // The eve run of 19 Nov on the desktop's Pro plan: 15:56 local, the 5-hour limit at 5% until 20:50, the week at 35% until 07:00, no earlier run measured, and work that costs about nine times what it does on the Mac, where a full 5-hour window moves the week about 12.5 points.
 const nov19pro = { five: 5, fiveReset: '2026-11-19T18:50:00Z', week: 35, weekReset: '2026-11-20T05:00:00Z', now: '2026-11-19T13:56:00Z', since: '2026-11-14T10:24:00Z', utcOffset: '+0200', sessions: 125, history: [], costScale: 9, ratio: 8 }
@@ -154,7 +160,7 @@ const scenarios = [
     ['last use before the reset', st => st.lastUse < reset],
     noHits,
   ]]),
-  ['final of 31 Oct, 5-hour limit at 70% until 14:00', oct31, [
+  ['final of 31 Oct, 5-hour limit at 70% until 14:00', notOverdue(oct31), [
     ['mode is final', (st, r) => /^final/.test(r.mode)],
     ['waits for the 14:00 reset instead of dropping the work', st => st.started.some(s => s.label.endsWith(' after the 14:00 reset'))],
     ['starts the work after the reset and before the 14:45 cutoff', st => {
@@ -329,7 +335,7 @@ const scenarios = [
   ['battery read 10 hours ago',{ ...wed, week: 30, sessions: 4, extraHistory: [ranBattery('2026-10-14T08:00:00Z')] }, [
     ['is not due yet', (st, r) => !st.labels.battery && r.sources.notDue.includes('battery')],
   ]],
-  ['battery read 21 hours ago', { ...wed, week: 30, sessions: 4, extraHistory: [ranBattery('2026-10-13T21:00:00Z')] }, [
+  ['battery read 21 hours ago', notOverdue({ ...wed, week: 30, sessions: 4, extraHistory: [ranBattery('2026-10-13T21:00:00Z')] }), [
     ['is due, and covers the time since that run', st => st.labels.battery === 1 && battery(st).includes('Cover 2026-10-13T21:00:00Z to')],
     ['and gives find that time without milliseconds, which BSD find and bfs reject', st => /-newermt 2026-10-13T21:00:00Z /.test(battery(st))],
   ]],
@@ -362,7 +368,7 @@ const scenarios = [
   ['a run that reads the transcripts', { ...wed, week: 30, sessions: 4 }, [
     ['moves the window start to its own time', st => recorded(st).readTo === '2026-10-14T18:00:00Z' && recorded(st).time === '2026-10-14T18:00:00Z'],
   ]],
-  ['symlinked project folders', { ...fri, five: 5, week: 30, sessions: 12, dupes: true }, [
+  ['symlinked project folders', notOverdue({ ...fri, five: 5, week: 30, sessions: 12, dupes: true }), [
     ['reads each transcript, carried or listed twice, once', st => {
       const read = Object.entries(st.prompts).filter(([k]) => /^(transcripts|deep|subagents) /.test(k)).flatMap(([, p]) => [...p.matchAll(/^- \S+\/(\S+\.jsonl) \(/gm)].map(m => m[1]))
       return read.filter(n => n.startsWith('s')).length === 12 && read.some(n => n.startsWith('o')) && read.some(n => n.startsWith('a')) && new Set(read).size === read.length
@@ -446,7 +452,7 @@ const scenarios = [
     ['uses nothing after the 07:00 reset', st => st.afterWeekReset === 0 && st.lastUse < fridayReset],
     noHits,
   ]],
-  ['first run on a machine, the runs on record another machine\'s', { ...wed, week: 30, sessions: 20, machine: 'desk', history: [on('mac', HISTORY)], extraHistory: [on('mac', ranBattery('2026-10-14T08:00:00Z'))] }, [
+  ['first run on a machine, the runs on record another machine\'s', notOverdue({ ...wed, week: 30, sessions: 20, machine: 'desk', history: [on('mac', HISTORY)], extraHistory: [on('mac', ranBattery('2026-10-14T08:00:00Z'))] }, 'mac'), [
     ['estimates from none of them', st => st.logs.some(l => /Estimating from 0 earlier runs/.test(l))],
     ['starts one piece of work and only when it is done the next, which the reading then measures', st => {
       const [first, second, third] = st.started.filter(work)
@@ -456,7 +462,7 @@ const scenarios = [
     ['what the other machine read 10 hours ago still counts as read', (st, r) => !st.labels.battery && r.sources.notDue.includes('battery')],
     noHits,
   ]],
-  ['a later run on that machine', { ...wed, week: 30, sessions: 20, machine: 'desk', history: [on('mac', HISTORY), on('desk', HISTORY)] }, [
+  ['a later run on that machine', notOverdue({ ...wed, week: 30, sessions: 20, machine: 'desk', history: [on('mac', HISTORY), on('desk', HISTORY)] }, 'mac'), [
     ['estimates from its own run alone', st => st.logs.some(l => /Estimating from 1 earlier runs/.test(l))],
     ['and starts seven pieces of work at once', st => { const starts = st.started.filter(work); return starts.filter(s => s.at === starts[0].at).length === 7 }],
   ]],
@@ -477,6 +483,18 @@ const scenarios = [
   ['first run of the day on the machine the limit resets record names', { ...wed, week: 30, sessions: 4, resetsRecord: resetsRecord('2026-10-13') }, [
     ['reads the record before the scout', st => (st.prompts['usage before the scout'] || '').includes('cat ~/.claude/dream/claude-resets.json 2>/dev/null')],
     ['has the session check the limit resets first, on the local day', (st, r) => r.forTheSession.startsWith('Before anything else, check the limit resets the user can use') && r.forTheSession.includes('set checked to 2026-10-14')],
+  ]],
+  ['a final run with room for two pieces, no weekly source read yet', { ...sat, week: 94, sessions: 200 }, [
+    ['reads weekly pieces and no transcripts', st => firstRead(st) === 'token waste' && !st.started.some(s => s.label.startsWith('transcripts '))],
+    ['puts the sources of one piece before the pieces of a larger one', st => /^Overdue, so read before the transcripts: token waste, harness overlap, doctor, anthropic changes, hacker news, finnish terms, tools: hooks/.test(st.logs.find(l => l.startsWith('Overdue')) || '')],
+    ['records the pieces it read', st => JSON.stringify(recorded(st).pieces) === '["token waste","harness overlap"]'],
+    noHits,
+  ]],
+  ['the same run with the weekly sources read 8 days ago', notOverdue({ ...sat, week: 94, sessions: 200 }), [
+    ['keeps them behind the transcripts', st => !st.logs.some(l => l.startsWith('Overdue')) && firstRead(st) === 'transcripts 1/50'],
+  ]],
+  ['the same run with the rules read 20 days ago and three of their sections 2 days ago', { ...sat, week: 94, sessions: 200, earlierHistory: [ranWeekly(daysBefore(sat, 20)), ranWeekly(daysBefore(sat, 2), { sources: WEEKLY.filter(s => s !== 'rules'), pieces: ['rules: Git', 'rules: Remote', 'rules: Commands'] })] }, [
+    ['reads the sections no run read since', st => st.started.some(s => s.label === 'rules: Commits') && !st.started.some(s => /^rules: (Git|Remote|Commands)$/.test(s.label))],
   ]],
 ]
 
