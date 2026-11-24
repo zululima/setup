@@ -6,9 +6,21 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## dream: read overdue weekly pieces before the transcripts
+## no-own-chrome: check what runs after a heredoc
 
 2026-11-24, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> [an ask about an employer's GitHub organisation left out]
+
+Reply: [an answer about the same left out]
+
+**2.** (answer to: shall I draft the profile README?)
+> Yes, a
+
+## dream: read overdue weekly pieces before the transcripts
+
+2026-11-24, commit [190198d](https://github.com/zululima/setup/commit/190198d9a56c578bf325ba78775a27acdc2b3a61), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > [pasted: the address of a model release post] this came out 3 days

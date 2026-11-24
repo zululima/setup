@@ -15,7 +15,13 @@ input="$(cat)"
 cmd="$(printf '%s' "$input" | jq -r '.tool_input.command // empty' 2>/dev/null)" || exit 0
 [ -n "$cmd" ] || exit 0
 
-cmd="${cmd%%<<*}"
+cmd="$(printf '%s\n' "$cmd" | awk '
+  skip { t = $0; if (tabs) sub(/^\t+/, "", t); if (t == delim) skip = 0; next }
+  { print
+    line = $0; gsub(/<<</, "", line)
+    if (match(line, /<<-?[ \t]*["'\'']?[A-Za-z_][A-Za-z0-9_]*["'\'']?/)) {
+      d = substr(line, RSTART, RLENGTH); tabs = (d ~ /^<<-/)
+      sub(/^<<-?[ \t]*/, "", d); gsub(/["'\'']/, "", d); delim = d; skip = 1 } }')"
 cmd="${cmd//$'\\\n'/ }"
 
 hit=""
