@@ -51,8 +51,6 @@ apply to one repository belong in that repository's project memory.
   other as unsigned. `git commit-tree`, which builds a commit without a checkout, ignores that
   setting, so it always runs with `-S`, and `git log --format='%h %G?'` over the commits a push adds
   shows no `N` before the push.
-- A `git commit` runs only through `&&` after its `git add`, so an add that fails, such as on a path
-  a move took away, commits nothing.
 
 ## Pull requests
 
@@ -87,9 +85,6 @@ apply to one repository belong in that repository's project memory.
 - Remote layout decides the flow. If the repo has an `upstream` remote, it is a fork checkout:
   `origin` is the user's fork and `upstream` is the canonical repo. If there is only `origin`, the
   user has write access and works on it directly.
-- Fork checkouts: the user has read access on the upstream repo. Branch from `upstream/<default
-  branch>`, push to `origin`, and open the PR against the upstream repo. Switch the checkout back to
-  the branch it was on afterwards.
 - Direct checkouts: branch from `origin/<default branch>`, push to `origin`, and open the PR against
   that default branch. The exception is a repository the user is the sole contributor to: one under
   the user's own account whose only collaborator is the user, as `gh api
@@ -684,6 +679,10 @@ apply to one repository belong in that repository's project memory.
   a project folder like any other and gets a group of its own. `change_directory` refuses those
   scratch folders, so a running session cannot move to This computer: asked to, the session says so,
   and the user starts a No folder session for a question that belongs to no project.
+- A move of the session's folder, with `change_directory` or `request_directory`, that the app
+  reports did not happen, or after which the shell still starts outside the folder, is made again at
+  once with the same path, without asking. Only a second failure goes to the user, with what the app
+  said.
 - A session started in a project's folder keeps to that project: a wider prompt, such as which Slack
   messages wait for a reply, gets the project's part alone, and its steps and lists leave other work
   out. A first prompt unrelated to the folder gets a first line naming where it belongs, a No folder

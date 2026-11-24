@@ -30,6 +30,9 @@ GitHub.
 - Public and upstream repositories: never name a downstream project, its client or its customer. Say
   "a downstream project". Redact them in quoted prompts with square brackets, and redact absolute
   paths and container names that carry them.
+- Fork checkouts: the user has read access on the upstream repo. Branch from `upstream/<default
+  branch>`, push to `origin`, and open the PR against the upstream repo. Switch the checkout back to
+  the branch it was on afterwards.
 - In a fork checkout, resolve the GitHub handle at runtime with `gh api user --jq .login` (never
   hardcode it) and open the PR with `--repo <upstream-owner>/<repo> --head <handle>:<branch> --base
   <default branch>`. In a direct checkout, open it with `--head <branch>`.

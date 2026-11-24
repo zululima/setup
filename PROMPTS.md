@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## models: ask before work starts on a cheaper pick for the pace
+## Retry a folder move that did not take
 
 2026-11-24, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**3.** (answer to: shall I try moving this session to the [a project] folder again?)
+> yes always try again if doesnt work first time
+
+## models: ask before work starts on a cheaper pick for the pace
+
+2026-11-24, commit [69c3b3e](https://github.com/zululima/setup/commit/69c3b3e1b6fe0058206dfe0a3db347f7a6dae7e6), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > [a question about nonprofit pricing left out]
