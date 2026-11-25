@@ -30,6 +30,9 @@ GitHub.
 - Public and upstream repositories: never name a downstream project, its client or its customer. Say
   "a downstream project". Redact them in quoted prompts with square brackets, and redact absolute
   paths and container names that carry them.
+- Remote layout decides the flow. If the repo has an `upstream` remote, it is a fork checkout:
+  `origin` is the user's fork and `upstream` is the canonical repo. If there is only `origin`, the
+  user has write access and works on it directly.
 - Fork checkouts: the user has read access on the upstream repo. Branch from `upstream/<default
   branch>`, push to `origin`, and open the PR against the upstream repo. Switch the checkout back to
   the branch it was on afterwards.
