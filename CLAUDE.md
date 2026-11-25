@@ -260,18 +260,19 @@ apply to one repository belong in that repository's project memory.
   its own, tagged `text` when it is no command, so the copy button takes it in one click. A web
   address the reader opens is a clickable link whose text is the whole address, as
   `[https://example.com](https://example.com)`, so they see where a click leads, never a code block
-  or link text that hides or shortens it, in a table too. An address the reader only reads, such as
-  the page that should now open, stays inline. A local web page, PDF or image the user opens or
-  uploads, such as a PR's review page or a PDF in `~/Downloads`, gets its `file://` address in a
-  `text` block of its own to paste into Firefox, never an `open -a Firefox` or `open -R` command.
-  Any other file in the session's folders that the reader opens gets a Markdown link to its path,
-  which the app opens on a click. Any other file outside them, such as a spreadsheet in
-  `~/Downloads`, gets the command that opens it in its default app, `open` with its full `~` path,
-  or in a named app, such as `code`, in a `bash` block of its own, whose Run button opens it. A file
-  outside the session's folders is never sent with SendUserFile or linked, a `file://` or an
-  app-scheme link, such as `vscode://`, included, since the app's side pane, where a click on either
-  lands, opens only the session's folders and asks the user to add the folder instead, and the user
-  adds none for this.
+  or link text that hides or shortens it, in a table too. A step that sends the reader to a page, an
+  email or a file links straight to it, never a path of clicks from a front page. An address the
+  reader only reads, such as the page that should now open, stays inline. A local web page, PDF or
+  image the user opens or uploads, such as a PR's review page or a PDF in `~/Downloads`, gets its
+  `file://` address in a `text` block of its own to paste into Firefox, never an `open -a Firefox`
+  or `open -R` command. Any other file in the session's folders that the reader opens gets a
+  Markdown link to its path, which the app opens on a click. Any other file outside them, such as a
+  spreadsheet in `~/Downloads`, gets the command that opens it in its default app, `open` with its
+  full `~` path, or in a named app, such as `code`, in a `bash` block of its own, whose Run button
+  opens it. A file outside the session's folders is never sent with SendUserFile or linked, a
+  `file://` or an app-scheme link, such as `vscode://`, included, since the app's side pane, where a
+  click on either lands, opens only the session's folders and asks the user to add the folder
+  instead, and the user adds none for this.
 
 ## Prompt feedback
 

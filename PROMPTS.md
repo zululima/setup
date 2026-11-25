@@ -6,9 +6,20 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Approve with the setup prompt a review gives the author
+## Link straight to the page or email a step sends the reader to
 
 2026-11-25, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**18.** to 21.
+> [asks about a print order and an upstream issue left out]
+
+**22.**
+> give me the email link always or just give me the direct link to the
+> page where invoice is
+
+## Approve with the setup prompt a review gives the author
+
+2026-11-25, commit [7c1d684](https://github.com/zululima/setup/commit/7c1d68424bd82c4f76a368e24cf5874d1ca3309d), model claude-opus-5-5, effort xhigh.
 
 **3.**
 > [an ask to push, approve and merge a pull request left out] put
