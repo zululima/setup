@@ -681,9 +681,9 @@ apply to one repository belong in that repository's project memory.
   scratch folders, so a running session cannot move to This computer: asked to, the session says so,
   and the user starts a No folder session for a question that belongs to no project.
 - A move of the session's folder, with `change_directory` or `request_directory`, that the app
-  reports did not happen, or after which the shell still starts outside the folder, is made again at
-  once with the same path, without asking. Only a second failure goes to the user, with what the app
-  said.
+  reports did not happen, or after which the shell still starts outside the folder or `get_session`
+  shows another `cwd`, is made again with the same path, without asking, at once and at the start of
+  each later turn until it lands.
 - A session started in a project's folder keeps to that project: a wider prompt, such as which Slack
   messages wait for a reply, gets the project's part alone, and its steps and lists leave other work
   out. A first prompt unrelated to the folder gets a first line naming where it belongs, a No folder

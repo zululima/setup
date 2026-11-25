@@ -6,9 +6,28 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Let an approval carry the setup prompt for the PR's author
+## Retry a folder move each turn until it lands
 
 2026-11-25, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**13.**
+> [a rule on hand steps, committed in d294d9c, left out] also how come
+> isnt this session in [a project]
+
+Reply: The session's folder move failed twice because the app found it busy after each turn; I've queued it once more for when this turn ends.
+
+**14.**
+> done. how should we fix that session move issue? more tries until
+> success?
+
+Reply: The folder moves fail because your verify gate runs npm run verify for about 20 seconds after a turn that edited a repository, and the app gives up on a move after about 6. The third try landed because that turn edited nothing.
+
+**15.** (answer to: which folder move fix should I build?)
+> a, retry and issue
+
+## Let an approval carry the setup prompt for the PR's author
+
+2026-11-25, commit [e19dabf](https://github.com/zululima/setup/commit/e19dabfabf89e53ee6f10db7e2daf4eb80d088e1), model claude-opus-5-5, effort xhigh.
 
 **12.** Quoted under [d294d9c](https://github.com/zululima/setup/commit/d294d9cc8e6187da502309e9a8c40e3b8ddb1740).
 
