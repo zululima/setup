@@ -312,10 +312,10 @@ GitHub.
 - A review that gives a prompt for the author's own Claude Code setup approves with that prompt as
   its comment, so the author pastes it and their setup learns from the review: one line that asks
   the author to paste the prompt into their Claude Code, then the prompt in a fenced `text` block.
-  Every word of the comment has to come from a prompt the user typed, so the reply that asks whether
-  to approve and merge gives the whole comment in a `text` block for the user to send after a word
-  of their own, such as approve, since a prompt that opens with a paste counts as none. That prompt
-  is the yes to approve with it and merge.
+  The user's yes to approve and merge covers the comment, so the session posts it with the approval
+  and asks nothing more about it. While `~/.claude/hooks/no-github-posts.sh` refuses it, the session
+  approves with no comment and merges, and the reply says so first, then gives the PR's address and
+  the comment in a `text` block for the user to post there as a comment.
 - Where the PR's steps fall short, the overlay's `added_steps` put the fix on the page, marked as
   added by the review: the two command steps when the PR lacks them (an empty `after` puts a step
   before the PR's first), a step for a change the PR's steps skip, and the bug steps below. They

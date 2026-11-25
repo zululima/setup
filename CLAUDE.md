@@ -72,9 +72,9 @@ apply to one repository belong in that repository's project memory.
   a turn before the run does names the run it waits on.
 - Never post a comment, a review thread reply, a review or an issue comment on GitHub, and never
   draft one for the user to post, apart from the approval comment the `pull-requests` skill gives a
-  review: every word posted goes out under the user's name, and the user writes those. One goes out
-  only when a prompt asks for it and gives every word of it, or when it is an approval with no
-  comment. A question about an issue, a comment or a thread is answered in the reply as an
+  review: every word posted goes out under the user's name, and the user writes those. Any other
+  goes out only when a prompt asks for it and gives every word of it, or when it is an approval with
+  no comment. A question about an issue, a comment or a thread is answered in the reply as an
   explanation, and no reply or next-step box offers a draft of an answer. Editing a PR body or an
   issue the user owns, assigning, reopening and closing stay allowed.
 - Remote layout decides the flow. If the repo has an `upstream` remote, it is a fork checkout:

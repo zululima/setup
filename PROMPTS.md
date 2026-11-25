@@ -6,9 +6,22 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Link straight to the page or email a step sends the reader to
+## Post the setup prompt with the approval, with no second ask
 
 2026-11-25, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**4.**
+> [an ask to post a comment, approve and merge a pull request left
+> out] next time dont double check
+
+Reply: [a pull request's merge left out] Now rewriting the approval comment rule.
+
+**5.**
+> whaat why didnt you add the prompt to the approval comment?
+
+## Link straight to the page or email a step sends the reader to
+
+2026-11-25, commit [3fd08f1](https://github.com/zululima/setup/commit/3fd08f137c5a98a80642318063b71fd1a0a844f3), model claude-opus-5-5, effort xhigh.
 
 **18.** to 21.
 > [asks about a print order and an upstream issue left out]
