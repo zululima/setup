@@ -53,6 +53,11 @@ description: Browser work in Claude in Chrome: starting the extension, the cooki
   checked. A step that hands the user input to type in the browser names the button that saves it,
   and the session reads that page as it stands before its first navigate, reload or click away from
   it, saves what is still unsaved and leaves only once the input is saved.
+- A file the user needs from a site, such as an invoice or a receipt for an expense claim, is the
+  session's to fetch: it downloads the file in Chrome into the work's `~/Downloads` folder and files
+  it where it goes, such as an expense app's web page, leaving the user only the sign-in and the yes
+  to submit. When the site has not issued the file yet, the reply says so with the address of the
+  page that will hold it, and the fetch stays the session's step, never one handed to the user.
 - A file that a member of another organisation posted in a shared channel, such as a Slack Connect
   channel, lives in that organisation's workspace, which the connector's token cannot reach, so the
   retry fails too and file search does not list it. Open such a file where the user is signed in:
