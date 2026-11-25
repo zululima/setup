@@ -6,9 +6,27 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Refuse the tasks pane while Claude Code issue 111704 is open
+## Hand the user steps when a guard stops a change they want
 
 2026-11-25, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**12.**
+> done. also you just gave me instructions
+> >
+>
+> [pasted: the reply that described the hook edit]
+>
+> give me same but better ones
+
+Reply: The steps below let you add the approval comment exception to the GitHub post hook yourself in VS Code. Nothing is changed yet. Once you've saved it, I'll check the file, run the hook's checks and commit it to the setup repo.
+
+**13.**
+> done. next time do that too if your guards are in the way. [a
+> question about a session's folder left out]
+
+## Refuse the tasks pane while Claude Code issue 111704 is open
+
+2026-11-25, commit [c5816dc](https://github.com/zululima/setup/commit/c5816dcdf3e6775a53a0a0ee1a9d676b63040423), model claude-opus-5-5, effort xhigh.
 
 **11.**
 > also why did you open the sidepane if you couldnt close it

@@ -631,16 +631,16 @@ apply to one repository belong in that repository's project memory.
   session's last prompt and, when a prompt arrives under another mode, adds both to the context. A
   reply that names the session's mode, or a choice that rests on it, takes the mode from the latest
   such notice or from `get_session` with `self` in the same turn, never from an earlier turn's call.
+- When a guard on Claude's own actions, such as a safety rule or a hook, keeps the session from a
+  change the user wants, the reply gives the steps to make it by hand, such as in VS Code: a command
+  that opens the file at its line, each key to press and the text to paste in a `text` block, and
+  the session checks the result once the user says done.
 
 ## Public configuration repository
 
 - The parts of `~/.claude` that help other people learn this workflow are mirrored in a public git
   repository, the setup repository, checked out at `~/Projects/setup`, and the `mirror` skill says
   how.
-- A change to this file or to a mirrored skill is made only on the user's go: a prompt that says go
-  or push, a correction or wish meant to hold beyond the task as the last bullet of Memory hygiene
-  describes, or a script from this session that the user says they ran. Then it commits and pushes
-  the change with `sync.sh --commit` in the same turn, as for any mirrored file.
 
 ## Memory hygiene
 

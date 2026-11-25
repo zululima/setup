@@ -5,11 +5,15 @@ description: How the public mirror of ~/.claude in ~/Projects/setup works: sync.
 
 # Public configuration repository
 
-These procedures sit beside the Public configuration repository rules in `~/.claude/CLAUDE.md`,
-which still hold: the user's go before a change to that file or a mirrored skill, and the `sync.sh`
-run and its commit in the same turn.
+These procedures sit beside the Public configuration repository rules in `~/.claude/CLAUDE.md`.
 
 ## Writing a rule
+
+- A change to `~/.claude/CLAUDE.md` or to a mirrored skill is made only on the user's go: a prompt
+  that says go or push, a correction or wish meant to hold beyond the task as the last bullet of
+  Memory hygiene in `~/.claude/CLAUDE.md` describes, or a script from this session that the user
+  says they ran. Then it commits and pushes the change with `sync.sh --commit` in the same turn, as
+  for any mirrored file.
 
 - A `mirror` ask is how the user asks for a rule change, alone or inside a prompt about other work,
   and so is one that names the setup repository or says dotclaude, its name until 2026-11-13. The
