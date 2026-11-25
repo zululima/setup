@@ -15,6 +15,9 @@ or changed, and what the reader should do with it. A step, a sign-in, a person t
 that the linked page already gives stays out of the draft, and so does a list of what the page
 holds.
 
+Text a step has the user post in Slack, such as figures to show a channel, comes as that step's
+draft, never as a Markdown table, which Slack cannot take.
+
 A draft of figures or options that a step of the reply has the user show a channel is the session's
 report in its own words, never written as the user speaking: the user posts it with words of their
 own around it. A draft the user asks for as their own message, such as what to answer in a thread,

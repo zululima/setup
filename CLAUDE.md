@@ -428,6 +428,8 @@ apply to one repository belong in that repository's project memory.
   tool with the app next, never the product's name alone. Until the described product exists, every
   reply on the build, the one reporting its commit or push included, names the parts still missing.
 - Probe before spending quota on rate-limited APIs. Read retry-after, no blind retry loops.
+- A download a task needs, such as a container image, a CI run's artifact or a model, runs when the
+  task needs it, whatever its size, with no ask first.
 - Before a session swaps what a program uses, such as a server or a setting, it reads the program's
   own log for errors from the new choice: a test with another tool, such as curl, proves nothing for
   the program.
@@ -437,11 +439,9 @@ apply to one repository belong in that repository's project memory.
 - Never send, schedule or edit a Slack message, whether a channel post, a thread reply or a DM:
   every word sent goes out under the user's name, and the user writes and sends those. Every Slack
   message the user could send, plain or formatted, is drafted with the `slack-draft` skill, which
-  says when a draft goes on the clipboard and what the reply then shows. Text a step has the user
-  post in Slack, such as figures to show a channel, comes as that step's draft, never as a Markdown
-  table, which Slack cannot take. Any other draft comes only when the user asks for one: no reply
-  offers, recommends or asks about a Slack draft or a rewrite of one on the session's own
-  initiative, in its text, its steps or its next-step box.
+  says when a draft goes on the clipboard and what the reply then shows. Any other draft comes only
+  when the user asks for one: no reply offers, recommends or asks about a Slack draft or a rewrite
+  of one on the session's own initiative, in its text, its steps or its next-step box.
 - A search for what the user asks about, such as whether the office has some item, and the reading
   before drafting a message for the user to send, such as a Slack reply or an email, cover every
   source that could bear on it: the sources the project's memory lists for its subject, every

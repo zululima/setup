@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Test a feature from every way users reach its page
+## Download what a task needs without asking first
 
 2026-11-25, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**2.** (answer to: shall I pull the 669 MB image to measure on Linux?)
+> yes always download stuff as needed dont ask things like that
+
+## Test a feature from every way users reach its page
+
+2026-11-25, commit [61e7cb8](https://github.com/zululima/setup/commit/61e7cb8c9555228d7eaee53625d6b5d709c128ed), model claude-opus-5-5, effort xhigh.
 
 **4.** Quoted under [ce87b31](https://github.com/zululima/setup/commit/ce87b3154753253e8e630f0b988e7a7e9535a37b).
 
