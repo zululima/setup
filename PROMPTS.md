@@ -6,9 +6,22 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## pull-requests: verify steps install what they need and match ports
+## archive-files: keep finished files in ~/Archive
 
 2026-11-25, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> where can i find the [a logo file] again? maybe we should have some
+> good place for archived project artifacts i can easily access?
+
+Reply: The file is in ~/Downloads/[task]. Nothing has been changed yet. A visible ~/Archive folder for the finished files of archived sessions is proposed but not built.
+
+**2.** (answer to: shall I set up ~/Archive for finished files?)
+> Yes, build a
+
+## pull-requests: verify steps install what they need and match ports
+
+2026-11-25, commit [cb24192](https://github.com/zululima/setup/commit/cb24192e75e3e6e0546fd46c6fc483a07777e990), model claude-opus-5-5, effort xhigh.
 
 **13.**
 > let me review it from my brwoser too

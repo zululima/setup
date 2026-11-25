@@ -1,8 +1,9 @@
 #!/bin/bash
 
-# Moves what an archived desktop session left behind, its drafts folder and the
-# ~/Downloads folder and files named after it, to ~/.claude/archive/<task>/, and
-# rewrites the memory notes and background files that name an old path. The
+# Moves what an archived desktop session left behind, its drafts folder to
+# ~/.claude/archive/<task>/ and the ~/Downloads folder and files named after it
+# to ~/Archive/<task>/, where Finder shows them, and rewrites the memory notes
+# and background files that name an old path. The
 # archive-files mod runs it whenever the desktop app rewrites its index of
 # archived sessions. That index and the session records beside it are the
 # app's own undocumented files, so an app update can stop this without an
@@ -11,14 +12,16 @@
 # A session's tasks are the ~/.claude/drafts/<task> folders its tool calls
 # name. A task moves when the session changed its folder, its ~/Downloads/<task>
 # folder or one of its ~/Downloads/<task>-* files, and no session still open
-# names it. The .origins file in ~/.claude/archive/<task>/ notes where each
-# entry came from.
+# names it. The .origins file in each of the two folders notes where each of
+# its entries came from.
 #
 # When the user unarchives a session, each task whose archived files it
 # changed moves back to where .origins says, and the notes point back. An
-# archive from before .origins sends downloads/<task>-* and downloads/<task>.*
-# files to ~/Downloads, the rest of downloads/ to ~/Downloads/<task>/ and every
-# other entry to ~/.claude/drafts/<task>/. Closed Chrome tabs stay closed.
+# entry .origins does not name goes back by its place: a <task>-* or <task>.*
+# file in ~/Archive/<task>/, or in the downloads/ folder that older archives
+# kept in ~/.claude/archive/<task>/, to ~/Downloads, the rest of those folders
+# to ~/Downloads/<task>/ and every other entry to ~/.claude/drafts/<task>/.
+# Closed Chrome tabs stay closed.
 #
 # ~/.claude is synced between machines, so the app also holds records it
 # imported from the other machine's transcripts. A record that started outside
@@ -65,6 +68,7 @@ PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin
 sessions="$HOME/Library/Application Support/Claude/claude-code-sessions"
 [ -d "$sessions" ] || sessions="${XDG_CONFIG_HOME:-$HOME/.config}/Claude/claude-code-sessions"
 archive="$HOME/.claude/archive"
+finished="$HOME/Archive"
 state="$HOME/Library/Application Support/claude-archive-files"
 [ -d "${state%/*}" ] || state="${XDG_STATE_HOME:-$HOME/.local/state}/claude-archive-files"
 seen="$state/archived-sessions"
@@ -135,7 +139,7 @@ rewrite_notes() {
 
 move_task() {
   local task=$1 since=$2 drafts="$HOME/.claude/drafts/$1" dest="$archive/$1" shared="$HOME/Downloads/$1"
-  local files=() f e changed= folder=
+  local kept="$finished/$1" files=() f e changed= folder=
   shopt -s nullglob dotglob
   for f in "$HOME/Downloads/$task"-* "$HOME/Downloads/$task".*; do
     [ -f "$f" ] && [ -n "$(find "$f" -mmin "-$since")" ] && files+=("$f")
@@ -153,8 +157,8 @@ move_task() {
   fi
   if [ -n "$dry" ]; then
     [ -d "$drafts" ] && say "  $task: would move ${drafts/#$HOME/~} to ${dest/#$HOME/~}"
-    [ -n "$folder" ] && say "  $task: would move ${shared/#$HOME/~} to ${dest/#$HOME/~}/downloads/"
-    for f in ${files[@]+"${files[@]}"}; do say "  $task: would move ${f/#$HOME/~} to ${dest/#$HOME/~}/downloads/"; done
+    [ -n "$folder" ] && say "  $task: would move ${shared/#$HOME/~} to ${kept/#$HOME/~}"
+    for f in ${files[@]+"${files[@]}"}; do say "  $task: would move ${f/#$HOME/~} to ${kept/#$HOME/~}/"; done
     return
   fi
   mkdir -p "$archive"
@@ -162,60 +166,65 @@ move_task() {
     if [ -e "$dest" ]; then
       for e in "$drafts"/*; do
         to=$(place "$e" "$dest")
-        origin "$to" "$e"
+        origin "$dest" "$to" "$e"
         [ "$to" = "$dest/${e##*/}" ] || rewrite_notes "$e" "$to"
       done
       rmdir "$drafts"
     else
       mv "$drafts" "$dest"
-      for e in "$dest"/*; do origin "$e" "$drafts/${e##*/}"; done
+      for e in "$dest"/*; do origin "$dest" "$e" "$drafts/${e##*/}"; done
     fi
     say "  $task: moved ${drafts/#$HOME/~} to ${dest/#$HOME/~}"
     rewrite_notes "$drafts" "$dest"
   fi
   if [ -n "$folder" ]; then
-    mkdir -p "$dest/downloads"
+    mkdir -p "$kept"
     for e in "$shared"/*; do
-      to=$(place "$e" "$dest/downloads")
-      origin "$to" "$e"
-      [ "$to" = "$dest/downloads/${e##*/}" ] || rewrite_notes "$e" "$to"
+      to=$(place "$e" "$kept")
+      origin "$kept" "$to" "$e"
+      [ "$to" = "$kept/${e##*/}" ] || rewrite_notes "$e" "$to"
     done
     rmdir "$shared"
-    say "  $task: moved ${shared/#$HOME/~} to ${dest/#$HOME/~}/downloads"
-    rewrite_notes "$shared" "$dest/downloads"
+    say "  $task: moved ${shared/#$HOME/~} to ${kept/#$HOME/~}"
+    rewrite_notes "$shared" "$kept"
   fi
   for f in ${files[@]+"${files[@]}"}; do
-    mkdir -p "$dest/downloads"
-    to=$(place "$f" "$dest/downloads")
-    origin "$to" "$f"
+    mkdir -p "$kept"
+    to=$(place "$f" "$kept")
+    origin "$kept" "$to" "$f"
     say "  $task: moved ${f/#$HOME/~} to ${to/#$HOME/~}"
     rewrite_notes "$f" "$to"
   done
 }
 
-# Notes in .origins that the archive entry $1 came from the path $2.
+# Notes in the .origins file of the folder $1 that its entry $2 came from the
+# path $3.
 origin() {
-  printf '%s\t%s\n' "${1#"$dest"/}" "~/${2#"$HOME"/}" >>"$dest/.origins"
+  printf '%s\t%s\n' "${2#"$1"/}" "~/${3#"$HOME"/}" >>"$1/.origins"
 }
 
 # Moves a task back from the archive for a session the user unarchived.
 restore_task() {
-  local task=$1 dest="$archive/$1" drafts="$HOME/.claude/drafts/$1" shared="$HOME/Downloads/$1"
-  local e rel from to name to_drafts= to_shared=
+  local task=$1 dest="$archive/$1" kept="$finished/$1" drafts="$HOME/.claude/drafts/$1" shared="$HOME/Downloads/$1"
+  local e base rel from to name to_drafts= to_shared= from_kept= from_old=
   shopt -s nullglob dotglob
-  for e in "$dest"/* "$dest"/downloads/*; do
-    rel=${e#"$dest"/}
-    case $rel in downloads | .origins) continue ;; esac
+  for e in "$dest"/* "$dest"/downloads/* "$kept"/*; do
+    base=$dest
+    [ "${e#"$kept"/}" != "$e" ] && base=$kept
+    rel=${e#"$base"/}
+    case $base:$rel in "$dest:downloads" | *:.origins) continue ;; esac
     from=
-    [ -f "$dest/.origins" ] && from=$(awk -F'\t' -v r="$rel" '$1 == r { o = $2 } END { print o }' "$dest/.origins")
+    [ -f "$base/.origins" ] && from=$(awk -F'\t' -v r="$rel" '$1 == r { o = $2 } END { print o }' "$base/.origins")
     if [ -z "$from" ]; then
       name=${e##*/}
+      [ "$base" = "$kept" ] && rel=downloads/$rel
       case $rel in
         downloads/"$task"-* | downloads/"$task".*) if [ -f "$e" ]; then from="~/Downloads/$name"; else from="~/Downloads/$task/$name"; fi ;;
         downloads/*) from="~/Downloads/$task/$name" ;;
         *) from="~/.claude/drafts/$task/$name" ;;
       esac
     fi
+    if [ "$base" = "$kept" ]; then from_kept=1; elif [ "${rel%%/*}" = downloads ]; then from_old=1; fi
     from="$HOME/${from#\~/}"
     mkdir -p "${from%/*}"
     to=$(place "$e" "${from%/*}" "${from##*/}")
@@ -228,16 +237,23 @@ restore_task() {
     [ "$to" = "$from" ] || say "  $task: ${from/#$HOME/~} was taken, so it went back as ${to##*/}"
   done
   if [ -n "$to_shared" ]; then
-    say "  $task: moved ${dest/#$HOME/~}/downloads back to ${shared/#$HOME/~}"
-    rewrite_notes "$dest/downloads" "$shared"
+    if [ -n "$from_kept" ]; then
+      say "  $task: moved ${kept/#$HOME/~} back to ${shared/#$HOME/~}"
+      rewrite_notes "$kept" "$shared"
+    fi
+    if [ -n "$from_old" ]; then
+      say "  $task: moved ${dest/#$HOME/~}/downloads back to ${shared/#$HOME/~}"
+      rewrite_notes "$dest/downloads" "$shared"
+    fi
   fi
   if [ -n "$to_drafts" ]; then
     say "  $task: moved ${dest/#$HOME/~} back to ${drafts/#$HOME/~}"
     rewrite_notes "$dest" "$drafts"
   fi
-  rm -f "$dest/.origins"
+  rm -f "$dest/.origins" "$kept/.origins"
   rmdir "$dest/downloads" 2>/dev/null
-  rmdir "$dest" 2>/dev/null || say "  $task: ${dest/#$HOME/~} still holds files"
+  if [ -d "$kept" ]; then rmdir "$kept" 2>/dev/null || say "  $task: ${kept/#$HOME/~} still holds files"; fi
+  if [ -d "$dest" ]; then rmdir "$dest" 2>/dev/null || say "  $task: ${dest/#$HOME/~} still holds files"; fi
 }
 
 # Moves $1 into the folder $2 as the name $3, or its own, numbering the name
@@ -571,8 +587,8 @@ unarchived() {
     return
   fi
   for task in $(tasks_of "$t"); do
-    [ -d "$archive/$task" ] || continue
-    if [ -z "$(find "$archive/$task" -type f ! -name .origins -mmin "-$(minutes_since "$record")" | head -1)" ]; then
+    [ -d "$archive/$task" ] || [ -d "$finished/$task" ] || continue
+    if [ -z "$(find "$archive/$task" "$finished/$task" -type f ! -name .origins -mmin "-$(minutes_since "$record")" 2>/dev/null | head -1)" ]; then
       say "  $task: left in the archive, nothing in it changed during this session"
       continue
     fi

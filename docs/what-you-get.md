@@ -168,17 +168,18 @@
   run is done. The tokens and what they would cost show once a week instead, in the report of the
   last `/dream` run before the weekly reset.
 - [`mods/archive-files`](../mods/archive-files): when you archive a session in the desktop app, the
-  files it made for you, its drafts folder and its folder in `~/Downloads`, move to
-  `~/.claude/archive/` within seconds, on macOS and on Linux, and memory notes and background files
-  that named them point to where they went. Unarchive the session and the files it changed move back
-  to where they were, with the notes pointing there again. On a Mac it also closes every Chrome tab
-  that no open session uses, the archived session's and your own, such as a page you signed in on,
-  through Chrome's AppleScript, so macOS asks once whether Claude may control Google Chrome. When no
-  tab would stay, the last one stays open, so Claude in Chrome keeps the window it connects through.
-  Before the close, a small companion extension of yours in Chrome takes those tabs out of their tab
-  groups, which makes Chrome delete each saved group rather than pin it to the bookmarks bar. Groups
-  that were already closed, by a window closing or Chrome quitting, it reopens from their chip on a
-  New Tab page that the extension opens, then ungroups and closes, only while every Chrome window is
+  files it made for you move within seconds, on macOS and on Linux: its drafts folder to
+  `~/.claude/archive/`, and its folder in `~/Downloads`, the finished work, to `~/Archive/`, where
+  Finder and your file manager show it. Memory notes and background files that named them point to
+  where they went. Unarchive the session and the files it changed move back to where they were, with
+  the notes pointing there again. On a Mac it also closes every Chrome tab that no open session
+  uses, the archived session's and your own, such as a page you signed in on, through Chrome's
+  AppleScript, so macOS asks once whether Claude may control Google Chrome. When no tab would stay,
+  the last one stays open, so Claude in Chrome keeps the window it connects through. Before the
+  close, a small companion extension of yours in Chrome takes those tabs out of their tab groups,
+  which makes Chrome delete each saved group rather than pin it to the bookmarks bar. Groups that
+  were already closed, by a window closing or Chrome quitting, it reopens from their chip on a New
+  Tab page that the extension opens, then ungroups and closes, only while every Chrome window is
   behind another app. Nothing it does shows Chrome, brings it to the front or types into it, and if
   Chrome ever comes forward, the sweep turns itself off. It reads the app's own list of archived
   sessions, which is not documented and may change in an update. If files stop moving,
