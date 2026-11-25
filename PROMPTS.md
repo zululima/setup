@@ -6,9 +6,32 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## chrome: quit Chrome only while no other session runs a turn
+## Check the next-step box for gendered pronouns too
 
 2026-11-25, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> [a question about a colleague's message left out]
+
+Reply: [a summary of a colleague's message left out]
+
+**2.**
+> what are the three testing tulres
+
+Reply: [a list of three testing rules from a colleague's setup]
+
+**3.**
+> do you think theyre good
+
+Reply: The rule to test a feature from every way users reach its page is worth adding to the global CLAUDE.md, with a narrower scope. The other two are correct but fit only one project, whose docs already cover what they are about.
+
+**4.**
+> shouldnt the two other bullets be in [a project's] agents.md? and the
+> one to my own claudemd
+
+## chrome: quit Chrome only while no other session runs a turn
+
+2026-11-25, commit [178b359](https://github.com/zululima/setup/commit/178b359f9d63a2e590d7291adbf868016a814bf0), model claude-opus-5-5, effort xhigh.
 
 **1.** Quoted under [57858d1](https://github.com/zululima/setup/commit/57858d106b34f34ffd55daa49fe2437fb51eaadb).
 

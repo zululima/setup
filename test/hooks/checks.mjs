@@ -1174,6 +1174,32 @@ esac`)
     ]
   }],
 
+  ['stop-gendered-pronoun.sh', run => {
+    const t = path.join(home, 'pronoun.jsonl')
+    const stop = (last, active = false) => ({ session_id: 's1', transcript_path: t, stop_hook_active: active, last_assistant_message: last })
+    const box = recap => uses('mcp__ccd_turn__wrap_up', { recap, ask: 'Shall I add them?' })
+    return [
+      ['sends back a reply that calls someone she', () => {
+        jsonl(t, [human('what was it')])
+        return refused(run(stop('It was Sam, and she ran it.')))
+      }],
+      ['lets the second stop of a turn through', () => quiet(run(stop('It was Sam, and she ran it.', true)))],
+      ['lets a reply through that says they', () => {
+        jsonl(t, [human('what was it')])
+        return quiet(run(stop('It was Sam, and they ran it.')))
+      }],
+      ['sends back a next-step box recap that calls someone her', () => {
+        jsonl(t, [human('what was it'), box('It pastes the prompt her setup wrote.')])
+        const r = run(stop('Sam ran it.'))
+        return refused(r) && r.err.includes('wrap_up again')
+      }],
+      ['does not read the box of an earlier turn', () => {
+        jsonl(t, [human('what was it'), box('It pastes the prompt her setup wrote.'), says('Sam ran it.'), human('and then'), box('Their setup wrote it.')])
+        return quiet(run(stop('Sam ran it.')))
+      }],
+    ]
+  }],
+
   ['stop-unreachable-claim.sh', run => {
     const t = path.join(home, 'unreachable.jsonl')
     const browser = { type: 'attachment', attachment: { type: 'deferred_tools', names: ['mcp__claude-in-chrome__navigate'] } }

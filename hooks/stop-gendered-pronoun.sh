@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-# Claude Code Stop hook. When the turn's closing message calls someone he, him,
-# his, himself, she, her, hers or herself, it sends the turn back once with
+# Claude Code Stop hook. When the turn's closing message, or the recap or
+# question of its next-step box, calls someone he, him, his, himself, she, her,
+# hers or herself, it sends the turn back once with
 # that sentence, since the Prose rule of CLAUDE.md makes a person whose
 # pronouns no source states they. Fenced blocks other than text blocks, code
 # spans, URLs, quotes and block quotes are skipped, and so is he in a Finnish
@@ -17,6 +18,16 @@ command -v jq >/dev/null 2>&1 || exit 0
 input="$(cat 2>/dev/null)"
 [ "$(printf '%s' "$input" | jq -r '.stop_hook_active // false' 2>/dev/null)" = false ] || exit 0
 last="$(printf '%s' "$input" | jq -r '.last_assistant_message // empty' 2>/dev/null)"
+transcript="$(printf '%s' "$input" | jq -r '.transcript_path // empty' 2>/dev/null)"
+if [ -f "$transcript" ]; then
+  box="$(jq -rs '
+    (map(.type == "user" and (.message.content | type) == "string") | rindex(true)) as $p
+    | .[($p // 0):][] | select(.type == "assistant") | .message.content[]?
+    | select(.type == "tool_use" and .name == "mcp__ccd_turn__wrap_up") | .input
+    | (.recap // empty), (.ask // empty)
+  ' "$transcript" 2>/dev/null)"
+  [ -n "$box" ] && last="$last"$'\n\n'"$box"
+fi
 [ -n "$last" ] || exit 0
 listed="$(cat "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/rules/pronouns.md" 2>/dev/null)"
 
@@ -49,5 +60,5 @@ hit="$(jq -rn --arg last "$last" --arg listed "$listed" '
 ' 2>/dev/null)"
 [ -n "$hit" ] || exit 0
 
-printf '%s\n' "This reply gives someone a gendered pronoun in: \"$hit\". The Prose rule of ~/.claude/CLAUDE.md says a person whose pronouns no source states is they, them and their, whatever their name or role. Write the closing message again in full, without calling wrap_up again, with they, them, their or the person's name in place of each such pronoun. Where a source does state the person's pronouns, keep them and name that source in the reply." >&2
+printf '%s\n' "This reply gives someone a gendered pronoun in: \"$hit\". The Prose rule of ~/.claude/CLAUDE.md says a person whose pronouns no source states is they, them and their, whatever their name or role. Write the closing message again in full with they, them, their or the person's name in place of each such pronoun. Call wrap_up again first only when the sentence is in the next-step box's recap or question, with it fixed there. Where a source does state the person's pronouns, keep them and name that source in the reply." >&2
 exit 2

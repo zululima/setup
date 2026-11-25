@@ -229,7 +229,8 @@ run and its commit in the same turn.
   that backs the rule in the `chrome` skill that tries Claude in Chrome before calling a page out of
   reach.
 - A `Stop` hook, `~/.claude/hooks/stop-gendered-pronoun.sh`, sends a turn back once when its closing
-  message calls someone he, him, his, she or her outside code, quotes and links, unless the reply
+  message, or the recap or question of its next-step box, calls someone he, him, his, she or her
+  outside code, quotes and links, unless the reply
   names a person whom `~/.claude/rules/pronouns.md` lists with those pronouns and their source. It
   backs the rule in Prose of `~/.claude/CLAUDE.md` that a person whose pronouns no source states is
   they.
