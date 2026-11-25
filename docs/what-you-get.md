@@ -272,6 +272,10 @@
   Chrome starts with that tab as its only window, and
   [`chrome-anchor-kwin.js`](../hooks/chrome-anchor-kwin.js), a KWin script, hides the window as it
   opens.
+- [`chrome-tabs-lost.sh`](../hooks/chrome-tabs-lost.sh): Claude in Chrome forgets which tabs were a
+  session's when Chrome or the computer restarts. At your next prompt in such a session, this hook
+  tells Claude which pages its tabs last showed, and Claude opens again the ones its work still
+  waits on, such as a cart waiting for your go.
 - [`skills/pull-requests/review-page`](../skills/pull-requests/review-page/build.py): turns a pull
   request's test steps and screenshots into a checklist page you tick off with the keyboard while
   you review it.

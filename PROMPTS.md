@@ -6,9 +6,30 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Download what a task needs without asking first
+## Reopen a session's Chrome pages after a restart
 
 2026-11-25, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**5.** to 14.
+> [asks about a print order left out]
+
+**15.**
+> why isnt this session open in chrome anymore
+
+Reply: The Mac restarted at 07:28 and that closed Chrome, so this session lost its tabs. [the state of a print order left out]
+
+**16.**
+> cant we fix that ut a session can't take back a tab group from before
+> a restart, so this session had nothing to see.
+
+Reply: Claude in Chrome itself can't take back tabs from before a restart. I drafted a Claude Code feature request for that in a Chrome tab, not submitted yet. A local hook could reopen a session's pages automatically, and it isn't built.
+
+**17.** (answer to: shall I build the hook?)
+> Yes, build it
+
+## Download what a task needs without asking first
+
+2026-11-25, commit [112d8bb](https://github.com/zululima/setup/commit/112d8bb5f21c73746fc7cc4f0b317d39c01f8a41), model claude-opus-5-5, effort xhigh.
 
 **2.** (answer to: shall I pull the 669 MB image to measure on Linux?)
 > yes always download stuff as needed dont ask things like that

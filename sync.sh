@@ -230,6 +230,7 @@ mirrored=(
   hooks/chrome-background.sh
   hooks/chrome-anchor.html
   hooks/chrome-anchor-kwin.js
+  hooks/chrome-tabs-lost.sh
   hooks/energy-session-pid.sh
   hooks/usage-waiting.sh
   hooks/finished-banner.sh
