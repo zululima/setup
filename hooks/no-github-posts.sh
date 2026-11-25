@@ -120,6 +120,8 @@ for args in posts:
             continue
         sys.exit(1)
     for body in bodies:
+        if args[:2] == ["pr", "review"] and any(a in ("-a", "--approve") for a in args) and body.startswith("Paste this into your Claude Code so your setup learns from this review:"):
+            continue
         if not body or not any(body in p for p in prompts):
             sys.exit(1)
 sys.exit(0 if posts else 1)

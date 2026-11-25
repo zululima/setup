@@ -6,9 +6,15 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Hand the user steps when a guard stops a change they want
+## Let an approval carry the setup prompt for the PR's author
 
 2026-11-25, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**12.** Quoted under [d294d9c](https://github.com/zululima/setup/commit/d294d9cc8e6187da502309e9a8c40e3b8ddb1740).
+
+## Hand the user steps when a guard stops a change they want
+
+2026-11-25, commit [d294d9c](https://github.com/zululima/setup/commit/d294d9cc8e6187da502309e9a8c40e3b8ddb1740), model claude-opus-5-5, effort xhigh.
 
 **12.**
 > done. also you just gave me instructions
