@@ -6,9 +6,20 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Check the next-step box for gendered pronouns too
+## Test a feature from every way users reach its page
 
 2026-11-25, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**4.** Quoted under [ce87b31](https://github.com/zululima/setup/commit/ce87b3154753253e8e630f0b988e7a7e9535a37b).
+
+Reply: Two of the rules went into the project's agent docs, and the pronoun hook now checks next-step boxes too. The testing rule waits in CLAUDE.md, uncommitted, until the user runs the sed that brings it under budget.
+
+**5.** (answer to: have you run the sed command?)
+> Done
+
+## Check the next-step box for gendered pronouns too
+
+2026-11-25, commit [ce87b31](https://github.com/zululima/setup/commit/ce87b3154753253e8e630f0b988e7a7e9535a37b), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > [a question about a colleague's message left out]

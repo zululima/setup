@@ -47,10 +47,6 @@ apply to one repository belong in that repository's project memory.
   each commit sets the committer date again, so it runs the amend with `GIT_COMMITTER_DATE` set to
   the commit's author date, and a `--reset-author` in it comes with `--date` set to that date too,
   since on its own it resets the author date as well.
-- Every commit a session makes is signed when git's `commit.gpgSign` is on, since GitHub shows any
-  other as unsigned. `git commit-tree`, which builds a commit without a checkout, ignores that
-  setting, so it always runs with `-S`, and `git log --format='%h %G?'` over the commits a push adds
-  shows no `N` before the push.
 
 ## Pull requests
 
@@ -324,6 +320,10 @@ apply to one repository belong in that repository's project memory.
 
 - Run the repo's verify command (lint, typecheck, unit tests) after meaningful edits, not only at
   commit time.
+- A feature that depends on how its page or screen was reached, such as one that reads the address,
+  its `#` part, a deep link or a setting read on first load, is tested from each way a user gets
+  there: moving there inside the app, a typed or bookmarked address, a link from another page or
+  app, and a link to a section of it.
 - Starting a local stack to debug is fine. Nothing may still be running when the turn ends:
   stop the project's container stack with the project's own stop command before the reply,
   every turn, even when the next turn will start it again, and say in the reply that it is

@@ -25,6 +25,10 @@ reaches a running one through the hook that the `mirror` skill describes.
   sign-off to them, and once the file holds it, `-s` adds no second one.
 - A `git commit` runs only through `&&` after its `git add`, so an add that fails, such as on a path
   a move took away, commits nothing.
+- Every commit a session makes is signed when git's `commit.gpgSign` is on, since GitHub shows any
+  other as unsigned. `git commit-tree`, which builds a commit without a checkout, ignores that
+  setting, so it always runs with `-S`, and `git log --format='%h %G?'` over the commits a push adds
+  shows no `N` before the push.
 - Never add `Co-Authored-By: Claude`, "Generated with Claude Code", or any Claude or Anthropic
   attribution to commits, PR bodies, or issues. The `attribution` setting also enforces this.
 - When squashing a pull request, by squash merge or by squashing its commits into one before
