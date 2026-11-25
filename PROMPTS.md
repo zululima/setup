@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Fetch a file the user needs from a site instead of handing it over
+## Refuse the tasks pane while Claude Code issue 111704 is open
 
 2026-11-25, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**11.**
+> also why did you open the sidepane if you couldnt close it
+
+## Fetch a file the user needs from a site instead of handing it over
+
+2026-11-25, commit [e432840](https://github.com/zululima/setup/commit/e432840143f538993636e64ce28f49cc75bb787f), model claude-opus-5-5, effort xhigh.
 
 **23.**
 > why couldnt you open teh invoice yourself

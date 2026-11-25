@@ -135,6 +135,9 @@
 - [`no-session-cards.sh`](../hooks/no-session-cards.sh): stops Claude from proposing another
   session as a card you have to click. It asks under its reply instead, with the model and effort
   the session would run on, so one shortcut says yes.
+- [`tasks-pane-after-111704.sh`](../hooks/tasks-pane-after-111704.sh): keeps Claude from showing the
+  tasks pane for a background run while Claude Code issue 111704 is open, since a closed pane then
+  stays behind empty in your window.
 - [`memory-plain-characters.sh`](../hooks/memory-plain-characters.sh): points out long dashes in
   Claude's memory notes, so Claude swaps them for plain punctuation.
 - [`claude-md-memory-index.sh`](../hooks/claude-md-memory-index.sh): when Claude changes a rule in

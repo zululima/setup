@@ -59,6 +59,16 @@ const suites = [
     ]
   }],
 
+  ['tasks-pane-after-111704.sh', run => {
+    const state = text => write(path.join(home, '.cache', 'claude-hooks', 'claude-code-issue-111704'), `${text}\n`)
+    const show = pane => run({ hook_event_name: 'PreToolUse', tool_name: 'mcp__ccd_view__show_pane', tool_input: { pane } })
+    return [
+      ['refuses the tasks pane while the issue is open', () => (state('OPEN'), refused(show('tasks')))],
+      ['lets the tasks pane through once the issue is closed', () => (state('CLOSED'), quiet(show('tasks')))],
+      ['lets another pane through', () => (state('OPEN'), quiet(show('diff')))],
+    ]
+  }],
+
   ['ask-recall.sh', run => {
     const searched = path.join(home, 'ask-recall-searched')
     const search = cosine => write(path.join(home, 'bin', `search-${cosine}`), `#!/bin/bash\necho "$1" >> ${q(searched)}\necho '${JSON.stringify({ hits: [{ id: 7, kind: 'prompt', time: '2026-11-01T10:00:00Z', project: 'demo', cosine, snippet: 'i test on the pixel 7' }] })}'\n`)

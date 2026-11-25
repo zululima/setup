@@ -473,6 +473,16 @@
             "timeout": 30
           }
         ]
+      },
+      {
+        "matcher": "^mcp__ccd_view__show_pane$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.claude/hooks/tasks-pane-after-111704.sh\"",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "Stop": [

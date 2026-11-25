@@ -219,6 +219,7 @@ mirrored=(
   hooks/slack-user-search-own-workspace.sh
   hooks/detach-started-session.sh
   hooks/no-session-cards.sh
+  hooks/tasks-pane-after-111704.sh
   hooks/permission-mode-changed.sh
   hooks/no-foreground-wait.sh
   hooks/stop-unreachable-claim.sh
