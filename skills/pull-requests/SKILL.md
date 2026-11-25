@@ -185,6 +185,11 @@ GitHub.
   new terminal, which starts in `~`. The manual steps follow them.
 - The reader of a verify step is at a terminal and pastes, so a step without its block sends them to
   look the command up.
+- A command step needs nothing the session left on the machine, such as a container volume of
+  installed packages or a build it ran, since a cleanup can remove it before the reader runs the
+  step: the step installs or builds what is missing itself. A step that starts a server publishes it
+  on the same port inside and outside its container, so the address the output prints is the one the
+  reader opens, and no step tells the reader to ignore an address the terminal prints.
 - A session that works in a worktree of its own detaches it from the PR's branch, with `git switch
   --detach` there, before the reply that hands over the steps or the review page: git refuses to
   switch the reader's checkout to a branch another worktree holds, so the first step fails.

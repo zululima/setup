@@ -6,9 +6,21 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Link the message a waiting person wrote as a step to answer it
+## pull-requests: verify steps install what they need and match ports
 
 2026-11-25, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**13.**
+> let me review it from my brwoser too
+
+Reply: The PR now ends with a nine-step How to verify section, and a Finnish review page built from it is in the main checkout, which is switched to the PR's branch. I ran every step here, and no container is left running.
+
+**14.**
+> localhost:8080 didnt answer
+
+## Link the message a waiting person wrote as a step to answer it
+
+2026-11-25, commit [a862a9f](https://github.com/zululima/setup/commit/a862a9fdc0d83fc02d57eb9d1eb74b0c1c1dcbf5), model claude-opus-5-5, effort xhigh.
 
 **3.**
 > next time if same situation give me also the slack link where i have
