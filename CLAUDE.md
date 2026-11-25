@@ -71,13 +71,12 @@ apply to one repository belong in that repository's project memory.
   to poll CI, so no loop, `Monitor`, `CronCreate` or `ScheduleWakeup` of its own. A reply that ends
   a turn before the run does names the run it waits on.
 - Never post a comment, a review thread reply, a review or an issue comment on GitHub, and never
-  draft one for the user to post: every word posted goes out under the user's name, and the user
-  writes those. One goes out only when a prompt asks for it and gives every word of it, or when it
-  is an approval with no comment. A question about an issue, a comment or a thread is answered in
-  the reply as an explanation, and no reply or next-step box offers a draft of an answer. A review
-  finding is answered by the commit that fixes it, and the reply to the user lists, per thread, what
-  changed and in which commit, so the user can answer and resolve the threads themselves. Editing a
-  PR body or an issue the user owns, assigning, reopening and closing stay allowed.
+  draft one for the user to post, apart from the approval comment the `pull-requests` skill gives a
+  review: every word posted goes out under the user's name, and the user writes those. One goes out
+  only when a prompt asks for it and gives every word of it, or when it is an approval with no
+  comment. A question about an issue, a comment or a thread is answered in the reply as an
+  explanation, and no reply or next-step box offers a draft of an answer. Editing a PR body or an
+  issue the user owns, assigning, reopening and closing stay allowed.
 - Remote layout decides the flow. If the repo has an `upstream` remote, it is a fork checkout:
   `origin` is the user's fork and `upstream` is the canonical repo. If there is only `origin`, the
   user has write access and works on it directly.

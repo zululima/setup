@@ -6,9 +6,18 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Reopen a session's Chrome pages after a restart
+## Approve with the setup prompt a review gives the author
 
 2026-11-25, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**3.**
+> [an ask to push, approve and merge a pull request left out] put
+> also the prompt as comment in the approve to [a colleague] to paste
+> so that their setup will learn. always do that
+
+## Reopen a session's Chrome pages after a restart
+
+2026-11-25, commit [6f0a8c7](https://github.com/zululima/setup/commit/6f0a8c75d4f587bfb8cdec19c0866fc76e0faac0), model claude-opus-5-5, effort xhigh.
 
 **5.** to 14.
 > [asks about a print order left out]
