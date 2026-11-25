@@ -88,8 +88,11 @@ description: Browser work in Claude in Chrome: starting the extension, the cooki
   Chrome extension that fills logins there. A sign-in in Chrome is the user's to type or paste each
   time a site asks, from the password manager they keep outside Chrome.
 - A Chrome tab stays open while a step still needs it, such as a sign-in left to the user. Once
-  the session needs no tab and no other open session names one, as the `archive-files` mod reads it
-  from their transcripts, the session quits Chrome wholly before the reply: it first sends its tab
+  the session needs no tab, no other open session names one, as the `archive-files` mod reads it
+  from their transcripts, and no other session is running a turn, as `list_sessions` called right
+  before the quit shows, since a turn that started after the last read can be driving Chrome, the
+  session quits Chrome wholly before the reply. Otherwise it closes only its own tabs with
+  `tabs_close_mcp` and leaves Chrome running. To quit, it first sends its tab
   ids as `{"ungroup": [ids]}` to the bridge's `run/chrome.sock`, so Chrome keeps no saved group,
   then quits with `osascript -e 'quit app "Google Chrome"'` on macOS, which leaves Chrome behind,
   and on Linux with SIGTERM to Chromium's browser process, the one without `--type=`, which Chromium

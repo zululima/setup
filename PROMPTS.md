@@ -6,9 +6,20 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## chrome: quit Chrome only while no other session runs a turn
+
+2026-11-25, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** Quoted under [57858d1](https://github.com/zululima/setup/commit/57858d106b34f34ffd55daa49fe2437fb51eaadb).
+
+Reply: [the morning routine's report on hours, the nightly run, meetings and the tasks of the day]
+
+**2.**
+> already started that. chrome skill done pasted on terminal
+
 ## Name a store's whole library as a two-way reading
 
-2026-11-24, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+2026-11-24, commit [3cc3c73](https://github.com/zululima/setup/commit/3cc3c73dd68135b873947c61aa2c62690e6272c8), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > [an ask for a menu entry for each game installed from Steam, left
