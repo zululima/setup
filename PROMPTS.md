@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Rename a session with the turn's first tool calls
+## Keep an asked-for prompt in the task's last reply
 
 2026-11-26, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**3.**
+> soo wheres the prompt i asked for
+
+## Rename a session with the turn's first tool calls
+
+2026-11-26, commit [1105e1d](https://github.com/zululima/setup/commit/1105e1d070021fb085562c18dcbbddac1f576626), model claude-opus-5-5, effort xhigh.
 
 **2.**
 > session should probably be renamed way earlier on. now this thing

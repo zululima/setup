@@ -63,6 +63,7 @@ description: Browser work in Claude in Chrome: starting the extension, the cooki
   retry fails too and file search does not list it. Open such a file where the user is signed in:
   the message's permalink in Chrome, the option to open it in the browser, then the app's own
   viewer, read page by page from zoomed screenshots, since the viewer's frame blocks scripts.
+- A reply calls a file unreadable only after both routes fail, and says how many tries each took.
 - While the user is in a call in a Chrome tab, such as Google Meet, no session opens, loads or
   closes a tab in Chrome, since its tab can take the call's place on the screen. Chrome holds the
   camera or the microphone then, so before its first browser step the session reads

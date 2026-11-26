@@ -149,12 +149,13 @@ apply to one repository belong in that repository's project memory.
   it, which the app folds under counts such as "ran 2 commands": no text between tool calls, no file
   card sent during the turn and no earlier turn's reply. So an answer to a question asked mid-turn
   goes into the closing message, and every tool call, a rename too, comes before it. What the user
-  is to read, check or choose from, such as a report, a list or the options, is written out whole in
-  it, also when a file or an earlier reply holds it too. A picture or file sent for them to look at
-  is linked in that message by its path, or given its `open` command when it lies outside the
-  session's folders, with what it shows said there in words, never pointed to as sent above. A file
-  kept for a command or a later session is named in one line beside it and never stands in for it. A
-  Slack draft on the clipboard stays the exception that Running things names.
+  is to read, check or choose from, such as a report, a list, the options or a prompt or draft they
+  asked for, is written out whole in it, the task's last reply included, also when a file or an
+  earlier reply holds it too. A picture or file sent for them to look at is linked in that message
+  by its path, or given its `open` command when it lies outside the session's folders, with what it
+  shows said there in words, never pointed to as sent above. A file kept for a command or a later
+  session is named in one line beside it and never stands in for it. A Slack draft on the clipboard
+  stays the exception that Running things names.
 - An abbreviation and a term or shorthand that a session, a script, a workflow or Claude's own
   instructions coined, such as a name for a unit of work, a role, an option, a step label, a pair of
   figures like `85/85` or "the box" for the buttons under a reply, is explained in plain words where
@@ -654,8 +655,7 @@ apply to one repository belong in that repository's project memory.
   words, such as upload, login or screenshot, and try each recipe it finds. A tool that has failed
   to connect twice is not tried a third time in that turn: look for another route.
 - A file a connector cannot open gets one retry of the same call, then is opened in Chrome as the
-  `chrome` skill says. A reply calls a file unreadable only after both routes fail, and says how
-  many tries each took. When the file will be read again, ask the user for a copy in the project
+  `chrome` skill says. When the file will be read again, ask the user for a copy in the project
   instead.
 - A desktop session started with No folder gets a new memory key each time, which no later
   session loads, so a deny rule in `settings.json` blocks memory writes there. Save a project
