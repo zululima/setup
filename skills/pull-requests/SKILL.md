@@ -58,6 +58,16 @@ GitHub.
   that The body places and names the order it recommends, and the follow-up change waits on a pushed
   branch of its own for the PR that lands second, built on the two combined, with the repository's
   verify command and end to end run passing there. A review reports such an order as a finding.
+- Before a PR opens and before each push to it, read every guide the repository's `AGENTS.md` or
+  `CLAUDE.md` links for what the PR changes, such as a translation or release guide, and check the
+  PR against each check the guide lists. Fetch the base branch too and run the checks that compare
+  the branch with it, such as a test that every locale has the default locale's keys, on the branch
+  merged into the base as it stands then, since a reviewer reads that combined tree and counts a gap
+  the base's newer commits open as a finding. When that tree fails, the branch takes the base as it
+  already does, by merge or rebase, and the same push carries the fix. A PR that adds something
+  every build ships, such as a locale or an app name, is followed through each build variant and
+  distribution channel the repository defines, such as staging and production or a store bundle and
+  a direct download, and each must show it.
 - Never add `Co-Authored-By: Claude`, "Generated with Claude Code", or any Claude or Anthropic
   attribution to commits, PR bodies, or issues. The `attribution` setting also enforces this.
 

@@ -6,9 +6,20 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Keep an asked-for prompt in the task's last reply
+## Check guides, the base and every build before a PR push
 
 2026-11-26, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> [an ask about a downstream pull request left out]
+
+**2.**
+> also are these things not recorded properly on the repo or whats up?
+> why hasnt my harness found these earlier?
+
+## Keep an asked-for prompt in the task's last reply
+
+2026-11-26, commit [e0120df](https://github.com/zululima/setup/commit/e0120df22ba1736603524fabd02a4c708681e39b), model claude-opus-5-5, effort xhigh.
 
 **3.**
 > soo wheres the prompt i asked for
