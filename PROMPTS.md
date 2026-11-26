@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## List Terminal tabs before each reply, ask to close what stays
+## Rename a session with the turn's first tool calls
 
 2026-11-26, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**2.**
+> session should probably be renamed way earlier on. now this thing
+> just is fix blhablablhab
+
+## List Terminal tabs before each reply, ask to close what stays
+
+2026-11-26, commit [256125f](https://github.com/zululima/setup/commit/256125f29caf1d4f29646acc1bc964d7a6e11894), model claude-opus-5-5, effort xhigh.
 
 **16.**
 > why are there terminal tabs open. also if you cant close those or the

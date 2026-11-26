@@ -524,17 +524,17 @@ apply to one repository belong in that repository's project memory.
   or boot of that simulator is asked about the same way until a launch shows the crash fixed.
 - In the desktop app, every turn that answers a prompt from the user renames its own session
   with `set_session_title` and `self`, to a title for what the whole session has done so far, not
-  for the latest prompt alone. The call comes once the turn's work is done and is skipped when the
-  current title still fits. An issue or pull request in a title is IS or PR and its number, as in IS
-  176 or PR 220, never a bare #176, which says neither. A title stays within 16 characters, not
-  counting the emoji the `usage` mod puts before it, and fewer when capitals or digits fill it: a
-  pull request badge, the count beside it, an unread dot or the indent of a session started from
-  another takes room at the end of a sidebar row, and the narrowest such row fades out text past
-  about 16. The `usage` mod refuses a rename to a longer title, and to one that Cmd+K would list
-  another session for as well: every word of it part of another session's title or earlier title,
-  archived ones included, or every word of another session's title part of it. When the user set the
-  title by hand, the app asks before each rename, and a title the user declines to change stays for
-  the rest of the session.
+  for the latest prompt alone. The call comes with the turn's first tool calls and again at its end,
+  skipped when the current title still fits. An issue or pull request in a title is IS or PR and its
+  number, as in IS 176 or PR 220, never a bare #176, which says neither. A title stays within 16
+  characters, not counting the emoji the `usage` mod puts before it, and fewer when capitals or
+  digits fill it: a pull request badge, the count beside it, an unread dot or the indent of a
+  session started from another takes room at the end of a sidebar row, and the narrowest such row
+  fades out text past about 16. The `usage` mod refuses a rename to a longer title, and to one that
+  Cmd+K would list another session for as well: every word of it part of another session's title or
+  earlier title, archived ones included, or every word of another session's title part of it. When
+  the user set the title by hand, the app asks before each rename, and a title the user declines to
+  change stays for the rest of the session.
 - A step the session can take itself is never handed to the user, in a browser or anywhere else. A
   step on another of the user's computers is a prompt for Claude Code there, never a command, saved
   as `<word>.md` in the folder synced there that `~/.claude/rules/` names, if any, so the user types
