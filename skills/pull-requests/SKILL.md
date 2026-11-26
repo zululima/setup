@@ -310,7 +310,10 @@ GitHub.
   text is the whole address, and under it the review page's `file://` address, with the full path
   from the root, in a `text` block of its own, which the user copies into Firefox's address bar, as
   `~/.claude/CLAUDE.md` says for every local page. The block is the last thing before Prompt
-  feedback, where the reader's eye is when they go to copy it.
+  feedback, where the reader's eye is when they go to copy it. A reply that leaves the user nothing
+  to do on the PR, such as one that hands it to another reviewer or says the session can be
+  archived, gives the PR's page alone and no review page address: the page is for the user's own
+  pass over the steps, so its address reads as work still waiting.
 - Once no finding of a review of a PR another author opened is left open, the reply asks in its
   next-step box whether the session approves and merges it, naming any PR the merge waits on, such
   as the one that holds its base branch, unless the PR's reviews or comments name someone else to

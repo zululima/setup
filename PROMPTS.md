@@ -6,9 +6,21 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## docs(pull-requests): no review page address when nothing is left
+
+2026-11-26, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-fable-5-2, effort high.
+
+**5.**
+> why did you give me the review link at the end
+
+Reply: The review page link in the last reply came from a standing rule that every reply about a pull request ends with it. It did not fit a reply that said nothing was left for you to do. No rule is changed yet.
+
+**6.** (answer to: drop the review page link from such a reply?)
+> Yes, drop it there
+
 ## archive-files: keep finished files in ~/Archive
 
-2026-11-25, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+2026-11-25, commit [f2f3593](https://github.com/zululima/setup/commit/f2f35937cd5a52d2bfc150dd96c837fd7c82c8ca), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > where can i find the [a logo file] again? maybe we should have some
