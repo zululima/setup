@@ -19,10 +19,12 @@ description: Which Claude model and effort each kind of work runs on, when a tas
   `detach_session` with `self` before any other step, and a session another one started does so
   first, told or not. The session that started one also detaches it in the next message. It then
   reports nothing back, so the reply of a session that stays, one with work of its own left, links
-  it, and a step that needs its result waits for the user to say it is done. A spawner, as
-  `~/.claude/CLAUDE.md` defines it, archives itself instead, once the start, the detach and any
-  send of the task returned without error: it calls `wrap_up` with a recap alone, then
-  `archive_session` with `self`, and writes no reply. A session that used `hand_off_to_session` to
+  it, and a step that needs its result waits for the user to say it is done. A spawner archives
+  itself instead. A spawner, a session that handed its task to another or started the next job's
+  session with nothing else left in that sense, ends its turn with `archive_session` and `self`
+  once `start_session`, `detach_session` and any send of the task returned without error, and
+  writes no closing reply, link or Prompt feedback, as its question named the model and effort. On
+  an error it stays and says so. Before the archive it calls `wrap_up` with a recap alone. A session that used `hand_off_to_session` to
   answer a new message is no spawner, since it answers. The brief of a session a spawner starts
   also gives the spawner's `local_` id and tells its session to call `archive_session` on it before
   its first closing reply unless `get_session` shows it archived, and not to mention that.

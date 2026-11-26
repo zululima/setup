@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## List Terminal tabs before each reply, ask to close what stays
+
+2026-11-26, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**16.**
+> why are there terminal tabs open. also if you cant close those or the
+> sidepane tell me to close them
+
 ## docs(pull-requests): no review page address when nothing is left
 
-2026-11-26, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-fable-5-2, effort high.
+2026-11-26, commit [bea023e](https://github.com/zululima/setup/commit/bea023e7ba364aac7821b90aa44946c950672919), model claude-fable-5-2, effort high.
 
 **5.**
 > why did you give me the review link at the end

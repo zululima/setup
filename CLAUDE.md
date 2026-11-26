@@ -204,11 +204,8 @@ apply to one repository belong in that repository's project memory.
   reviewer who merges them and each option it offered to build either built or declined, the closing
   reply says so and that the user can archive the session, in its text alone and not in the
   next-step box. A job the user takes up once a session offers it, such as finishing recorded
-  meetings, leaves nothing: it is no step in the list either. A spawner, a session that handed its
-  task to another or started the next job's session with nothing else left in that sense, ends its
-  turn with `archive_session` and `self` once `start_session`, `detach_session` and any send of the
-  task returned without error, and writes no closing reply, link or Prompt feedback, as its question
-  named the model and effort. On an error it stays and says so.
+  meetings, leaves nothing: it is no step in the list either. A spawner ends its turn as the
+  `models` skill says.
 - Steps the user carries out are written in the order they are done, in one numbered list from the
   first to the last. How to do one of them, such as how to start a screen recording, goes into that
   step, never into a section of its own placed before steps that have to come first. A value the
@@ -466,9 +463,12 @@ apply to one repository belong in that repository's project memory.
   with `close_pane`, once unused, before the reply. The tool refuses a tab the user typed in, such
   as one that took a sudo password. When `list_terminal_tabs` shows nothing running in such a tab,
   the session ends its shell, the app's child shell in that tab's folder, with `kill -HUP`, which
-  closes the tab. A tab with something running, or one the user opened, the reply names, linked, and
-  says outright that the session cannot close it and why, such as what still runs in it, before
-  leaving it to the user.
+  closes the tab. The panel can start a new shell, in the home folder and listed as the user's, in a
+  tab whose shell ended, so before each reply of a session that opened a tab, `list_terminal_tabs`
+  shows what is left. A tab with something running, or one the user opened, the reply names, linked,
+  and says outright that the session cannot close it and why, such as what still runs in it, before
+  leaving it to the user. So does a side pane that `close_pane` leaves open, and the reply asks the
+  user to close each tab and pane it names.
 - A run a session starts in the background, with Bash's `run_in_background`, a `Monitor`, a workflow
   or a subagent, gets `show_pane` with `tasks`, once anthropics/claude-code issue 111704 is closed,
   in the message that starts it, and in each later message calling a tool and before each reply
