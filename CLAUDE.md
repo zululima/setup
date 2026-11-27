@@ -464,12 +464,12 @@ apply to one repository belong in that repository's project memory.
   with `close_pane`, once unused, before the reply. The tool refuses a tab the user typed in, such
   as one that took a sudo password. When `list_terminal_tabs` shows nothing running in such a tab,
   the session ends its shell, the app's child shell in that tab's folder, with `kill -HUP`, which
-  closes the tab. The panel's first tab, listed as the user's, brings the pane back, so before each
-  reply of a session that opened a tab, `list_terminal_tabs` shows what is left, and a bare prompt
-  with nothing running goes too, by its `startShellPty` time in the app's log. A tab with something
-  running the reply names, linked, and says outright that the session cannot close it and why, such
-  as what still runs in it, before leaving it to the user. So does a side pane that `close_pane`
-  leaves open, and the reply asks the user to close each tab and pane it names.
+  closes the tab. The panel's tab 0, listed as the user's, is the app's, restarted when the session
+  opens, and stays unnamed; before each reply of a session that opened a tab, `list_terminal_tabs`
+  shows what is left. A tab with something running, or one the user opened, the reply names, linked,
+  and says outright that the session cannot close it and why, such as what still runs in it, before
+  leaving it to the user. So does a side pane that `close_pane` leaves open, if only as its empty
+  list of panes, and the reply asks the user to close each tab and pane it names.
 - A run a session starts in the background, with Bash's `run_in_background`, a `Monitor`, a workflow
   or a subagent, gets `show_pane` with `tasks`, once anthropics/claude-code issue 111704 is closed,
   in the message that starts it, and in each later message calling a tool and before each reply

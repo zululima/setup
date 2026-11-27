@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Re-check a step the user may have taken in each reply
+## Leave the Terminal panel's tab 0 alone, name an empty side panel
 
 2026-11-27, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**14.**
+> the sidepane is not gone. no terminal tabs
+
+## Re-check a step the user may have taken in each reply
+
+2026-11-27, commit [aea4b74](https://github.com/zululima/setup/commit/aea4b740e92f865603a10dcd1f7082bc1d282cad), model claude-opus-5-5, effort xhigh.
 
 **3.**
 > [an answer about a recording left out] also always check if things
