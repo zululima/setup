@@ -6,9 +6,20 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## Close the Terminal panel's first tab so its pane stays shut
+
+2026-11-27, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** to 12.
+> [asks about a slide show at a fair stand, its battery and a local
+> helper script, left out]
+
+**13.**
+> again with the sidepane
+
 ## Check guides, the base and every build before a PR push
 
-2026-11-26, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+2026-11-26, commit [75759a0](https://github.com/zululima/setup/commit/75759a0f1e11eb9b3ff4910e7a1845b28fa834a3), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > [an ask about a downstream pull request left out]
