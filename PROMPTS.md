@@ -6,9 +6,18 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Close the Terminal panel's first tab so its pane stays shut
+## Re-check a step the user may have taken in each reply
 
 2026-11-27, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**3.**
+> [an answer about a recording left out] also always check if things
+> have been done. like 1. is already done. [an ask about a project's
+> task list left out]
+
+## Close the Terminal panel's first tab so its pane stays shut
+
+2026-11-27, commit [c717d3b](https://github.com/zululima/setup/commit/c717d3b29f30ed0238778fd06044bb8a653a438a), model claude-opus-5-5, effort xhigh.
 
 **1.** to 12.
 > [asks about a slide show at a fair stand, its battery and a local
