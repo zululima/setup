@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Hide the empty side panel close_pane leaves open
+## Link the Qobuz cover helper from the Mac doc
 
 2026-11-27, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**4.** (answer to: shall I add qobuz-cover-wall to docs/mac.md, next to qobuz-ear-pause?)
+> Yes, add it
+
+## Hide the empty side panel close_pane leaves open
+
+2026-11-27, commit [db6df3e](https://github.com/zululima/setup/commit/db6df3ef445079b773384c8c791be1daac616005), model claude-opus-5-5, effort xhigh.
 
 **15.**
 > still there

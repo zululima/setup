@@ -217,3 +217,8 @@ LaunchAgents in `~/Library/LaunchAgents` start these at login:
   play and pause Qobuz. It has its own repository,
   [https://github.com/zululima/qobuz-ear-pause](https://github.com/zululima/qobuz-ear-pause), with
   its install steps.
+- A second helper Claude wrote for Qobuz, which shows the cover of the track Qobuz plays across my
+  external display, on a gradient like the one in Qobuz's own full-screen player, behind every
+  window, so I see it whenever that display is otherwise empty. It has its own repository,
+  [https://github.com/zululima/qobuz-cover-wall](https://github.com/zululima/qobuz-cover-wall), with
+  its install steps.
