@@ -334,6 +334,11 @@ GitHub.
   merge it, as Merging says. Approving and merging are never listed as the user's steps: the session
   takes both on the yes, the approval with no comment unless the review gave a prompt for the
   author's setup, as the next bullet says.
+- A review with findings on a PR another author made with Claude Code, as the PR body or the project
+  memory shows, gives a prompt for that author's own setup, fixed findings included. It tells their
+  Claude Code to add, generalised past the case, the rule or check that would have caught each
+  finding before the PR opened, each with the case that prompted it, and to commit it where their
+  setup is kept, named where a source shows it.
 - A review that gives a prompt for the author's own Claude Code setup approves with that prompt as
   its comment, so the author pastes it and their setup learns from the review: one line that asks
   the author to paste the prompt into their Claude Code, then the prompt in a fenced `text` block.

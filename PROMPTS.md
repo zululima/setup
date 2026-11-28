@@ -6,9 +6,16 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## pull-requests: review fixes where reviewers fix, not the author
+## pull-requests: a review prompts the author's Claude Code setup
 
 2026-11-28, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**5.** (answer to: have you run the permission script?)
+> done. also we should give the prompt for [a teammate]s claude
+
+## pull-requests: review fixes where reviewers fix, not the author
+
+2026-11-28, commit [fa3dd3f](https://github.com/zululima/setup/commit/fa3dd3f5979e87113f331da4848f3a239c6a50f7), model claude-opus-5-5, effort xhigh.
 
 **3.**
 > [pasted: a step of the last reply that handed the review findings

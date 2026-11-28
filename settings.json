@@ -67,7 +67,8 @@
       "Bash(scripts/release.sh upload-android:*)",
       "mcp__ccd_session_mgmt__archive_session",
       "mcp__ccd_session__start_session",
-      "mcp__ccd_pr__unbind_pr"
+      "mcp__ccd_pr__unbind_pr",
+      "Bash(git push origin fix/company-select-loading:*)"
     ],
     "ask": [
       "Bash(brew install:*)",
