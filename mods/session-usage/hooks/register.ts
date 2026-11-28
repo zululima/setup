@@ -24,6 +24,8 @@ const ICE = '\u{1F9CA}'
 const COOKIE = '\u{1F36A}'
 const BRAIN = '\u{1F9E0}'
 const GEAR = '\u2699\uFE0F'
+const FIVE = '5\uFE0F\u20E3'
+const CALENDAR = '\u{1F4C5}'
 const MARK = new RegExp(`^(${FIRE}|${ICE}|\u2699\uFE0F?) `, 'u')
 const RETRY = 600_000
 // A waiting session rewrites its file on each 15-second tick.
@@ -34,8 +36,8 @@ const MOST_TITLE = 16
 // The labels of the usage card and of plan-limits.sh, which keep a window
 // apart from the per-model weekly ones.
 const WINDOWS = [
-  { kind: 'five_hour', label: '5-hour limit', short: '5h' },
-  { kind: 'seven_day', label: 'Weekly \u00B7 all models', short: 'week' },
+  { kind: 'five_hour', label: '5-hour limit', short: FIVE },
+  { kind: 'seven_day', label: 'Weekly \u00B7 all models', short: CALENDAR },
 ]
 
 const minutes = (left: number) => (left >= 60_000 ? String(Math.floor(left / 60_000)) : '<1')

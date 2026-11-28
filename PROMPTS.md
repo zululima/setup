@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## usage mod: a keycap five and a calendar label the limits
+
+2026-11-28, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**3.**
+> maybe use emoji like 5 and something else for week emoji otherwise
+> numberrs get hidden inside the plaintext
+
 ## Local dreaming: an offline model reads transcripts while away
 
-2026-11-28, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5 for prompts 1 to 3, claude-fable-5-2 for 4, effort xhigh for prompts 1 to 3, high for 4.
+2026-11-28, commit [73af63b](https://github.com/zululima/setup/commit/73af63bbdbf1530f191f40c75266a536243dde99), model claude-opus-5-5 for prompts 1 to 3, claude-fable-5-2 for 4, effort xhigh for prompts 1 to 3, high for 4.
 
 **1.**
 > dreaming should have a local llm(s) running alonside it nonstop. like

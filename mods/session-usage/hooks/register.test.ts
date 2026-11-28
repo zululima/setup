@@ -9,6 +9,8 @@ const ICE = '\u{1F9CA}'
 const COOKIE = '\u{1F36A}'
 const LATE = '\u{1F4B8}'
 const GEAR = '⚙️'
+const FIVE = '5\uFE0F\u20E3'
+const CALENDAR = '\u{1F4C5}'
 // 12:20 on 20 Oct at UTC+3, and the next midnight there
 const NOW = 1792488000_000
 const MIDNIGHT = 1792530000_000
@@ -346,7 +348,7 @@ test('adds the 5-hour and weekly limits from the usage card, asked once a minute
 
   await $.session.start(START)
   expect(asked).toBe(1)
-  expect(shown.at(-1)).toBe(`${FIRE} 30m, ${FIGURES}, 5h 68%, week 89%`)
+  expect(shown.at(-1)).toBe(`${FIRE} 30m, ${FIGURES}, ${FIVE} 68%, ${CALENDAR} 89%`)
   expect(JSON.parse(files.get(LIMITS) ?? '{}')).toEqual({
     machine: 'mac',
     writtenAt: secs(NOW),
@@ -368,14 +370,14 @@ test('adds the 5-hour and weekly limits from the usage card, asked once a minute
   files.set(LIMITS, JSON.stringify({ ...file, checkedEpoch: (NOW + 50_000) / 1000, windows }))
   await clock.advance(15_000)
   expect(asked).toBe(1)
-  expect(shown.at(-1)).toBe(`${FIRE} 29m, ${FIGURES}, 5h 70%, week 89%`)
+  expect(shown.at(-1)).toBe(`${FIRE} 29m, ${FIGURES}, ${FIVE} 70%, ${CALENDAR} 89%`)
 
   // A minute after that it asks, and an older figure of the same window does
   // not set the one on file back.
   await clock.advance(60_000)
   expect(asked).toBe(2)
-  expect(shown.at(-1)).toBe(`${FIRE} 28m, ${FIGURES}, 5h 70%, week 89%`)
-  // Each emoji counted as two columns
+  expect(shown.at(-1)).toBe(`${FIRE} 28m, ${FIGURES}, ${FIVE} 70%, ${CALENDAR} 89%`)
+  // Each emoji counted as two columns, the keycap as its three code points
   expect(shown.every(text => [...(text ?? '')].length + 2 <= 40)).toBe(true)
 })
 
@@ -403,16 +405,16 @@ test('takes the limits a turn measures and drops a window at its reset', async (
 
   await $.session.start(START)
   await measure(12.4, 600_000)
-  expect(shown.at(-1)).toBe(`${FIRE} 59m, ${FIGURES}, 5h 12%, week 40%`)
+  expect(shown.at(-1)).toBe(`${FIRE} 59m, ${FIGURES}, ${FIVE} 12%, ${CALENDAR} 40%`)
 
   await measure(9, 600_000)
-  expect(shown.at(-1)).toBe(`${FIRE} 59m, ${FIGURES}, 5h 12%, week 40%`)
+  expect(shown.at(-1)).toBe(`${FIRE} 59m, ${FIGURES}, ${FIVE} 12%, ${CALENDAR} 40%`)
 
   await clock.advance(600_000)
-  expect(shown.at(-1)).toBe(`${FIRE} 49m, ${FIGURES}, week 40%`)
+  expect(shown.at(-1)).toBe(`${FIRE} 49m, ${FIGURES}, ${CALENDAR} 40%`)
 
   await measure(1, 5 * 3_600_000)
-  expect(shown.at(-1)).toBe(`${FIRE} 49m, ${FIGURES}, 5h 1%, week 40%`)
+  expect(shown.at(-1)).toBe(`${FIRE} 49m, ${FIGURES}, ${FIVE} 1%, ${CALENDAR} 40%`)
 })
 
 const record = (id: string) => `/me/sessions/org/account/local_${id}.json`
