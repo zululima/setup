@@ -6,9 +6,18 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Limit the PR video to changes a web page shows
+## pull-requests: review fixes where reviewers fix, not the author
 
 2026-11-28, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**3.**
+> [pasted: a step of the last reply that handed the review findings
+> to the PR's author]
+> what. fix the findings
+
+## Limit the PR video to changes a web page shows
+
+2026-11-28, commit [c91a17b](https://github.com/zululima/setup/commit/c91a17bdba57944d968fefc634bb6d288b213a09), model claude-opus-5-5, effort xhigh.
 
 **7.** (answer to: shall I set up a video for every PR that changes a screen?) Quoted under [95492ab](https://github.com/zululima/setup/commit/95492ab56acb0eb2344165024b321f17cc8d82f4).
 

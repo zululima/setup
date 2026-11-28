@@ -279,7 +279,11 @@ GitHub.
   such as a merge or a change outside the repository, stays a proposal. A review of a PR another
   author opened stays findings for that author, as this section says, and no session pushes to that
   author's branch, a fix it has made and tested included: the fix goes into the finding as the
-  change the review would make, for the author to commit.
+  change the review would make, for the author to commit. Where the repository's project memory says
+  its reviewers fix findings themselves rather than send them back, the review commits each fix on
+  the PR's branch in the checkout in the same turn and tests it, and its next-step box asks whether
+  the session pushes them to the author's branch. No reply there tells the user to pass the findings
+  to the author.
 - A PR review switches the checkout to the PR's branch and leaves it there, runs the two command
   steps above itself, and checks the PR's manual steps against the screen. "Here" or "only" in a
   review prompt limits where the reply goes, never what runs. Right after the switch it binds the PR
