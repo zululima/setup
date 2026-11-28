@@ -6,9 +6,15 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Record a narrated video for each PR that changes a screen
+## Limit the PR video to changes a web page shows
 
 2026-11-28, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**7.** (answer to: shall I set up a video for every PR that changes a screen?) Quoted under [95492ab](https://github.com/zululima/setup/commit/95492ab56acb0eb2344165024b321f17cc8d82f4).
+
+## Record a narrated video for each PR that changes a screen
+
+2026-11-28, commit [95492ab](https://github.com/zululima/setup/commit/95492ab56acb0eb2344165024b321f17cc8d82f4), model claude-opus-5-5, effort xhigh.
 
 **2.**
 > [an ask about another project's code, voice and licence left out]

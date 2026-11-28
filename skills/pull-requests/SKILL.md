@@ -400,12 +400,13 @@ GitHub.
 
 - Every manual step of How to verify gets a screenshot of the state it describes, in the PR body and
   so on the review page, whether or not the change alters what a page renders: the reader sees what
-  should happen before acting. A PR that changes what a screen shows also gets a narrated video of
+  should happen before acting. A PR that changes what a web page shows also gets a narrated video of
   the change, made with the installed skill that records story videos, as its `SKILL.md` says. Where
-  no such skill is installed, a recording comes on top only where motion is the point, or where the
-  change is visual and the repository asks for one, in its pull request template or in the agent
-  instructions it keeps in context (`AGENTS.md`, `CLAUDE.md`). A repository may keep such asks out
-  of the template so the body carries only what a reviewer reads, and they bind as much there.
+  no such skill is installed, or the change shows only where it cannot record, such as in a phone
+  app, a recording comes on top only where motion is the point, or where the change is visual and
+  the repository asks for one, in its pull request template or in the agent instructions it keeps in
+  context (`AGENTS.md`, `CLAUDE.md`). A repository may keep such asks out of the template so the
+  body carries only what a reviewer reads, and they bind as much there.
 - Capture them from the local stack on fixture data with a scratch Playwright script in the
   scratchpad, on the repository's Playwright install, never a config change in the repository:
   one PNG per manual step of "How to verify", in the state that step describes, named after the
