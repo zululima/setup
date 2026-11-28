@@ -6,9 +6,17 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## pull-requests: a setup prompt says your, and is not posted twice
+## Refuse a Slack draft whose text makes an emoji code
 
 2026-11-28, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**6.**
+> [an aside left out] fr why did you put :[a colleague's name]: there
+> [an emoji and an ask about the draft's thread left out]
+
+## pull-requests: a setup prompt says your, and is not posted twice
+
+2026-11-28, commit [ee5cc8b](https://github.com/zululima/setup/commit/ee5cc8bd435acbf760a40be0c3999e7d4fb2b11b), model claude-opus-5-5, effort xhigh.
 
 **3.**
 > [an approval and merge of a downstream pull request left out] also
@@ -8905,6 +8913,7 @@ Stop, add it to dotclaude?)
 - FAQ: frequently asked questions
 - feat: feature
 - ff-only: fast-forward only
+- fr: for real
 - fri: Friday
 - GB: gigabytes
 - gcp: Google Cloud Platform

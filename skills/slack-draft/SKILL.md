@@ -38,6 +38,11 @@ with one paste. A draft of words, line breaks, bare addresses and emoji codes al
 plain paste and skips the clipboard: the reply gives it in a `text` block, with a blank line
 between paragraphs, and steps 1, 3 and 4 below do not apply to it.
 
+Slack shows any `:word:` in the text as an emoji, also one that two colons make by accident, such
+as a label `API:t:` that puts a Finnish case ending after an abbreviation, or a time `10:07:`. So a
+draft holds no `:word:` outside code unless it means that emoji: reword it, such as
+`API-tunnisteet:`. This holds for a `text` block draft too, which no script checks.
+
 ## Steps
 
 1. Write the draft as an HTML fragment in `~/.claude/drafts/<topic>.html`, with words separated
@@ -70,7 +75,9 @@ between paragraphs, and steps 1, 3 and 4 below do not apply to it.
    Check each GitHub link with `gh api`, the `contents` endpoint with `?ref=<sha>` for a file,
    the `commits` endpoint for a commit and `releases/tags/<tag>` for a release. Never name a
    shell variable `path` in that loop: zsh ties it to `PATH`.
-3. Run the copy script. It prints what it read back and exits non-zero when a type is missing.
+3. Run the copy script. It prints what it read back and exits non-zero when a type is missing. It
+   copies nothing and names each `:word:` outside `<code>` and `<pre>`, unless `--emoji` before
+   the file says the draft means them.
    ```bash
    ~/.claude/skills/slack-draft/copy-rich.sh ~/.claude/drafts/<topic>.html
    ```

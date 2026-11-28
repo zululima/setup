@@ -3,15 +3,33 @@
 # each back. Slack's message box keeps link text, bold, lists and code only from a
 # rich paste, and a target that reads plain text alone still gets the words.
 #
-#   copy-rich.sh <file.html>
+#   copy-rich.sh [--emoji] <file.html>
 #
-# Exits non-zero when a type is missing after the write.
+# Exits non-zero when a type is missing after the write. Exits 3 without copying
+# when the text outside <code> and <pre> holds a :word:, which Slack shows as an
+# emoji, unless --emoji says the draft means it.
 set -eu
+
+emoji=no
+if [ "${1:-}" = --emoji ]; then
+  emoji=yes
+  shift
+fi
 
 html=${1:-}
 if [ -z "$html" ] || [ ! -f "$html" ]; then
-  echo "usage: copy-rich.sh <file.html>" >&2
+  echo "usage: copy-rich.sh [--emoji] <file.html>" >&2
   exit 2
+fi
+
+if [ "$emoji" = no ]; then
+  codes=$(perl -0777 -ne 's{<(code|pre)\b[^>]*>.*?</\1>}{}gis; s{<[^>]*>}{}g;
+    print "$1\n" while /(:[A-Za-z0-9_+-]+:)/g' "$html" | sort -u)
+  if [ -n "$codes" ]; then
+    echo "copy-rich.sh: Slack shows these as emoji, so reword them or pass --emoji:" >&2
+    printf '%s\n' "$codes" >&2
+    exit 3
+  fi
 fi
 
 tmp=$(mktemp -d)
