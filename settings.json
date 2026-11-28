@@ -705,7 +705,6 @@
   "switchModelsOnFlag": false,
   "agentPushNotifEnabled": true,
   "inputNeededNotifEnabled": true,
-  "autoCompactWindow": 400000,
   "statusLine": {
     "type": "command",
     "command": "\"$HOME/.claude/hooks/plan-limits.sh\"",

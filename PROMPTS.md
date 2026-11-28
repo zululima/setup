@@ -6,9 +6,20 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## usage mod: 5-hour and weekly limits in place of the next cold session
+## settings: let sessions run to the full context window
 
 2026-11-28, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.** Quoted under [677abab](https://github.com/zululima/setup/commit/677ababceace91ad7352bc5c4f2675dffe6b076d).
+
+Reply: The usage line now shows your 5-hour and weekly limits, as in "🔥 57m, 🧠 79%, 5h 77%, week 90%", and the hourglass entry is gone. It is live in your sessions, and it is committed and pushed to the setup repo as 677abab. The 400k compaction cap is still in place.
+
+**2.** (answer to: shall I remove the 400k compaction cap so sessions run to the full window?)
+> Yes, remove it
+
+## usage mod: 5-hour and weekly limits in place of the next cold session
+
+2026-11-28, commit [677abab](https://github.com/zululima/setup/commit/677ababceace91ad7352bc5c4f2675dffe6b076d), model claude-opus-5-5, effort xhigh.
 
 **1.**
 > lets do some claude code harness modding. ill start using that
