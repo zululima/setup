@@ -6,9 +6,39 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## Local dreaming: an offline model reads transcripts while away
+
+2026-11-28, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5 for prompts 1 to 3, claude-fable-5-2 for 4, effort xhigh for prompts 1 to 3, high for 4.
+
+**1.**
+> dreaming should have a local llm(s) running alonside it nonstop. like
+> when i go to lunch, drive car, go to bed and be off work this machine
+> should work non stop. not make new features no, but the same way
+> dreaming works now too. i would say dream and it chooses to only
+> local dream or also claude dream if percents looks like taht although
+> unlikely with my history. can we somehow restrict internet access to
+> make it secure? should claude supervise internet requests? is it
+> expensive for claude? lets build this. every dream session should
+> give the cmd enter wake up as default so i can start working. when
+> dreaming in general you can also transcribe any untranscribed stuff
+> etc like heavy lifting. local dreaming should work continue even if
+> interent loses
+
+Reply: Nothing is built yet: your 5-hour limit is 81% used and on pace for 114% before it resets at 14:20. The local dreaming build waits on your pick of model.
+
+**2.** (answer to: move the build to a new session on Fable 5.2 at high effort?)
+> Yes, move it
+
+**3.** [a task another Claude session wrote, left out]
+
+Reply: The local dream worker is written and tested inside a block that refuses every internet connection, but it is not started, not wired into dream and not committed. Still missing: the battery setting, the wake up button, Claude's check of its findings and the background job.
+
+**4.** (answer to: should local dreaming pause while the Mac is on battery with the lid shut?)
+> No, run always
+
 ## settings: let sessions run to the full context window
 
-2026-11-28, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+2026-11-28, commit [9d56505](https://github.com/zululima/setup/commit/9d56505dda1c20fbe5b164122ae620ee9d25a573), model claude-opus-5-5, effort xhigh.
 
 **1.** Quoted under [677abab](https://github.com/zululima/setup/commit/677ababceace91ad7352bc5c4f2675dffe6b076d).
 

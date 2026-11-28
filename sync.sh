@@ -284,6 +284,9 @@ mirrored=(
   skills/read-aloud/SKILL.md
   skills/models/SKILL.md
   skills/models/pace.sh
+  skills/local-dream/SKILL.md
+  skills/local-dream/local-dream.sh
+  skills/local-dream/no-internet.sb
   skills/local-review/SKILL.md
   skills/local-review/local-review.sh
   skills/recall/SKILL.md

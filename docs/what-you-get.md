@@ -313,6 +313,13 @@
   session starts, such as a subagent, takes a cheaper pick. `pace.sh` beside the skill works out
   that pace from how your own weeks have gone. `/dream` keeps both tables current from each new
   model's launch page and from the unofficial trackers that watch for a model quietly getting worse.
+- [`skills/local-dream`](../skills/local-dream/SKILL.md): while you are away, a model running on
+  your own computer in Ollama reads your Claude Code transcripts for the corrections you made and
+  for wasted work, and Whisper transcribes the meetings still waiting. It runs inside a macOS
+  sandbox that refuses every connection but those to the machine itself, so it needs no network and
+  can reach none. You say dream to start it and wake up to stop it. What it finds are claims for a
+  dream run to check, up to 12 a run, since a small model gets many wrong. It does nothing until you
+  install Ollama and pull `gpt-oss:20b`.
 - [`skills/local-review`](../skills/local-review/SKILL.md): a model running on your own computer in
   Ollama reviews your branch in the background while you review it yourself, so it costs none of
   your Claude plan and the code stays on your machine. It reads every changed file once from each of
