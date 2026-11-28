@@ -6,9 +6,19 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Link the Slack message a draft answers, copyable too
+## usage mod: 5-hour and weekly limits in place of the next cold session
 
 2026-11-28, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**1.**
+> lets do some claude code harness modding. ill start using that
+> longest possible session size. lets fit the warm cache remaining time
+> there. lets remove the hourglass from mod. lets add 5h and weekly
+> usage there too
+
+## Link the Slack message a draft answers, copyable too
+
+2026-11-28, commit [f85d69f](https://github.com/zululima/setup/commit/f85d69f81eb8dbd609f57ef0074509312549c5a9), model claude-opus-5-5, effort xhigh.
 
 **6.**
 > [an aside left out] also link the message where i would send that

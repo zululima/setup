@@ -6,9 +6,7 @@ const FIGURES = '\u{1F9E0} 16%'
 const FIRE = '\u{1F525}'
 const ALARM = '\u23F0'
 const ICE = '\u{1F9CA}'
-const HOURGLASS = '\u23F3'
 const COOKIE = '\u{1F36A}'
-const LOCK = '\u{1F512}️'
 const LATE = '\u{1F4B8}'
 const GEAR = '⚙️'
 // 12:20 on 20 Oct at UTC+3, and the next midnight there
@@ -163,66 +161,6 @@ test('reads the transcript on each tick while a main turn runs', async ($, on) =
   expect(runs).toBe(4)
 })
 
-test('names the other session that goes cold next, cut to fit, read once a minute', async ($, on) => {
-  const shown: (string | undefined)[] = []
-  let nextRuns = 0
-  const clock = mock.clock(on, { now: NOW })
-  on('session.id', () => ({ value: 'abc' }))
-  on('process.run', ($, e) => {
-    if (e.argv[1] !== '--next') return warmFor(59)
-    expect(e.argv[2]).toBe('abc')
-    nextRuns++
-    return ran(`${NOW / 1000 + 90}\tStore status\n${NOW / 1000 + 18 * 60}\tOctober role at the office\n`)
-  })
-  on('ui.status', ($, e) => {
-    shown.push(e.text)
-    return { value: undefined }
-  })
-  on('session.start', () => ({ cwd: '/' }))
-
-  await $.session.start(START)
-  await clock.advance(45_000)
-  await clock.advance(45_000)
-
-  expect(nextRuns).toBe(2)
-  expect(shown).toEqual([
-    `${FIRE} 59m, ${FIGURES}, ${HOURGLASS} 1m Store status`,
-    `${FIRE} 58m, ${FIGURES}, ${HOURGLASS} 1m Store status`,
-    `${FIRE} 58m, ${FIGURES}, ${HOURGLASS} <1m Store status`,
-    `${FIRE} 57m, ${FIGURES}, ${HOURGLASS} <1m Store status`,
-    `${FIRE} 57m, ${FIGURES}, ${HOURGLASS} 16m October role at`,
-  ])
-  // Each emoji counted as two columns
-  expect(shown.every(text => [...(text ?? '')].length + 3 <= 40)).toBe(true)
-})
-
-test('names an untitled session by its last prompt and reads it each tick until titled', async ($, on) => {
-  const shown: (string | undefined)[] = []
-  let nextRuns = 0
-  const clock = mock.clock(on, { now: NOW })
-  on('session.id', () => ({ value: 'abc' }))
-  on('process.run', ($, e) => {
-    if (e.argv[1] !== '--next') return warmFor(59)
-    nextRuns++
-    return nextRuns === 1
-      ? ran(`${NOW / 1000 + 300}\tdoes the app log mic use\tcold\t\tuntitled\n`)
-      : ran(`${NOW / 1000 + 300}\tMic logging\tcold\t\t\n`)
-  })
-  on('ui.status', ($, e) => {
-    shown.push(e.text)
-    return { value: undefined }
-  })
-  on('session.start', () => ({ cwd: '/' }))
-
-  await $.session.start(START)
-  await clock.advance(15_000)
-  await clock.advance(15_000)
-
-  expect(nextRuns).toBe(2)
-  expect(shown[0]).toBe(`${FIRE} 59m, ${FIGURES}, ${HOURGLASS} 5m does the app log`)
-  expect(shown.at(-1)).toBe(`${FIRE} 58m, ${FIGURES}, ${HOURGLASS} 4m Mic logging`)
-})
-
 test('shows its own Chrome sign-in in place of the cache while it ends first', async ($, on) => {
   const shown: (string | undefined)[] = []
   const clock = mock.clock(on, { now: NOW })
@@ -249,29 +187,7 @@ test('shows its own Chrome sign-in in place of the cache while it ends first', a
   ])
 })
 
-test('ranks a Chrome sign-in that ends with the caches that go cold, under a lock', async ($, on) => {
-  const shown: (string | undefined)[] = []
-  const clock = mock.clock(on, { now: NOW })
-  on('session.id', () => ({ value: 'abc' }))
-  on('process.run', ($, e) => {
-    if (e.argv[1] !== '--next') return warmFor(59)
-    return ran(`${NOW / 1000 + 4 * 60}\tBank export\tsign-in\n${NOW / 1000 + 18 * 60}\tOctober role\n`)
-  })
-  on('ui.status', ($, e) => {
-    shown.push(e.text)
-    return { value: undefined }
-  })
-  on('session.start', () => ({ cwd: '/' }))
-
-  await $.session.start(START)
-  await clock.advance(4 * 60_000)
-
-  expect(shown.at(0)).toBe(`${FIRE} 59m, ${FIGURES}, ${LOCK} 4m Bank export`)
-  expect(shown.at(-1)).toBe(`${FIRE} 55m, ${FIGURES}, ${HOURGLASS} 14m October role`)
-})
-
 test('reads the other sessions again within seconds of a prompt in one of them', async ($, on) => {
-  const shown: (string | undefined)[] = []
   const written: string[] = []
   let beaconAt = NOW - 600_000
   let nextRuns = 0
@@ -290,14 +206,9 @@ test('reads the other sessions again within seconds of a prompt in one of them',
   on('process.run', ($, e) => {
     if (e.argv[1] !== '--next') return warmFor(59)
     nextRuns++
-    return nextRuns === 1
-      ? ran(`${NOW / 1000 + 90}\tStore status\n${NOW / 1000 + 18 * 60}\tOctober role\n`)
-      : ran(`${NOW / 1000 + 18 * 60}\tOctober role\n`)
+    return ran('')
   })
-  on('ui.status', ($, e) => {
-    shown.push(e.text)
-    return { value: undefined }
-  })
+  on('ui.status', () => ({ value: undefined }))
   on('session.start', () => ({ cwd: '/' }))
   on('turn.start', ($, e) => ({ turnId: e.turnId }))
 
@@ -308,7 +219,6 @@ test('reads the other sessions again within seconds of a prompt in one of them',
   beaconAt = NOW + 6_000
   await clock.advance(5_000)
   expect(nextRuns).toBe(2)
-  expect(shown.at(-1)).toBe(`${FIRE} 58m, ${FIGURES}, ${HOURGLASS} 17m October role`)
 
   // Its own prompt writes the beacon and reads nothing again.
   await $.turn.start({ text: 'go', turnId: 't1', agentId: 'sub' })
@@ -320,7 +230,6 @@ test('reads the other sessions again within seconds of a prompt in one of them',
 })
 
 test('reads the other sessions again within seconds of an archive in the app', async ($, on) => {
-  const shown: (string | undefined)[] = []
   const stated = new Set<string>()
   const root = '/me/Library/Application Support/Claude/claude-code-sessions'
   const index = `${root}/org/account/archived-sessions.idx`
@@ -343,14 +252,9 @@ test('reads the other sessions again within seconds of an archive in the app', a
   on('process.run', ($, e) => {
     if (e.argv[1] !== '--next') return warmFor(59)
     nextRuns++
-    return nextRuns === 1
-      ? ran(`${NOW / 1000 + 90}\tStore status\n${NOW / 1000 + 18 * 60}\tOctober role\n`)
-      : ran(`${NOW / 1000 + 18 * 60}\tOctober role\n`)
+    return ran('')
   })
-  on('ui.status', ($, e) => {
-    shown.push(e.text)
-    return { value: undefined }
-  })
+  on('ui.status', () => ({ value: undefined }))
   on('session.start', () => ({ cwd: '/' }))
 
   await $.session.start(START)
@@ -361,33 +265,9 @@ test('reads the other sessions again within seconds of an archive in the app', a
   archivedAt = NOW + 6_000
   await clock.advance(5_000)
   expect(nextRuns).toBe(2)
-  expect(shown.at(-1)).toBe(`${FIRE} 58m, ${FIGURES}, ${HOURGLASS} 17m October role`)
 
   await clock.advance(5_000)
   expect(nextRuns).toBe(2)
-})
-
-test('names the other session that goes cold next before its own first answer', async ($, on) => {
-  const shown: (string | undefined)[] = []
-  const clock = mock.clock(on, { now: NOW })
-  on('session.id', () => ({ value: 'abc' }))
-  on('process.run', ($, e) => {
-    if (e.argv[1] !== '--next') return ran('')
-    return ran(`${NOW / 1000 + 18 * 60}\tOctober role at the office with a long title\n`)
-  })
-  on('ui.status', ($, e) => {
-    shown.push(e.text)
-    return { value: undefined }
-  })
-  on('session.start', () => ({ cwd: '/' }))
-
-  await $.session.start(START)
-  await clock.advance(15_000)
-
-  expect(shown).toEqual([
-    `${HOURGLASS} 18m October role at the office with a`,
-    `${HOURGLASS} 17m October role at the office with a`,
-  ])
 })
 
 test('leaves a subagent turn alone and clears on no line', async ($, on) => {
@@ -408,109 +288,138 @@ test('leaves a subagent turn alone and clears on no line', async ($, on) => {
   expect(shown).toEqual([undefined])
 })
 
+const secs = (at: number) => new Date(at).toISOString().replace(/\.\d+Z$/, 'Z')
+const LIMITS = '/config/plan-limits.json'
+const WEEKLY = 'Weekly · all models'
+
+const card = (fiveHour: number, weekly: number) => ({
+  value: {
+    content: [
+      {
+        type: 'text' as const,
+        text: JSON.stringify({
+          plan: {
+            status: 'ok',
+            windows: [
+              { label: '5-hour limit', percentUsed: fiveHour, resetsAt: new Date(NOW + 7_200_244).toISOString() },
+              { label: WEEKLY, percentUsed: weekly, resetsAt: new Date(NOW + 10_800_000).toISOString() },
+              { label: 'Weekly · Fable', percentUsed: 51, resetsAt: new Date(NOW + 10_800_000).toISOString() },
+            ],
+          },
+        }),
+      },
+    ],
+    isError: false,
+  },
+})
+
+test('adds the 5-hour and weekly limits from the usage card, asked once a minute by one session', async ($, on) => {
+  const shown: (string | undefined)[] = []
+  const files = new Map<string, string>()
+  let asked = 0
+  const clock = mock.clock(on, { now: NOW })
+  mock.env(on, { CLAUDE_CONFIG_DIR: '/config' })
+  on('session.id', () => ({ value: 'abc' }))
+  on('process.run', ($, e) => {
+    if (e.argv[0] === 'uname') return ran('mac.local\n')
+    if (e.argv[1] === '--status') return warmFor(30)
+    return ran('')
+  })
+  on('ui.status', ($, e) => {
+    shown.push(e.text)
+    return { value: undefined }
+  })
+  on('fs.read', ($, e) => {
+    const text = files.get(e.path)
+    return text === undefined ? { deny: 'missing' } : { value: text }
+  })
+  on('fs.write', ($, e) => {
+    files.set(e.path, e.text)
+    return { value: undefined }
+  })
+  on('mcp.call', ($, e) => {
+    expect([e.server, e.tool]).toEqual(['ccd_session_mgmt', 'get_usage'])
+    asked++
+    return card(68, 89.4)
+  })
+  on('session.start', () => ({ cwd: '/' }))
+
+  await $.session.start(START)
+  expect(asked).toBe(1)
+  expect(shown.at(-1)).toBe(`${FIRE} 30m, ${FIGURES}, 5h 68%, week 89%`)
+  expect(JSON.parse(files.get(LIMITS) ?? '{}')).toEqual({
+    machine: 'mac',
+    writtenAt: secs(NOW),
+    writtenEpoch: NOW / 1000,
+    checkedEpoch: NOW / 1000,
+    windows: [
+      { label: '5-hour limit', percentUsed: 68, resetsAt: secs(NOW + 7_200_000), resetsEpoch: NOW / 1000 + 7_200 },
+      { label: WEEKLY, percentUsed: 89.4, resetsAt: secs(NOW + 10_800_000), resetsEpoch: NOW / 1000 + 10_800 },
+    ],
+  })
+
+  // Within the minute it reads only the file.
+  await clock.advance(45_000)
+  expect(asked).toBe(1)
+
+  // Another session of the machine asked the card meanwhile.
+  const file = JSON.parse(files.get(LIMITS) ?? '{}')
+  const windows = [{ ...file.windows[0], percentUsed: 70 }, file.windows[1]]
+  files.set(LIMITS, JSON.stringify({ ...file, checkedEpoch: (NOW + 50_000) / 1000, windows }))
+  await clock.advance(15_000)
+  expect(asked).toBe(1)
+  expect(shown.at(-1)).toBe(`${FIRE} 29m, ${FIGURES}, 5h 70%, week 89%`)
+
+  // A minute after that it asks, and an older figure of the same window does
+  // not set the one on file back.
+  await clock.advance(60_000)
+  expect(asked).toBe(2)
+  expect(shown.at(-1)).toBe(`${FIRE} 28m, ${FIGURES}, 5h 70%, week 89%`)
+  // Each emoji counted as two columns
+  expect(shown.every(text => [...(text ?? '')].length + 2 <= 40)).toBe(true)
+})
+
+test('takes the limits a turn measures and drops a window at its reset', async ($, on) => {
+  const shown: (string | undefined)[] = []
+  const clock = mock.clock(on, { now: NOW })
+  on('session.id', () => ({ value: 'abc' }))
+  on('process.run', () => warmFor(59))
+  on('ui.status', ($, e) => {
+    shown.push(e.text)
+    return { value: undefined }
+  })
+  on('session.start', () => ({ cwd: '/' }))
+  on('session.measure', ($, e) => ({ changed: e.changed }))
+
+  const measure = (fiveHour: number, resetsIn: number) =>
+    $.session.measure({
+      context: { window: 1_000_000 },
+      rateLimits: [
+        { kind: 'five_hour', percentUsed: fiveHour, resetsAt: new Date(NOW + resetsIn).toISOString() },
+        { kind: 'seven_day', percentUsed: 40, resetsAt: new Date(NOW + 2 * 86_400_000).toISOString() },
+      ],
+      changed: ['rateLimits'],
+    })
+
+  await $.session.start(START)
+  await measure(12.4, 600_000)
+  expect(shown.at(-1)).toBe(`${FIRE} 59m, ${FIGURES}, 5h 12%, week 40%`)
+
+  await measure(9, 600_000)
+  expect(shown.at(-1)).toBe(`${FIRE} 59m, ${FIGURES}, 5h 12%, week 40%`)
+
+  await clock.advance(600_000)
+  expect(shown.at(-1)).toBe(`${FIRE} 49m, ${FIGURES}, week 40%`)
+
+  await measure(1, 5 * 3_600_000)
+  expect(shown.at(-1)).toBe(`${FIRE} 49m, ${FIGURES}, 5h 1%, week 40%`)
+})
+
 const record = (id: string) => `/me/sessions/org/account/local_${id}.json`
 const titleRow = (coldAt: number, title: string, kind: string, id: string, source = 'tool', sessionId = '') =>
   `${coldAt / 1000}\t${title}\t${kind}\t${record(id)}\t${source}\t${sessionId}`
 
-const indexRow = (id: string, at: number, titles: string[], pr = '') => [record(id), at, pr, ...titles].join('\t')
-
-// This session is "own", most recent of all and left out of its own Cmd+K;
-// "store" goes cold next; "fix" is more recent and once had a title like it. The
-// late mark leaves the name too little room for all three of its words.
-const nextNamed = async (
-  $: Parameters<TestBody>[0],
-  on: Parameters<TestBody>[1],
-  old: string,
-  fixedBefore = 'Store status fix',
-) => {
-  const shown: (string | undefined)[] = []
-  mock.clock(on, { now: NOW })
-  on('session.id', () => ({ value: 'abc' }))
-  on('process.run', ($, e) => {
-    if (e.argv[1] === '--index')
-      return ran(
-        [
-          indexRow('own', NOW, [`${FIRE} Page store notes`]),
-          indexRow('store', NOW - 50 * 60_000, [`${FIRE} Store status page`, 'Store status']),
-          indexRow('fix', NOW - 10 * 60_000, [`${FIRE} Fix login`, fixedBefore]),
-          indexRow('old', NOW - 5 * 86_400_000, [old]),
-        ].join('\n'),
-      )
-    if (e.argv[1] === '--next')
-      return ran(
-        `${titleRow(0, `${FIRE} Page store notes`, 'own', 'own')}\n` +
-          `${NOW / 1000 + 120}\t${FIRE} Store status page\tcold\t${record('store')}\n`,
-      )
-    if (e.argv[1] === '--titles') return ran('')
-    return ran(`${FIGURES}\n${NOW / 1000 + 59 * 60}\n10800\n${LATE}\n`)
-  })
-  on('ui.status', ($, e) => {
-    shown.push(e.text)
-    return { value: undefined }
-  })
-  on('session.start', () => ({ cwd: '/' }))
-
-  await $.session.start(START)
-  return shown.at(-1)
-}
-
-test('names the other session by its first word and the later ones Cmd+K lists it alone by', async ($, on) => {
-  expect(await nextNamed($, on, `${ICE} Status report`)).toBe(`${FIRE} 59m ${LATE}, ${FIGURES}, ${HOURGLASS} 2m Store page`)
-})
-
-test('keeps the first word whole rather than name the session by a later word alone', async ($, on) => {
-  const shown: (string | undefined)[] = []
-  mock.clock(on, { now: NOW })
-  on('session.id', () => ({ value: 'abc' }))
-  on('process.run', ($, e) => {
-    if (e.argv[1] === '--index')
-      return ran(
-        [
-          indexRow('own', NOW, [`${FIRE} Page store notes`]),
-          indexRow('note', NOW - 50 * 60_000, [`${FIRE} Notebooks fixes`]),
-          indexRow('import', NOW - 10 * 60_000, ['Notebooks import']),
-          indexRow('tests', NOW - 5 * 86_400_000, [`${ICE} Test fixes`]),
-        ].join('\n'),
-      )
-    if (e.argv[1] === '--next')
-      return ran(
-        `${titleRow(0, `${FIRE} Page store notes`, 'own', 'own')}\n` +
-          `${NOW / 1000 + 59 * 60}\t${FIRE} Notebooks fixes\tcold\t${record('note')}\n`,
-      )
-    if (e.argv[1] === '--titles') return ran('')
-    return ran(`${FIGURES}\n${NOW / 1000 + 59 * 60}\n10800\n${LATE}\n`)
-  })
-  on('ui.status', ($, e) => {
-    shown.push(e.text)
-    return { value: undefined }
-  })
-  on('session.start', () => ({ cwd: '/' }))
-
-  await $.session.start(START)
-  expect(shown.at(-1)).toBe(`${FIRE} 59m ${LATE}, ${FIGURES}, ${HOURGLASS} 59m Notebooks`)
-})
-
-test('takes more words to have Cmd+K list the other session alone, not only first', async ($, on) => {
-  expect(await nextNamed($, on, `${ICE} Status page report`)).toBe(
-    `${FIRE} 59m ${LATE}, ${FIGURES}, ${HOURGLASS} 2m Store page`,
-  )
-})
-
-test('settles for first when no choice of its words has Cmd+K list the other session alone', async ($, on) => {
-  expect(await nextNamed($, on, `${ICE} Store status page work`)).toBe(
-    `${FIRE} 59m ${LATE}, ${FIGURES}, ${HOURGLASS} 2m Store page`,
-  )
-})
-
-test('puts an older title that starts with the words first, as Cmd+K does', async ($, on) => {
-  expect(await nextNamed($, on, 'Page store status')).toBe(`${FIRE} 59m ${LATE}, ${FIGURES}, ${HOURGLASS} 2m Store page`)
-})
-
-test('keeps the title cut to fit when Cmd+K lists the other session alone by it', async ($, on) => {
-  expect(await nextNamed($, on, `${ICE} Status report`, 'Store fix')).toBe(
-    `${FIRE} 59m ${LATE}, ${FIGURES}, ${HOURGLASS} 2m Store status`,
-  )
-})
+const indexRow = (id: string, titles: string[], pr = '') => [record(id), pr, ...titles].join('\t')
 
 test('marks each title with a fire while its cache is warm and an ice cube once cold', async ($, on) => {
   const records = new Map([
@@ -529,16 +438,11 @@ test('marks each title with a fire while its cache is warm and an ice cube once 
       )
     if (e.argv[1] === '--next')
       return ran(
-        `${titleRow(0, 'This work', 'own', 'own', 'auto')}\n${NOW / 1000 + 120}\t${FIRE} Store status\n` +
-          `${titleRow(NOW + 120_000, 'Store status', 'title', 'store')}\n`,
+        `${titleRow(0, 'This work', 'own', 'own', 'auto')}\n${titleRow(NOW + 120_000, 'Store status', 'title', 'store')}\n`,
       )
     return warmFor(30)
   })
-  const shown: (string | undefined)[] = []
-  on('ui.status', ($, e) => {
-    shown.push(e.text)
-    return { value: undefined }
-  })
+  on('ui.status', () => ({ value: undefined }))
   on('fs.read', ($, e) => {
     const found = records.get(e.path)
     return found ? { value: JSON.stringify(found) } : { deny: 'missing' }
@@ -557,7 +461,6 @@ test('marks each title with a fire while its cache is warm and an ice cube once 
   await $.session.start(START)
   await clock.advance(1)
   expect(renamed).toEqual([`local_own: ${FIRE} This work`, `local_store: ${FIRE} Store status`, `local_old: ${ICE} Old work`])
-  expect(shown[0]).toBe(`${FIRE} 30m, ${FIGURES}, ${HOURGLASS} 2m Store status`)
 
   await clock.advance(135_000)
   expect(renamed.slice(3)).toEqual([`local_store: ${ICE} Store status`])
@@ -616,6 +519,7 @@ test('marks a title with a gear while its file under usage-waiting is fresh', as
     return found ? { value: JSON.stringify(found) } : { deny: 'missing' }
   })
   on('mcp.call', ($, e) => {
+    if (e.tool === 'get_usage') return { value: { content: [], isError: true } }
     const { session_id: id, title } = e.args as { session_id: string; title: string }
     renamed.push(`${id}: ${title}`)
     const path = `/me/sessions/org/account/${id}.json`
@@ -664,7 +568,6 @@ test('marks a title with a gear while a session it started works', async ($, on)
     [record('store'), { title: 'Store status', titleSource: 'tool' }],
   ])
   const renamed: string[] = []
-  const shown: (string | undefined)[] = []
   let waiting = [record('own'), record('store')]
   const clock = mock.clock(on, { now: NOW })
   on('session.id', () => ({ value: 'abc' }))
@@ -678,10 +581,7 @@ test('marks a title with a gear while a session it started works', async ($, on)
     if (e.argv[1] === '--status') return warmFor(30)
     return ran('')
   })
-  on('ui.status', ($, e) => {
-    shown.push(e.text)
-    return { value: undefined }
-  })
+  on('ui.status', () => ({ value: undefined }))
   on('fs.read', ($, e) => {
     const found = records.get(e.path)
     return found ? { value: JSON.stringify(found) } : { deny: 'missing' }
@@ -713,7 +613,6 @@ test('marks a title with a gear while a session it started works', async ($, on)
   waiting = []
   await clock.advance(60_000)
   expect(renamed.slice(4)).toEqual([`local_own: ${FIRE} This work`, `local_store: ${FIRE} Store status`])
-  expect(shown.every(text => !text?.includes(HOURGLASS))).toBe(true)
 })
 
 test('tries a rename the app declines again ten minutes later', async ($, on) => {
@@ -791,9 +690,9 @@ test('refuses a title that another session title holds, or that holds one', asyn
     if (e.argv[1] === '--index')
       return ran(
         [
-          indexRow('own', NOW, [`${FIRE} This work`]),
-          indexRow('pizza', NOW - 60_000, [`${FIRE} Mentoripizza`, 'Mentoripizza ja retry-sääntö']),
-          indexRow('store', NOW - 86_400_000, [`${ICE} Store status`]),
+          indexRow('own', [`${FIRE} This work`]),
+          indexRow('pizza', [`${FIRE} Mentoripizza`, 'Mentoripizza ja retry-sääntö']),
+          indexRow('store', [`${ICE} Store status`]),
         ].join('\n'),
       )
     if (e.argv[1] === '--next') return ran(`${titleRow(0, `${FIRE} This work`, 'own', 'own')}\n`)

@@ -7,11 +7,11 @@
 # desktop app's usage card, for the dream workflow to read where that card is
 # out of reach: the machine, the time written, and per window its label,
 # percentUsed and resetsAt. Every session of the machine writes the one file,
-# and an idle session repeats what it last saw, so a window on file gives way
-# only to the same window further along or to a later one. The file is one
-# machine's state: a configuration directory that syncs between machines
-# leaves it out. The limits are also the line it prints. Without rate_limits
-# it writes and prints nothing.
+# the usage mod in desktop sessions too, and an idle session repeats what it
+# last saw, so a window on file gives way only to the same window further
+# along or to a later one. The file is one machine's state: a configuration
+# directory that syncs between machines leaves it out. The limits are also the
+# line it prints. Without rate_limits it writes and prints nothing.
 
 set -u
 command -v jq >/dev/null 2>&1 || exit 0

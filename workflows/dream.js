@@ -58,7 +58,7 @@ const RESETS_FILE = '~/.claude/dream/claude-resets.json'
 // One run goes at a time across the machines that share this folder: a run keeps its machine, id, start and last sign of life here.
 const MARKER_FILE = '~/.claude/dream/running.json'
 const MARKER_MINUTES = 30
-// Where the status line script hooks/plan-limits.sh keeps the plan's limits for sessions without the usage card, and how old it may be.
+// Where the status line script hooks/plan-limits.sh and the usage mod keep the plan's limits for sessions without the usage card, and how old it may be.
 const LIMITS_FILE = '~/.claude/plan-limits.json'
 const LIMITS_MINUTES = 5
 const BACKLOG_FILE = `${OUT}/backlog.json`
@@ -567,7 +567,7 @@ if (going && going.machine) {
 const preCard = pre && pre.available && Array.isArray(pre.windows) ? pre.windows.find(w => /all models/i.test(w.label)) : null
 const RESETS_NOTE = pre && Number.isFinite(Date.parse(pre.now)) ? resetsCheck(preShift(Date.parse(pre.now)).slice(0, 10), pre.machine, pre.resetsRecord) : ''
 if (UNATTENDED && !preCard) {
-  return { error: `Nothing ran. This run is unattended and the plan's limits cannot be read here: no usage card, and no ${LIMITS_FILE} that the status line script ~/.claude/hooks/plan-limits.sh wrote for this machine in the last ${LIMITS_MINUTES} minutes with the weekly limit in it. The run would spend without a guard, so it stopped before its scout.` }
+  return { error: `Nothing ran. This run is unattended and the plan's limits cannot be read here: no usage card, and no ${LIMITS_FILE} that the status line script ~/.claude/hooks/plan-limits.sh or the usage mod wrote for this machine in the last ${LIMITS_MINUTES} minutes with the weekly limit in it. The run would spend without a guard, so it stopped before its scout.` }
 }
 if (!askedMode || askedMode === 'final') {
   const at = pre ? Date.parse(pre.now) : NaN

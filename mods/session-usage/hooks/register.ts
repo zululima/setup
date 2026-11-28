@@ -1,7 +1,9 @@
-import type { EngineInterface, Register, Timer } from 'claude-code'
+import type { EngineInterface, Register, SessionRateLimit, Timer } from 'claude-code'
 
 type Usage = { figures: string; coldAt: number; offset: number; mark: string; signedInUntil: number }
-type Other = { endsAt: number; title: string; isSignIn: boolean; record: string; isUntitled: boolean }
+type Window = { label: string; percentUsed: number; resetsAt: string; resetsEpoch: number }
+type Limits = { machine: string; writtenAt: string; writtenEpoch: number; checkedEpoch?: number; windows: Window[] }
+type Card = { plan?: { status?: string; windows?: { label?: string; percentUsed?: number; resetsAt?: string }[] } }
 type Titled = {
   coldAt: number
   title: string
@@ -11,7 +13,7 @@ type Titled = {
   retryAt: number
   sessionId: string
 }
-type Known = { at: number; pr: string; titles: string[]; written: string[] }
+type Known = { pr: string; titles: string[]; written: string[] }
 type SessionRecord = { isArchived?: boolean; title?: string; titleSource?: string }
 
 const DAY = 86_400_000
@@ -19,32 +21,31 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 const FIRE = '\u{1F525}'
 const ALARM = '⏰'
 const ICE = '\u{1F9CA}'
-const HOURGLASS = '\u23F3'
 const COOKIE = '\u{1F36A}'
 const BRAIN = '\u{1F9E0}'
-const LOCK = '\u{1F512}\uFE0F'
 const GEAR = '\u2699\uFE0F'
-// The desktop app cuts the status line at about this many characters.
-const WIDTH = 40
 const MARK = new RegExp(`^(${FIRE}|${ICE}|\u2699\uFE0F?) `, 'u')
 const RETRY = 600_000
 // A waiting session rewrites its file on each 15-second tick.
 const STALE = 60_000
-const MOST_WORDS = 8
 // A sidebar row with a pull request badge, indented under another session,
 // fades out text past about this many characters.
 const MOST_TITLE = 16
-
-// An emoji takes two columns, the hourglass too, though it is one UTF-16 unit,
-// and the variation selector after the lock counts as the unit it is.
-const width = (text: string) =>
-  [...text].reduce((n, c) => n + (c === '\uFE0F' ? 1 : (c.codePointAt(0) ?? 0) >= 0x2300 ? 2 : 1), 0)
+// The labels of the usage card and of plan-limits.sh, which keep a window
+// apart from the per-model weekly ones.
+const WINDOWS = [
+  { kind: 'five_hour', label: '5-hour limit', short: '5h' },
+  { kind: 'seven_day', label: 'Weekly \u00B7 all models', short: 'week' },
+]
 
 const minutes = (left: number) => (left >= 60_000 ? String(Math.floor(left / 60_000)) : '<1')
 
 let usage: Usage | undefined
 let compactsAt: number | undefined
-let others: Other[] = []
+let limits: Window[] = []
+let checkedAt = -Infinity
+let hasNoCard = false
+let machine: string | undefined
 // The records of the sessions waiting while a session they started works.
 let startedWork = new Set<string>()
 let othersReadAt = -Infinity
@@ -59,8 +60,6 @@ const titled = new Map<string, Titled>()
 let titling = Promise.resolve()
 const known = new Map<string, Known>()
 let ownRecord = ''
-let indexReads = 0
-let found: { key: string; text: string } | undefined
 
 const pad = (n: number) => String(n).padStart(2, '0')
 const bare = (title: string) => title.replace(MARK, '')
@@ -85,144 +84,91 @@ const cache = (now: number, { coldAt, offset, mark, signedInUntil }: Usage) => {
     : `${ICE} since ${cold.getUTCDate()} ${MONTHS[cold.getUTCMonth()]}`
 }
 
-const fit = (title: string, room: number) => {
-  if (title.length <= room) return title
-  const space = title.lastIndexOf(' ', room)
-
-  return title.slice(0, space > 0 ? space : room).replace(/[\s,:;+-]+$/, '')
-}
-
 // Cmd+K splits what is typed at anything but a letter or a digit and lists a
 // session when each word is part of its title, is its pull request number or
-// is "pr" beside that number, or when each is part of one earlier title. A
-// title that starts with what is typed comes first, which a marked one never
-// does, then the most recently active. It leaves out the session it opens in.
+// is "pr" beside that number, or when each is part of one earlier title.
 const words = (text: string) => text.toLowerCase().split(/[^\p{L}\p{N}]+/u).filter(Boolean)
 
-const place = (typed: string[], { pr, titles: [title = '', ...earlier] }: Known) =>
+const lists = (typed: string[], { pr, titles: [title = '', ...earlier] }: Known) =>
   typed.every(w => title.includes(w) || w === pr || (w === 'pr' && typed.includes(pr))) ||
   earlier.some(t => typed.every(w => t.includes(w)))
-    ? Number(!title.trim().startsWith(typed.join(' ')))
-    : undefined
-
-// 2 when Cmd+K lists the session alone, 1 when first, 0 when after another.
-const standing = (typed: string[], record: string) => {
-  const target = known.get(record)
-  const own = target && place(typed, target)
-  if (target === undefined || own === undefined) return 0
-
-  let rank = 2
-  for (const [r, k] of known) {
-    const p = r === record || r === ownRecord ? undefined : place(typed, k)
-    if (p === undefined) continue
-    if (p < own || (p === own && k.at >= target.at)) return 0
-    rank = 1
-  }
-
-  return rank
-}
 
 // Cmd+K lists only this session for its title while no other session's title
 // or earlier title holds every word of it, and while it holds every word of no
 // other session's title, which would list this one for that title too.
 const clash = (title: string, record: string) => {
   const typed = words(title)
-  const renamed: Known = { at: 0, pr: known.get(record)?.pr ?? '', titles: [title.toLowerCase()], written: [title] }
+  const renamed: Known = { pr: known.get(record)?.pr ?? '', titles: [title.toLowerCase()], written: [title] }
   for (const [r, k] of known) {
     if (r === record) continue
-    if (typed.length > 0 && place(typed, k) !== undefined) {
+    if (typed.length > 0 && lists(typed, k)) {
       const i = Math.max(0, k.titles.findIndex(t => typed.every(w => t.includes(w))))
       const was = i === 0 ? 'is titled' : 'was titled'
       return `Another session ${was} "${bare(k.written[i] ?? '')}", which holds every word of this title, so Cmd+K would list both for it. Pick a word it lacks.`
     }
     const theirs = words(k.titles[0] ?? '')
-    if (theirs.length > 0 && place(theirs, renamed) !== undefined)
+    if (theirs.length > 0 && lists(theirs, renamed))
       return `This title holds every word of another session's title, "${bare(k.written[0] ?? '')}", so Cmd+K would list both for that one. Pick other words.`
   }
 }
 
-const isAbove = (a: number[], b: number[]) => {
-  const i = a.findIndex((n, j) => n !== b[j])
-  return i >= 0 && (a[i] ?? 0) > (b[i] ?? 0)
+const iso = (seconds: number) => new Date(seconds * 1000).toISOString().replace(/\.\d+Z$/, 'Z')
+
+const toWindow = (label: string, percentUsed: number, resetsAt: string): Window[] => {
+  const resetsEpoch = Math.floor(Date.parse(resetsAt) / 1000)
+  return Number.isFinite(resetsEpoch) && Number.isFinite(percentUsed)
+    ? [{ label, percentUsed: Math.round(percentUsed * 10) / 10, resetsAt: iso(resetsEpoch), resetsEpoch }]
+    : []
 }
 
-// The title's first word, which a reader knows the session by, and those later
-// words that fit and have Cmd+K list it soonest: alone, or else first. Then
-// the most letters. The title cut to fit stands for the same words, and is the
-// one name left when the first word alone is too long.
-const findable = (other: Other, room: number) => {
-  const cut = fit(other.title, room)
-  if (!cut || other.isUntitled || !known.has(other.record)) return cut
-  const key = [other.record, other.title, room, ownRecord, indexReads].join('\t')
-  if (found?.key === key) return found.text
+const reported = (rateLimits: SessionRateLimit[]) =>
+  WINDOWS.flatMap(({ kind, label }) => {
+    const limit = rateLimits.find(l => l.kind === kind)
+    return limit?.resetsAt ? toWindow(label, limit.percentUsed, limit.resetsAt) : []
+  })
 
-  const own = [...new Map(other.title.split(/[^\p{L}\p{N}]+/u).filter(Boolean).map(w => [w.toLowerCase(), w])).values()]
-  const [first = '', ...later] = own.slice(0, MOST_WORDS)
-  let text = cut
-  let best: number[] | undefined
-  for (let n = 0; n < 2 ** later.length; n++) {
-    const picked = [first, ...later.filter((_, i) => n & (1 << i))]
-    const label = picked.join(' ')
-    if (width(label) > room) continue
-    const score = [standing(words(label), other.record), picked.join('').length]
-    if (!best || isAbove(score, best)) [text, best] = [label, score]
-  }
-  if (words(text).join(' ') === words(cut).join(' ')) text = cut
+// A window on file gives way only to the same window further along or to a
+// later one, as plan-limits.sh merges them, so the reading an idle session
+// repeats never sets a figure back.
+const merge = (kept: Window[], fresh: Window[], now: number) =>
+  WINDOWS.flatMap(({ label }) => {
+    const n = fresh.find(w => w.label === label && w.resetsEpoch > now)
+    const o = kept.find(w => w.label === label && w.resetsEpoch > now)
+    if (!n) return o ? [o] : []
+    if (!o || n.resetsEpoch > o.resetsEpoch + 300) return [n]
+    return n.resetsEpoch < o.resetsEpoch - 300 || n.percentUsed < o.percentUsed ? [o] : [n]
+  })
 
-  found = { key, text }
-  return text
-}
-
-// The other session whose cache goes cold or whose Chrome sign-in ends next,
-// named so Cmd+K lists it first.
-const next = (now: number, room: number) => {
-  const other = others.find(o => o.endsAt > now)
-  if (!other) return ''
-
-  const left = other.endsAt - now
-  const head = `${other.isSignIn ? LOCK : HOURGLASS} ${minutes(left)}m `
-  const title = findable(other, room - width(head))
-
-  return title ? head + title : ''
-}
+const plan = (now: number) =>
+  WINDOWS.flatMap(({ label, short }) => {
+    const w = limits.find(l => l.label === label && l.resetsEpoch * 1000 > now)
+    return w ? [`${short} ${Math.round(w.percentUsed)}%`] : []
+  }).join(', ')
 
 // Until the session's first answer usage.sh has no figures for it, so the
-// other session shows alone.
+// limits show alone. The desktop app cuts the line at about 40 characters,
+// so the cache comes first.
 const line = async ($: EngineInterface) => {
   const now = await $.clock.now()
-  if (!usage) return next(now, WIDTH) || undefined
+  const own = usage && `${cache(now, usage)}, ${usage.figures}`
 
-  const own = `${cache(now, usage)}, ${usage.figures}`
-  const other = next(now, WIDTH - width(own) - 2)
-
-  return other ? `${own}, ${other}` : own
+  return [own, plan(now)].filter(Boolean).join(', ') || undefined
 }
 
 // The first read takes every desktop session, archived ones too, and each one
 // after it those changed since.
 const index = async ($: EngineInterface) => {
   const read = await rows($, known.size > 0 ? ['--index', '65'] : ['--index'])
-  for (const [record = '', at = '0', pr = '', ...titles] of read)
-    if (record) known.set(record, { at: Number(at), pr, titles: titles.map(t => t.toLowerCase()), written: titles })
-  indexReads++
+  for (const [record = '', pr = '', ...titles] of read)
+    if (record) known.set(record, { pr, titles: titles.map(t => t.toLowerCase()), written: titles })
 }
 
 const readOthers = async ($: EngineInterface) => {
   await index($)
   const read = await rows($, ['--next', await $.session.id()])
-  const isTitle = ([, , kind = '']: string[]) => kind === 'title' || kind === 'own'
   const isWaits = ([, , kind = '']: string[]) => kind === 'waits'
   startedWork = new Set(read.filter(isWaits).map(([, , , record = '']) => record))
-  others = read
-    .filter(row => !isTitle(row) && !isWaits(row))
-    .map(([endsAt = '', title = '', kind = '', record = '', untitled = '']) => ({
-      endsAt: Number(endsAt) * 1000,
-      title: bare(title),
-      isSignIn: kind === 'sign-in',
-      record,
-      isUntitled: untitled === 'untitled',
-    }))
-  read.filter(isTitle).forEach(keep)
+  read.filter(row => !isWaits(row)).forEach(keep)
   othersReadAt = await $.clock.now()
 }
 
@@ -302,6 +248,95 @@ const configDir = async ($: EngineInterface) => {
   } catch {
     return undefined
   }
+}
+
+// plan-limits.sh keeps the limits in this file from a terminal session's status
+// line too, for this machine alone, as no sync carries it. The mod adds when
+// it last asked the usage card.
+let limitsFile: string | undefined
+
+const limitsPath = async ($: EngineInterface) => {
+  if (limitsFile === undefined) {
+    const dir = await configDir($)
+    limitsFile = dir === undefined ? '' : `${dir}/plan-limits.json`
+  }
+
+  return limitsFile
+}
+
+const machineName = async ($: EngineInterface) => {
+  if (machine === undefined) {
+    const { exitCode, stdout } = await $.process.run(['uname', '-n']).catch(() => ({ exitCode: 1, stdout: '' }))
+    machine = exitCode === 0 ? (stdout.trim().split('.')[0] ?? '') : ''
+  }
+
+  return machine
+}
+
+const onFile = async ($: EngineInterface) => {
+  const path = await limitsPath($)
+  const file = path
+    ? await $.fs
+        .read(path)
+        .then(text => JSON.parse(text) as Limits)
+        .catch(() => undefined)
+    : undefined
+
+  return file && file.machine === (await machineName($)) ? file : undefined
+}
+
+const store = async ($: EngineInterface, fresh: Window[], isChecked = false) => {
+  const now = Math.floor((await $.clock.now()) / 1000)
+  const old = await onFile($)
+  limits = merge(old?.windows ?? limits, fresh, now)
+  const path = await limitsPath($)
+  if (!path || limits.length === 0) return
+
+  const checkedEpoch = isChecked ? now : old?.checkedEpoch
+  const file: Limits = {
+    machine: await machineName($),
+    writtenAt: iso(now),
+    writtenEpoch: now,
+    ...(checkedEpoch === undefined ? {} : { checkedEpoch }),
+    windows: limits,
+  }
+  await $.fs.write(path, `${JSON.stringify(file)}\n`).catch(() => undefined)
+}
+
+// The usage card counts the work done elsewhere and starts a window over at its
+// reset while no turn reports the limits. The ask runs beside the tick, so an
+// app slow to answer holds up no other part of the line.
+const askCard = async ($: EngineInterface) => {
+  const card = await $.mcp
+    .call('ccd_session_mgmt', 'get_usage')
+    .then(({ content, isError }) => {
+      const text = content.find(block => block.type === 'text')?.text
+      return isError || !text ? undefined : (JSON.parse(text.slice(text.indexOf('{'))) as Card)
+    })
+    .catch(() => undefined)
+  hasNoCard = card?.plan?.status === 'not_applicable'
+  const fresh = (card?.plan?.windows ?? []).flatMap(({ label = '', percentUsed, resetsAt }) =>
+    WINDOWS.some(w => w.label === label) && percentUsed !== undefined && resetsAt
+      ? toWindow(label, percentUsed, resetsAt)
+      : [],
+  )
+  if (fresh.length === 0) return
+
+  await store($, fresh, true)
+  await redraw($)
+}
+
+// A session shows what any session of the machine last read, and once a minute
+// one of them asks the usage card.
+const readLimits = async ($: EngineInterface) => {
+  if (!(await limitsPath($))) return
+  const now = await $.clock.now()
+  const file = await onFile($)
+  limits = file?.windows ?? limits
+  if (hasNoCard || now - checkedAt < 60_000 || now - (file?.checkedEpoch ?? 0) * 1000 < 60_000) return
+
+  checkedAt = now
+  void askCard($)
 }
 
 // Every session's main turn rewrites the beacon, beside the usage log, so the
@@ -480,10 +515,10 @@ const show = async ($: EngineInterface) => {
 }
 
 // A running turn keeps refreshing the cache, so the transcript is read again.
-// The other sessions are read once a minute too, for what neither file shows,
-// and on each tick while one waits for the app to title it.
+// The other sessions are read once a minute too, for what neither file shows.
 const tick = async ($: EngineInterface) => {
-  if (others.some(o => o.isUntitled) || (await $.clock.now()) - othersReadAt >= 60_000) await readOthers($)
+  if ((await $.clock.now()) - othersReadAt >= 60_000) await readOthers($)
+  await readLimits($)
   await (isBusy ? show($) : redraw($))
   if (isWaiting) await keepWaiting($)
   await retitle($)
@@ -575,6 +610,7 @@ export const register: Register = on => {
     loadedAt = await $.clock.now()
     await hasNews($)
     await readOthers($)
+    await readLimits($)
     await measure($)
     await show($)
     await sweep($)
@@ -606,6 +642,18 @@ export const register: Register = on => {
     }
 
     return completed
+  })
+
+  // A response reports the limits, and the engine passes them on each time a
+  // window moves a whole point.
+  on('session.measure', async ($, e, next) => {
+    const measured = await next(e)
+    if (e.changed.includes('rateLimits')) {
+      await store($, reported(e.rateLimits))
+      await redraw($)
+    }
+
+    return measured
   })
 
   // A rename Claude makes keeps the mark. A session renames itself in a turn,
