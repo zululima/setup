@@ -335,17 +335,22 @@ GitHub.
   takes both on the yes, the approval with no comment unless the review gave a prompt for the
   author's setup, as the next bullet says.
 - A review with findings on a PR another author made with Claude Code, as the PR body or the project
-  memory shows, gives a prompt for that author's own setup, fixed findings included. It tells their
-  Claude Code to add, generalised past the case, the rule or check that would have caught each
-  finding before the PR opened, each with the case that prompted it, and to commit it where their
-  setup is kept, named where a source shows it.
+  memory shows, gives a prompt for that author's own setup, fixed findings included. It opens with
+  "Add these rules to your Claude Code setup, where the rules load in every session", never with
+  "my": it goes out under the user's name, where a first person reads as the user's own setup, and
+  any other text for someone else posted under the user's name speaks of that person's things as
+  theirs the same way. It tells their Claude Code to add, generalised past the case, the rule or
+  check that would have caught each finding before the PR opened, each with the case that prompted
+  it, and to commit it where their setup is kept, named where a source shows it.
 - A review that gives a prompt for the author's own Claude Code setup approves with that prompt as
   its comment, so the author pastes it and their setup learns from the review: one line that asks
   the author to paste the prompt into their Claude Code, then the prompt in a fenced `text` block.
   The user's yes to approve and merge covers the comment, so the session posts it with the approval
-  and asks nothing more about it. While `~/.claude/hooks/no-github-posts.sh` refuses it, the session
-  approves with no comment and merges, and the reply says so first, then gives the PR's address and
-  the comment in a `text` block for the user to post there as a comment.
+  and asks nothing more about it. Right before the approval it reads the PR's comments again, and
+  when the user has posted the prompt there themself, it approves with no comment. While
+  `~/.claude/hooks/no-github-posts.sh` refuses it, the session approves with no comment and merges,
+  and the reply says so first, then gives the PR's address and the comment in a `text` block for the
+  user to post there as a comment.
 - Where the PR's steps fall short, the overlay's `added_steps` put the fix on the page, marked as
   added by the review: the two command steps when the PR lacks them (an empty `after` puts a step
   before the PR's first), a step for a change the PR's steps skip, and the bug steps below. They
