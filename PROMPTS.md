@@ -6,9 +6,24 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
+## Record a narrated video for each PR that changes a screen
+
+2026-11-28, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**2.**
+> [an ask about another project's code, voice and licence left out]
+> this is actually a good tool better than my playwright videos. how
+> can i make this work on my projects too to each pr. [an ask about
+> where to keep the tool left out]
+
+Reply: [a reply about the tool's code left out] The per-PR video setup waits on where the tool will live.
+
+**7.** (answer to: shall I set up a video for every PR that changes a screen?)
+> Yes, set it up
+
 ## Link the Qobuz cover helper from the Mac doc
 
-2026-11-27, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+2026-11-27, commit [f434c9f](https://github.com/zululima/setup/commit/f434c9f7c028f7bfd7786ad3ce908d32d1690b95), model claude-opus-5-5, effort xhigh.
 
 **4.** (answer to: shall I add qobuz-cover-wall to docs/mac.md, next to qobuz-ear-pause?)
 > Yes, add it

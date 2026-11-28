@@ -400,18 +400,29 @@ GitHub.
 
 - Every manual step of How to verify gets a screenshot of the state it describes, in the PR body and
   so on the review page, whether or not the change alters what a page renders: the reader sees what
-  should happen before acting. A recording comes on top where motion is the point, or where the
+  should happen before acting. A PR that changes what a screen shows also gets a narrated video of
+  the change, made with the installed skill that records story videos, as its `SKILL.md` says. Where
+  no such skill is installed, a recording comes on top only where motion is the point, or where the
   change is visual and the repository asks for one, in its pull request template or in the agent
   instructions it keeps in context (`AGENTS.md`, `CLAUDE.md`). A repository may keep such asks out
   of the template so the body carries only what a reviewer reads, and they bind as much there.
 - Capture them from the local stack on fixture data with a scratch Playwright script in the
   scratchpad, on the repository's Playwright install, never a config change in the repository:
   one PNG per manual step of "How to verify", in the state that step describes, named after the
-  step, and a WebM only where motion is the point. A recording is made with `slowMo` of about
-  400 ms on the browser launch and a pause of two or three seconds at every state a step
-  describes, since a Playwright run at full speed is too fast to follow. Fixture data is what
-  the project's own start command leaves, so capture on a stack that no end to end run has
-  touched since its last clean start: specs add records the reader's stack lacks.
+  step. A recording without the video skill is a WebM made with `slowMo` of about 400 ms on the
+  browser launch and a pause of two or three seconds at every state a step describes, since a
+  Playwright run at full speed is too fast to follow. Fixture data is what the project's own start
+  command leaves, so capture on a stack that no end to end run has touched since its last clean
+  start: specs add records the reader's stack lacks.
+- The video has one chapter per acceptance criterion of the issue the PR closes, or per manual step
+  of How to verify where the issue lists none, is narrated in the language of the PR body, and is
+  recorded on the same freshly started stack as the screenshots. The app's UI skill, which signs in
+  and moves around, goes in `~/.claude/drafts/<repository>-ui/` for every PR of that repository, and
+  each PR's storyboard and video in that PR's drafts folder, never in the repository: both import
+  the video skill's code, whose licence need not match the repository's. Before the upload the
+  skill's own review shows no error, and its keyframes are opened with Read and checked as a picture
+  is. With no transcription model, nothing checked the narration by ear, and the reply that hands
+  over the PR says so.
 - Each PNG holds only the part of the screen its step is about, such as the open dialog or the list
   the step changes, taken with `locator.screenshot()` or a `clip`, so it stays legible at the size
   the review page gives it. The window around that part, a dimmed backdrop, empty margins and parts
