@@ -6,9 +6,22 @@ gives one. Square brackets mark what was left out or redacted, and a commit with
 section is left out. This file is generated from the commit messages, so a change by hand is
 lost at the next commit.
 
-## Refuse a Slack draft whose text makes an emoji code
+## Link the Slack message a draft answers, copyable too
 
 2026-11-28, [the commit that last changed this file](https://github.com/zululima/setup/commits/main/PROMPTS.md), model claude-opus-5-5, effort xhigh.
+
+**6.**
+> [an aside left out] also link the message where i would send that
+> message to
+
+Reply: The draft is fixed and back on your clipboard: the label no longer makes Slack show an emoji. The slack-draft skill and its copy script now refuse such a draft (setup commit d8ab73d). [a project step left out]
+
+**7.** (answer to: should every Slack draft reply link the message it answers from now on?)
+> yes every draft also give the slack link in copayble format too
+
+## Refuse a Slack draft whose text makes an emoji code
+
+2026-11-28, commit [d8ab73d](https://github.com/zululima/setup/commit/d8ab73d112e942857dcac5c3ade3516a6add054d), model claude-opus-5-5, effort xhigh.
 
 **6.**
 > [an aside left out] fr why did you put :[a colleague's name]: there

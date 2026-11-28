@@ -86,10 +86,13 @@ draft holds no `:word:` outside code unless it means that emoji: reword it, such
    last version when there was one, and name each link the recipients may not be able to open,
    such as a private repository or a permalink from another workspace. Then the steps. The first
    is to paste with Cmd+V in Slack and check it before sending. It names the channel, and for a
-   thread reply whose message it answers, in words only, with no link to the channel, the thread
-   or a message: the user goes there in the Slack app. The second is the command that puts the
-   draft back on the clipboard once something else overwrote it, with the draft's own file name
-   in place of `<topic>`:
+   thread reply the message it answers, and gives the address of that message, or of the channel
+   for a new post, twice: as a clickable link whose text is the whole address, and in a `text`
+   block of its own to copy. A message's address is its permalink from the Slack connector, with
+   `thread_ts` and `cid` for a message inside a thread, and a channel's or a DM's is
+   `https://<workspace>.slack.com/archives/<conversation id>`. The second step is the command that
+   puts the draft back on the clipboard once something else overwrote it, with the draft's own file
+   name in place of `<topic>`:
    ```bash
    ~/.claude/skills/slack-draft/copy-rich.sh ~/.claude/drafts/<topic>.html
    ```
